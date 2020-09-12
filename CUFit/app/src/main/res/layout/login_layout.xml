@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/login_bg">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_55"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55"/>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:transitionName="logo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_marginHorizontal="@dimen/LU_5_5"
+        android:layout_marginVertical="@dimen/LU_3"
+        android:src="@drawable/icon_text_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/login_credentials"/>
+
+    <LinearLayout
+        android:id="@+id/login_credentials"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/LU_4_5"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_55"
+        app:layout_constraintBottom_toBottomOf="@id/horizontal_55">
+
+        <com.portalpirates.cufit.ui.view.FitEditText
+            android:id="@+id/email_input"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:nextFocusDown="@+id/password_input"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email_address"/>
+
+        <com.portalpirates.cufit.ui.view.FitEditText
+            android:id="@+id/password_input"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/LU_2"
+            android:nextFocusUp="@+id/email_input"
+            android:imeOptions="actionGo"
+            android:inputType="textPassword"
+            app:passwordToggleEnabled="true"
+            android:hint="@string/password"/>
+
+    </LinearLayout>
+
+
+    <com.portalpirates.cufit.ui.view.FitButton
+        android:id="@+id/login_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/LU_4_5"
+        android:layout_marginTop="@dimen/LU_4"
+        app:buttonMode="inverted"
+        app:buttonType="primary"
+        app:layout_constraintBottom_toTopOf="@id/sign_up_btn"
+        app:layout_constraintLeft_toLeftOf="@id/login_credentials"
+        app:layout_constraintRight_toRightOf="@id/login_credentials"
+        app:layout_constraintTop_toBottomOf="@+id/login_credentials"
+        app:layout_constraintVertical_bias="0.0"
+        app:text="@string/log_in" />
+
+    <com.portalpirates.cufit.ui.view.FitButton
+        android:id="@+id/sign_up_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_2"
+        app:buttonType="tertiary"
+        app:text="@string/sign_up"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
