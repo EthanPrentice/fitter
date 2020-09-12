@@ -13,6 +13,25 @@
             <enum name="left"  value="0"/>
             <enum name="right" value="1"/>
         </attr>
+        <attr name="buttonMode">
+            <enum name="normal" value="0"/>
+            <enum name="inverted" value="1"/>
+        </attr>
         <attr name="android:clickable" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="FitEditText">
+        <attr name="editTextStyle" format="reference" />
+
+        <attr name="editTextType">
+            <enum name="primary" value="0"/>
+            <enum name="secondary" value="1"/>
+        </attr>
+        <attr name="android:hint"/>
+        <attr name="android:text"/>
+        <attr name="android:inputType"/>
+    </declare-styleable>
+
+
+
 </resources>

@@ -29,6 +29,15 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
         }
     }
 
+    private enum class ButtonMode(private val value: Int) {
+        NORMAL(0),
+        INVERTED(1);
+        companion object {
+            private val values = values()
+            fun fromValue(value: Int) = values.firstOrNull { it.value == value } ?: NORMAL
+        }
+    }
+
     private enum class IconLocation(private val value: Int) {
         LEFT(0),
         RIGHT(1);
@@ -39,7 +48,11 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
     }
 
     private val buttonType: ButtonType
+    private val buttonMode: ButtonMode
     private val iconLocation: IconLocation
+
+    private val inverted: Boolean
+        get() = buttonMode == ButtonMode.INVERTED
 
     var text: String = ""
         set(value) {
@@ -58,29 +71,29 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
 
     private val btnBackgroundColor: Int
         get() = when(buttonType) {
-            ButtonType.PRIMARY -> context.getColor(R.color.button_background)
-            ButtonType.SECONDARY -> context.getColor(android.R.color.transparent)
-            ButtonType.TERTIARY -> context.getColor(android.R.color.transparent)
+            ButtonType.PRIMARY -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
+            ButtonType.SECONDARY -> ContextCompat.getColor(context, android.R.color.transparent)
+            ButtonType.TERTIARY -> ContextCompat.getColor(context, android.R.color.transparent)
         }
 
     private val btnStrokeColor
         get() = when(buttonType) {
-            ButtonType.TERTIARY -> context.getColor(android.R.color.transparent)
-            else -> context.getColor(R.color.button_background)
+            ButtonType.TERTIARY -> ContextCompat.getColor(context, android.R.color.transparent)
+            else -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
         }
 
     private val btnForegroundColor: Int
         get() = when(buttonType) {
-            ButtonType.PRIMARY -> context.getColor(R.color.button_foreground)
-            ButtonType.SECONDARY -> context.getColor(R.color.button_background)
-            ButtonType.TERTIARY -> context.getColor(R.color.tertiary_btn_text)
+            ButtonType.PRIMARY -> ColorUtil.getInvertibleColor(context, R.color.component_fg, inverted)
+            ButtonType.SECONDARY -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
+            ButtonType.TERTIARY -> ContextCompat.getColor(context, R.color.tertiary_btn_text)
         }
 
     private val rippleColor: Int
         get() = when(buttonType) {
-            ButtonType.PRIMARY -> context.getColor(R.color.overlay_light)
-            ButtonType.SECONDARY -> context.getColor(R.color.overlay_dark)
-            ButtonType.TERTIARY -> context.getColor(android.R.color.transparent)
+            ButtonType.PRIMARY ->  ColorUtil.getInvertibleColor(context, R.color.overlay_light, inverted)
+            ButtonType.SECONDARY ->  ColorUtil.getInvertibleColor(context, R.color.overlay_dark, inverted)
+            ButtonType.TERTIARY -> ContextCompat.getColor(context, android.R.color.transparent)
         }
 
     private val underlineText: Boolean
@@ -97,6 +110,7 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
         // read in attrs
         val typedArr = context.obtainStyledAttributes(attrs, R.styleable.FitButton, defStyle, 0)
         buttonType = ButtonType.fromValue(typedArr.getInt(R.styleable.FitButton_buttonType, 0))
+        buttonMode = ButtonMode.fromValue(typedArr.getInt(R.styleable.FitButton_buttonMode, 0))
         text = typedArr.getString(R.styleable.FitButton_text) ?: ""
         iconLocation = IconLocation.fromValue(typedArr.getInt(R.styleable.FitButton_iconOn, 0))
         isClickable = typedArr.getBoolean(R.styleable.FitButton_android_clickable, true)
@@ -180,7 +194,7 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
     }
 
     private fun initBackground() {
-        val backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.button_background) as GradientDrawable
+        val backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.rounded_component_background) as GradientDrawable
         backgroundDrawable.color = ColorUtil.getSingleColorStateList(btnBackgroundColor)
         backgroundDrawable.setStroke(context.resources.getDimensionPixelOffset(R.dimen.LU_0_5), btnStrokeColor)
         background = backgroundDrawable

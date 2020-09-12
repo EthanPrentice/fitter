@@ -57,4 +57,10 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
+
+    <!-- Component styles -->
+    <style name="edittext_text" parent="body_text">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
 </resources>

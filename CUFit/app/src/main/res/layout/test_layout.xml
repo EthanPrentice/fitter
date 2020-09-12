@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -125,11 +126,11 @@
 
     </LinearLayout>
 
-    <com.portalpirates.cufit.ui.view.FitButton
-        android:layout_width="match_parent"
+    <com.portalpirates.cufit.ui.view.FitEditText
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/LU_4"
-        android:layout_marginTop="@dimen/LU_4"
-        app:text="Hello World"/>
+        app:editTextType="primary"
+        android:inputType="textEmailAddress"
+        android:hint="Email Address"/>
 
 </LinearLayout>
