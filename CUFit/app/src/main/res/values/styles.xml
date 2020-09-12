@@ -4,6 +4,15 @@
         <item name="buttonTextStyle">@style/button_text</item>
     </style>
 
+    <style name="FitTheme.Login">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="FitTheme.Splash">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
 
     <!-- Text Styles -->
     <style name="AppTheme.TextAppearance" parent="TextAppearance.AppCompat"/>
@@ -57,10 +66,11 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-
-    <!-- Component styles -->
     <style name="edittext_text" parent="body_text">
         <item name="fontFamily">@font/montserrat</item>
     </style>
+
+
+    <!-- Component styles -->
 
 </resources>

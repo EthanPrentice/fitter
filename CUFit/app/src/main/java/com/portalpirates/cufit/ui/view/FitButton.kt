@@ -100,6 +100,8 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
         get() = (buttonType == ButtonType.TERTIARY)
 
 
+    private val isTintEnabled: Boolean
+
     init {
         inflate(context, R.layout.button_layout, this)
         isClickable = true
@@ -114,6 +116,7 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
         text = typedArr.getString(R.styleable.FitButton_text) ?: ""
         iconLocation = IconLocation.fromValue(typedArr.getInt(R.styleable.FitButton_iconOn, 0))
         isClickable = typedArr.getBoolean(R.styleable.FitButton_android_clickable, true)
+        isTintEnabled = typedArr.getBoolean(R.styleable.FitButton_iconTintEnabled, true)
 
         imageView = when (iconLocation) {
             IconLocation.LEFT -> findViewById(R.id.btn_icon_left)
@@ -137,9 +140,10 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
     }
 
     private fun setPadding() {
+        val imageVertical = resources.getDimensionPixelOffset(R.dimen.LU_3)
         if (icon != null && text.isEmpty()) { // icon only
             val padding = context.resources.getDimensionPixelOffset(R.dimen.LU_1)
-            imageView.setPadding(padding, 0, padding, 0)
+            imageView.setPadding(padding, padding, padding, padding)
         }
         else if (icon == null && text.isNotEmpty()) { // text only
             val padding = context.resources.getDimensionPixelOffset(R.dimen.LU_3)
@@ -154,10 +158,10 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
             }
 
             if (iconLocation == IconLocation.LEFT) {
-                imageView.setPadding(outerPadding, 0, 0, 0)
+                imageView.setPadding(outerPadding, imageVertical, 0, imageVertical)
                 textView.setPadding(innerPadding, 0, outerPadding, 0)
             } else {
-                imageView.setPadding(0, 0, outerPadding, 0)
+                imageView.setPadding(0, imageVertical, outerPadding, imageVertical)
                 textView.setPadding(outerPadding, 0, innerPadding, 0)
             }
         }
@@ -165,7 +169,9 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
 
     private fun initImageView() {
         icon?.let {
-            it.setTint(btnForegroundColor)
+            if (isTintEnabled) {
+                it.setTint(btnForegroundColor)
+            }
             imageView.setImageDrawable(it)
             imageView.visibility = View.VISIBLE
         }

@@ -9,6 +9,7 @@
         <attr name="text" format="string" />
         <attr name="buttonTextStyle" format="reference" />
         <attr name="icon" format="reference"/>
+        <attr name="iconTintEnabled" format="boolean"/>
         <attr name="iconOn">
             <enum name="left"  value="0"/>
             <enum name="right" value="1"/>
@@ -30,6 +31,7 @@
         <attr name="android:hint"/>
         <attr name="android:text"/>
         <attr name="android:inputType"/>
+        <attr name="android:imeOptions"/>
     </declare-styleable>
 
 

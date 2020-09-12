@@ -1,16 +1,21 @@
 package com.portalpirates.cufit.ui.view
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
+import android.view.Gravity
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.ui.util.ColorUtil
 
-class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLayout(context, attrs, defStyle) {
+class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : TextInputLayout(context, attrs, defStyle) {
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
@@ -43,7 +48,7 @@ class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : Frame
 
 
     private val editTextType: EditTextType
-    private val editText: EditText = EditText(context)
+    private val editText: TextInputEditText = TextInputEditText(context)
 
     var text: String
         get() = editText.text?.toString() ?: ""
@@ -58,12 +63,18 @@ class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : Frame
         text = typedArr.getString(R.styleable.FitEditText_android_text) ?: ""
         editText.hint = typedArr.getString(R.styleable.FitEditText_android_hint) ?: ""
         editText.inputType = typedArr.getInt(R.styleable.FitEditText_android_inputType, 0)
+        editText.imeOptions = typedArr.getInt(R.styleable.FitEditText_android_imeOptions, 0)
         typedArr.recycle()
 
         isClickable = true
         isFocusable = true
+        isHintEnabled = false
+
+        gravity = Gravity.CENTER_VERTICAL
 
         editText.setTextAppearance(R.style.edittext_text)
+
+        setEndIconTintList(ContextCompat.getColorStateList(context, R.color.password_hint_tint))
 
         setPadding()
         initBackground()
