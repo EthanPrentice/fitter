@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#262626</color>
+
+    <color name="icon_primary">#FFFFFF</color>
+    <color name="icon_secondary">#CCFFFFFF</color>
+
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#66FFFFFF</color>
+
+    <color name="component_bg">#FFFFFF</color>
+    <color name="component_fg">#000000</color>
+    <color name="component_fg_secondary">#66000000</color>
+
+    <color name="component_bg_inverse">#161825</color>
+    <color name="component_fg_inverse">#FFFFFF</color>
+    <color name="component_fg_secondary_inverse">#CCFFFFFF</color>
+
+    <color name="overlay_dark">#AAFFFFFF</color>
+    <color name="overlay_light">#66000000</color>
+</resources>
