@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="icon_primary">#FFFFFF</color>
+    <color name="icon_secondary">#CCFFFFFF</color>
+
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#66FFFFFF</color>
+
+    <color name="button_background">#FFFFFF</color>
+    <color name="button_foreground">#000000</color>
+
+    <color name="overlay_dark">#AAFFFFFF</color>
+    <color name="overlay_light">#66000000</color>
+</resources>
