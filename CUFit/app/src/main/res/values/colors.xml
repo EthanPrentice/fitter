@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="background">#F2F2F2</color>
+
+    <color name="icon_primary">#000000</color>
+    <color name="icon_secondary">#CC000000</color>
+
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#66000000</color>
+
+    <color name="component_bg">#161825</color>
+    <color name="component_fg">#FFFFFF</color>
+    <color name="component_fg_secondary">#CCFFFFFF</color>
+
+    <color name="component_bg_inverse">#FFFFFF</color>
+    <color name="component_fg_inverse">#000000</color>
+    <color name="component_fg_secondary_inverse">#CC000000</color>
+
+    <color name="overlay_dark">#66000000</color>
+    <color name="overlay_light">#AAFFFFFF</color>
 </resources>
