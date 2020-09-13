@@ -56,7 +56,7 @@
             android:layout_marginTop="@dimen/LU_2"
             android:nextFocusUp="@id/email_input"
             android:nextFocusDown="@id/confirm_password_input"
-            android:imeOptions="actionGo"
+            android:imeOptions="actionNext"
             android:inputType="textPassword"
             app:passwordToggleEnabled="true"
             android:hint="@string/password"/>
@@ -65,13 +65,14 @@
             android:id="@+id/confirm_password_input"
             android:transitionName="@string/tr_confirm_password_input"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/LU_2"
             app:editTextType="primary"
-            android:nextFocusUp="@id/password_input"
+            android:nextFocusUp="@+id/password_input"
             android:imeOptions="actionGo"
             android:inputType="textPassword"
             app:passwordToggleEnabled="true"
-            android:hint="@string/confirm_password" />
+            android:hint="@string/confirm_password"/>
 
     </LinearLayout>
 
@@ -108,7 +109,7 @@
         app:layout_constraintRight_toRightOf="@id/credentials"
         app:layout_constraintTop_toBottomOf="@+id/message"
         app:layout_constraintVertical_bias="0.0"
-        app:text="@string/log_in" />
+        app:text="@string/sign_up" />
 
     <LinearLayout
         android:id="@+id/bottom_tray"
@@ -126,16 +127,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:buttonType="tertiary"
-            app:text="@string/sign_up"
+            app:text="@string/log_in"
             android:layout_weight="0.5"/>
-
-        <com.portalpirates.cufit.ui.view.FitButton
-            android:id="@+id/forgot_password_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:buttonType="tertiary"
-            app:text="@string/forgot_password"
-            android:visibility="gone"/>
 
     </LinearLayout>
 
