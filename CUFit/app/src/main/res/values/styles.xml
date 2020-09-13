@@ -1,10 +1,76 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="FitTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="buttonTextStyle">@style/button_text</item>
     </style>
+
+    <style name="FitTheme.Login">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="FitTheme.Splash">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
+
+    <!-- Text Styles -->
+    <style name="AppTheme.TextAppearance" parent="TextAppearance.AppCompat"/>
+
+    <style name="body_text" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/body_text_size</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="header1" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/header1_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="header2" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/header2_text_size</item>
+    </style>
+
+    <style name="header3" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/header3_text_size</item>
+    </style>
+
+    <style name="button_text" parent="header3">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="metadata_title1" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/metadata_title1_size</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="metadata_title2" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/metadata_title2_size</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="metadata_body1_primary" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/metadata_body1_size</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="metadata_body1_secondary" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/metadata_body1_size</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="metadata_body2" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/metadata_body2_size</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="edittext_text" parent="body_text">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+
+    <!-- Component styles -->
 
 </resources>
