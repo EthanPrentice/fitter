@@ -22,18 +22,19 @@ class LoginFragment private constructor() : AuthFragment() {
 
     private lateinit var forgotPasswordBtn: FitButton
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        postponeEnterTransition()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.login_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // if there is a sharedElement transition, make the views transparent
+        if (fitActivity!!.window.sharedElementEnterTransition != null) {
+            userInputs.alpha = 0f
+            actionBtn.alpha = 0f
+            switchModeBtn.alpha = 0f
+        }
 
         forgotPasswordBtn = view.findViewById(R.id.forgot_password_btn)
         forgotPasswordBtn.btn_text_view.maxLines = 1
@@ -48,16 +49,13 @@ class LoginFragment private constructor() : AuthFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        // if there is a sharedElement transition, make the views transparent
-        // and fade them in once the sharedElements are done being animated
+        // fade views in once the sharedElements are done being animated
         val sharedElementEnterTransition = fitActivity!!.window.sharedElementEnterTransition
         sharedElementEnterTransition?.addListener(object : Transition.TransitionListener {
             override fun onTransitionResume(transition: Transition) { }
             override fun onTransitionPause(transition: Transition) { }
             override fun onTransitionStart(transition: Transition) {
-                userInputs.alpha = 0f
-                actionBtn.alpha = 0f
-                switchModeBtn.alpha = 0f
+
             }
 
             override fun onTransitionEnd(transition: Transition) {

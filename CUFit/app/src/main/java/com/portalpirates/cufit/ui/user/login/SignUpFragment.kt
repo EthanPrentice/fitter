@@ -9,11 +9,6 @@ import com.portalpirates.cufit.R
 
 class SignUpFragment private constructor() : AuthFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        postponeEnterTransition()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.signup_layout, container, false)
     }
