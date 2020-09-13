@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.button_layout.view.*
 
 class LoginFragment private constructor() : AuthFragment() {
 
+    private var activityTransitionEnded = false
+
     private val isForgotPasswordShowing: Boolean
         get() = forgotPasswordBtn.visibility == View.VISIBLE
 
@@ -28,22 +30,19 @@ class LoginFragment private constructor() : AuthFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState == null) {
+            requireActivity().startPostponedEnterTransition()
+        }
+        startPostponedEnterTransition()
 
-        // if there is a sharedElement transition, make the views transparent
-        if (fitActivity!!.window.sharedElementEnterTransition != null) {
+        if (hasActivitySharedElemTransition && !activityTransitionEnded) {
             userInputs.alpha = 0f
             actionBtn.alpha = 0f
-            switchModeBtn.alpha = 0f
+            bottomTray.alpha = 0f
         }
 
         forgotPasswordBtn = view.findViewById(R.id.forgot_password_btn)
         forgotPasswordBtn.btn_text_view.maxLines = 1
-
-        startPostponedEnterTransition()
-
-        if (savedInstanceState == null) {
-            requireActivity().startPostponedEnterTransition()
-        }
     }
 
     override fun onAttach(context: Context) {
@@ -54,18 +53,29 @@ class LoginFragment private constructor() : AuthFragment() {
         sharedElementEnterTransition?.addListener(object : Transition.TransitionListener {
             override fun onTransitionResume(transition: Transition) { }
             override fun onTransitionPause(transition: Transition) { }
-            override fun onTransitionStart(transition: Transition) {
-
-            }
+            override fun onTransitionStart(transition: Transition) { }
 
             override fun onTransitionEnd(transition: Transition) {
+                activityTransitionEnded = true
                 fun View.fadeIn() = animate().alpha(1f).setDuration(400L).start()
                 userInputs.fadeIn()
                 actionBtn.fadeIn()
-                switchModeBtn.fadeIn()
+                bottomTray.fadeIn()
             }
             override fun onTransitionCancel(transition: Transition) = onTransitionEnd(transition)
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        // Transition ends and does not update the listener on-pause
+        // If the fragment is paused and the transition has not finished, show the views
+        if (hasActivitySharedElemTransition && !activityTransitionEnded) {
+            userInputs.alpha = 1f
+            actionBtn.alpha = 1f
+            bottomTray.alpha = 1f
+        }
     }
 
     override fun setActionOnClickListener() {
@@ -82,7 +92,7 @@ class LoginFragment private constructor() : AuthFragment() {
 
     override fun setImeListeners() {
         passwordInput.editText?.setOnEditorActionListener listener@{ _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
                 login()
                 return@listener true
             }

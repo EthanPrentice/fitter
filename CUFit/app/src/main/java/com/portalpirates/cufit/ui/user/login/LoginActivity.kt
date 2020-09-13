@@ -32,9 +32,14 @@ class LoginActivity : FitActivity() {
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
         if (savedInstanceState == null) {
+            val bundle = Bundle()
+            bundle.putBoolean(HAS_ACTIVITY_SHARED_ELEM_TRANSITION, true)
+
+            val frag = LoginFragment.newInstance(bundle)
+
             val manager: FragmentManager = supportFragmentManager
             val transaction: FragmentTransaction = manager.beginTransaction()
-            transaction.add(R.id.frag_container, LoginFragment.newInstance(), LoginFragment.TAG)
+            transaction.add(R.id.frag_container, frag, LoginFragment.TAG)
             transaction.commit()
         }
     }

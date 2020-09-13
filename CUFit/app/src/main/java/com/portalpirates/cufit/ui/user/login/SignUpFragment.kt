@@ -20,7 +20,7 @@ class SignUpFragment private constructor() : AuthFragment() {
 
     override fun setImeListeners() {
         confirmPasswordInput.editText?.setOnEditorActionListener listener@{ _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
                 signUp()
                 return@listener true
             }

@@ -37,6 +37,8 @@ abstract class FitActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "FitActivity"
+
+        const val HAS_ACTIVITY_SHARED_ELEM_TRANSITION = "com.portalpirates.cufit.ui.FitFragment:hasActivitySharedElemTransition"
     }
 
 }
