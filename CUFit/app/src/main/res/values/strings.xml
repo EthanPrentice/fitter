@@ -1,8 +1,26 @@
 <resources>
     <string name="app_name">CU Fit</string>
 
+
+    <!-- User facing / content -->
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+
+
+    <!-- Shared element transition IDs -->
+    <string name="tr_logo">logo</string>
+    <string name="tr_credentials">credentials</string>
+    <string name="tr_email_input">email_input</string>
+    <string name="tr_password_input">password_input</string>
+    <string name="tr_confirm_password_input">confirm_password_input</string>
+    <string name="tr_action_btn">action_btn</string>
+    <string name="tr_bottom_tray">bottom_tray</string>
+    <string name="tr_switch_mode_btn">switch_mode_btn</string>
+    <string name="tr_message">message</string>
+
+
 </resources>

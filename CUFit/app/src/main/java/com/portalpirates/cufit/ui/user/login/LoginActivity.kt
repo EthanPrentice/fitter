@@ -34,7 +34,7 @@ class LoginActivity : FitActivity() {
         if (savedInstanceState == null) {
             val manager: FragmentManager = supportFragmentManager
             val transaction: FragmentTransaction = manager.beginTransaction()
-            transaction.add(R.id.frag_container, LoginFragment(), LoginFragment.TAG)
+            transaction.add(R.id.frag_container, LoginFragment.newInstance(), LoginFragment.TAG)
             transaction.commit()
         }
     }

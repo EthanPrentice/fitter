@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FitTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="buttonTextStyle">@style/button_text</item>
+        <item name="android:autofilledHighlight">@android:color/transparent</item>
+    </style>
+
+</resources>

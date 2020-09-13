@@ -25,7 +25,7 @@ class SplashActivity : FitActivity() {
         handler.postDelayed({
             val logoView = findViewById<ImageView>(R.id.logo)
             val intent = Intent(this, LoginActivity::class.java)
-            val options = ActivityOptions.makeSceneTransitionAnimation(this, logoView, "logo")
+            val options = ActivityOptions.makeSceneTransitionAnimation(this, logoView, resources.getString(R.string.tr_logo))
             startActivity(intent, options.toBundle())
         }, DELAY_MS)
     }

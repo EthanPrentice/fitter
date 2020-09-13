@@ -1,57 +1,161 @@
 package com.portalpirates.cufit.ui.user.login
 
+import android.content.Context
 import android.os.Bundle
 import android.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.inputmethod.EditorInfo
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.ui.FitFragment
+import com.portalpirates.cufit.ui.animation.ResizeAnimation
 import com.portalpirates.cufit.ui.view.FitButton
+import kotlinx.android.synthetic.main.button_layout.view.*
 
-class LoginFragment : FitFragment() {
 
-    private lateinit var root: ConstraintLayout
+class LoginFragment private constructor() : AuthFragment() {
 
-    private lateinit var loginCreds: LinearLayout
-    private lateinit var loginBtn: FitButton
-    private lateinit var signupBtn: FitButton
+    private var enterAnimationFinished = false
+    private var wasPaused = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        root = inflater.inflate(R.layout.login_layout, container, false) as ConstraintLayout
+    private val isForgotPasswordShowing: Boolean
+        get() = forgotPasswordBtn.visibility == View.VISIBLE
 
-        loginCreds = root.findViewById(R.id.login_credentials)
-        loginBtn = root.findViewById(R.id.login_btn)
-        signupBtn = root.findViewById(R.id.sign_up_btn)
+    private lateinit var forgotPasswordBtn: FitButton
 
-        if (savedInstanceState == null) {
-            loginCreds.alpha = 0f
-            loginBtn.alpha = 0f
-        }
 
-        return root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        postponeEnterTransition()
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.login_layout, container, false)
+    }
 
-        requireActivity().startPostponedEnterTransition()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        forgotPasswordBtn = view.findViewById(R.id.forgot_password_btn)
+        forgotPasswordBtn.btn_text_view.maxLines = 1
+
+        startPostponedEnterTransition()
+
+        if (savedInstanceState == null) {
+            requireActivity().startPostponedEnterTransition()
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        // if there is a sharedElement transition, fade in the views once it's finished
         val sharedElementEnterTransition = fitActivity!!.window.sharedElementEnterTransition
-        sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
+        sharedElementEnterTransition?.addListener(object : Transition.TransitionListener {
             override fun onTransitionResume(transition: Transition) { }
             override fun onTransitionPause(transition: Transition) { }
-            override fun onTransitionCancel(transition: Transition) { }
-            override fun onTransitionStart(transition: Transition) { }
+            override fun onTransitionStart(transition: Transition) {
+                userInputs.alpha = 0f
+                actionBtn.alpha = 0f
+                switchModeBtn.alpha = 0f
+            }
 
             override fun onTransitionEnd(transition: Transition) {
-                loginCreds.fadeIn()
-                loginBtn.fadeIn()
-                signupBtn.fadeIn()
+                enterAnimationFinished = true
+                userInputs.fadeIn()
+                actionBtn.fadeIn()
+                switchModeBtn.fadeIn()
             }
+            override fun onTransitionCancel(transition: Transition) = onTransitionEnd(transition)
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        wasPaused = false
+
+        // if the frag is resumed and the enter animation never finished, fade in the views
+        if (!enterAnimationFinished && wasPaused) {
+            enterAnimationFinished = true
+            userInputs.fadeIn()
+            actionBtn.fadeIn()
+            switchModeBtn.fadeIn()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        wasPaused = true
+    }
+
+    override fun setActionOnClickListener() {
+        actionBtn.setOnClickListener {
+            login()
+        }
+    }
+
+    override fun setSwitchModeOnClickListener() {
+        switchModeBtn.setOnClickListener {
+            swapAuthMode(AuthMode.SIGN_UP)
+        }
+    }
+
+    override fun setImeListeners() {
+        passwordInput.editText?.setOnEditorActionListener listener@{ _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                login()
+                return@listener true
+            }
+            return@listener false
+        }
+    }
+
+    private fun login() {
+        onIncorrectInput()
+    }
+
+    override fun onIncorrectInput() {
+        super.onIncorrectInput()
+        showForgotPassword()
+    }
+
+    private fun hideForgotPassword() {
+        if (!isForgotPasswordShowing) {
+            return
+        }
+        val anim = ResizeAnimation(forgotPasswordBtn, 0, forgotPasswordBtn.measuredWidth, ResizeAnimation.Mode.WIDTH).apply {
+            duration = 200
+            interpolator = AccelerateDecelerateInterpolator()
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(p0: Animation?) { }
+                override fun onAnimationStart(p0: Animation?) { }
+                override fun onAnimationEnd(p0: Animation?) {
+                    forgotPasswordBtn.visibility = View.GONE
+                }
+            })
+        }
+        forgotPasswordBtn.startAnimation(anim)
+    }
+
+    private fun showForgotPassword() {
+        if (isForgotPasswordShowing) {
+            return
+        }
+        val anim = ResizeAnimation(forgotPasswordBtn, 0.5f, 0f, ResizeAnimation.Mode.WEIGHT).apply {
+            duration = 200
+            interpolator = AccelerateDecelerateInterpolator()
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(p0: Animation?) { }
+                override fun onAnimationEnd(p0: Animation?) { }
+                override fun onAnimationStart(p0: Animation?) {
+                    forgotPasswordBtn.visibility = View.VISIBLE
+                }
+            })
+        }
+
+        forgotPasswordBtn.startAnimation(anim)
     }
 
     private fun View.fadeIn() {
@@ -65,6 +169,12 @@ class LoginFragment : FitFragment() {
 
     companion object {
         const val TAG = "LoginFragment"
+
+        fun newInstance(bundle: Bundle? = null): LoginFragment {
+            val frag = LoginFragment()
+            frag.arguments = bundle
+            return frag
+        }
     }
 
 }
