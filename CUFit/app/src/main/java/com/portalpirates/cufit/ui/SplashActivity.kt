@@ -9,7 +9,7 @@ import android.view.Window
 import android.widget.ImageView
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.ui.user.login.LoginActivity
+import com.portalpirates.cufit.ui.user.auth.LoginActivity
 
 class SplashActivity : FitActivity() {
 

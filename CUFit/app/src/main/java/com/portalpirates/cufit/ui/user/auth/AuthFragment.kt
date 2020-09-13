@@ -1,4 +1,4 @@
-package com.portalpirates.cufit.ui.user.login
+package com.portalpirates.cufit.ui.user.auth
 
 import android.os.Bundle
 import android.transition.*
@@ -141,7 +141,7 @@ abstract class AuthFragment protected constructor() : FitFragment() {
     companion object {
         const val TAG = "AuthFragment"
 
-        protected const val BUNDLE_EMAIL_TEXT = "com.portalpirates.cufit.ui.user.login.AuthFragment:email"
+        protected const val BUNDLE_EMAIL_TEXT = "com.portalpirates.cufit.ui.user.auth.AuthFragment:email"
 
         private const val FRAG_TRANSITION_MS = 300L
     }

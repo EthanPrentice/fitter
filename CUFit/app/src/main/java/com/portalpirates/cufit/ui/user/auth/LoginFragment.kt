@@ -1,4 +1,4 @@
-package com.portalpirates.cufit.ui.user.login
+package com.portalpirates.cufit.ui.user.auth
 
 import android.content.Context
 import android.os.Bundle
