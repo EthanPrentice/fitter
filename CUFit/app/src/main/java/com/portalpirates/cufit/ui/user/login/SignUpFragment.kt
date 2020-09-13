@@ -45,6 +45,10 @@ class SignUpFragment private constructor() : AuthFragment() {
         }
     }
 
+
+    /**
+     * Attempts to sign up a user in based on the information filled out in the UI
+     */
     private fun signUp() {
         onIncorrectInput()
     }

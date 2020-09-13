@@ -17,9 +17,6 @@ import kotlinx.android.synthetic.main.button_layout.view.*
 
 class LoginFragment private constructor() : AuthFragment() {
 
-    private var enterAnimationFinished = false
-    private var wasPaused = false
-
     private val isForgotPasswordShowing: Boolean
         get() = forgotPasswordBtn.visibility == View.VISIBLE
 
@@ -51,7 +48,8 @@ class LoginFragment private constructor() : AuthFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        // if there is a sharedElement transition, fade in the views once it's finished
+        // if there is a sharedElement transition, make the views transparent
+        // and fade them in once the sharedElements are done being animated
         val sharedElementEnterTransition = fitActivity!!.window.sharedElementEnterTransition
         sharedElementEnterTransition?.addListener(object : Transition.TransitionListener {
             override fun onTransitionResume(transition: Transition) { }
@@ -63,31 +61,13 @@ class LoginFragment private constructor() : AuthFragment() {
             }
 
             override fun onTransitionEnd(transition: Transition) {
-                enterAnimationFinished = true
+                fun View.fadeIn() = animate().alpha(1f).setDuration(400L).start()
                 userInputs.fadeIn()
                 actionBtn.fadeIn()
                 switchModeBtn.fadeIn()
             }
             override fun onTransitionCancel(transition: Transition) = onTransitionEnd(transition)
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        wasPaused = false
-
-        // if the frag is resumed and the enter animation never finished, fade in the views
-        if (!enterAnimationFinished && wasPaused) {
-            enterAnimationFinished = true
-            userInputs.fadeIn()
-            actionBtn.fadeIn()
-            switchModeBtn.fadeIn()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        wasPaused = true
     }
 
     override fun setActionOnClickListener() {
@@ -112,6 +92,9 @@ class LoginFragment private constructor() : AuthFragment() {
         }
     }
 
+    /**
+     * Attempts to log in the user based on the information filled out in the UI
+     */
     private fun login() {
         onIncorrectInput()
     }
@@ -119,24 +102,6 @@ class LoginFragment private constructor() : AuthFragment() {
     override fun onIncorrectInput() {
         super.onIncorrectInput()
         showForgotPassword()
-    }
-
-    private fun hideForgotPassword() {
-        if (!isForgotPasswordShowing) {
-            return
-        }
-        val anim = ResizeAnimation(forgotPasswordBtn, 0, forgotPasswordBtn.measuredWidth, ResizeAnimation.Mode.WIDTH).apply {
-            duration = 200
-            interpolator = AccelerateDecelerateInterpolator()
-            setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(p0: Animation?) { }
-                override fun onAnimationStart(p0: Animation?) { }
-                override fun onAnimationEnd(p0: Animation?) {
-                    forgotPasswordBtn.visibility = View.GONE
-                }
-            })
-        }
-        forgotPasswordBtn.startAnimation(anim)
     }
 
     private fun showForgotPassword() {
@@ -158,13 +123,22 @@ class LoginFragment private constructor() : AuthFragment() {
         forgotPasswordBtn.startAnimation(anim)
     }
 
-    private fun View.fadeIn() {
-        alpha = 0f
-        visibility = View.VISIBLE
-
-        animate().alpha(1f)
-            .setDuration(400L)
-            .start()
+    private fun hideForgotPassword() {
+        if (!isForgotPasswordShowing) {
+            return
+        }
+        val anim = ResizeAnimation(forgotPasswordBtn, 0, forgotPasswordBtn.measuredWidth, ResizeAnimation.Mode.WIDTH).apply {
+            duration = 200
+            interpolator = AccelerateDecelerateInterpolator()
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(p0: Animation?) { }
+                override fun onAnimationStart(p0: Animation?) { }
+                override fun onAnimationEnd(p0: Animation?) {
+                    forgotPasswordBtn.visibility = View.GONE
+                }
+            })
+        }
+        forgotPasswordBtn.startAnimation(anim)
     }
 
     companion object {

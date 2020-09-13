@@ -60,6 +60,7 @@ abstract class AuthFragment protected constructor() : FitFragment() {
         bottomTray = view.findViewById(R.id.bottom_tray)
         switchModeBtn = bottomTray.findViewById(R.id.switch_mode_btn)
 
+        // Let the users email persist between recreates or from passed in bundles
         if (savedInstanceState != null) {
             // pull data from savedInstanceState in-case we get recreated
             emailAddrInput.text = savedInstanceState.getString(BUNDLE_EMAIL_TEXT) ?: ""
@@ -85,12 +86,18 @@ abstract class AuthFragment protected constructor() : FitFragment() {
      */
     protected abstract fun setActionOnClickListener()
 
+    /**
+     * Add listener to the switch mode button
+     */
     protected abstract fun setSwitchModeOnClickListener()
 
     protected open fun onIncorrectInput() {
         userInputs.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
     }
 
+    /**
+     * Transitions between auth modes (ie. login vs sign-up)
+     */
     protected fun swapAuthMode(swapTo: AuthMode) {
         val bundle = Bundle()
         bundle.putString(BUNDLE_EMAIL_TEXT, emailAddrInput.text)
@@ -134,7 +141,7 @@ abstract class AuthFragment protected constructor() : FitFragment() {
     companion object {
         const val TAG = "AuthFragment"
 
-        protected const val BUNDLE_EMAIL_TEXT = "email"
+        protected const val BUNDLE_EMAIL_TEXT = "com.portalpirates.cufit.ui.user.login.AuthFragment:email"
 
         private const val FRAG_TRANSITION_MS = 300L
     }
