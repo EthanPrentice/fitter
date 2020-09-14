@@ -55,7 +55,6 @@
             android:layout_height="50dp"
             android:layout_marginTop="@dimen/LU_2"
             android:nextFocusUp="@id/email_input"
-            android:nextFocusDown="@id/confirm_password_input"
             android:imeOptions="actionGo"
             android:inputType="textPassword"
             app:passwordToggleEnabled="true"
@@ -67,8 +66,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:editTextType="primary"
-            android:nextFocusUp="@id/password_input"
-            android:imeOptions="actionGo"
             android:inputType="textPassword"
             app:passwordToggleEnabled="true"
             android:hint="@string/confirm_password" />
