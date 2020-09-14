@@ -1,8 +1,6 @@
-import * as functions from 'firebase-functions';
-
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-const {addBlankUserOnRegister} = require('./userFunctions/addBlankUserOnRegister');
+const {addBlankUserOnRegister} = require('./User/addBlankUserOnRegister');
 
 exports.addBlankUserOnRegister = addBlankUserOnRegister;

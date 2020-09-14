@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions';
-
 const admin = require('firebase-admin');
 
 // Adds a blank user into the database when they are registered
