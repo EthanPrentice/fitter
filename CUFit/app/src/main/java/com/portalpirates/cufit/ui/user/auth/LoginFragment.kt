@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.manager.UserManager
 import com.portalpirates.cufit.ui.animation.ResizeAnimation
 import com.portalpirates.cufit.ui.view.FitButton
 import kotlinx.android.synthetic.main.button_layout.view.*
@@ -104,7 +106,24 @@ class LoginFragment private constructor() : AuthFragment() {
      * Attempts to log in the user based on the information filled out in the UI
      */
     private fun login() {
-        onIncorrectInput()
+        val email = emailAddrInput.text
+        val password = passwordInput.text
+
+        // Put userManager in the view model later when it's written
+        val userManager = UserManager()
+        userManager.receiver.authenticateUser(email, password) { success ->
+            if (success) {
+                userManager.provider.getCurrentUser { user ->
+                    if (user == null) {
+                        onIncorrectInput()
+                    } else {
+                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                onIncorrectInput()
+            }
+        }
     }
 
     override fun onIncorrectInput() {

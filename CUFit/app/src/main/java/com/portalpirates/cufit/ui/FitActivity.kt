@@ -3,7 +3,9 @@ package com.portalpirates.cufit
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.portalpirates.cufit.datamodel.manager.UserManager
 
 /**
  * Base Activity class for CU Fit - All other Activities should inherit from this class
