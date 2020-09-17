@@ -3,13 +3,14 @@ package com.portalpirates.cufit.datamodel.processing
 import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.auth.User
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.BIRTH_DATE
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.FIRST_NAME
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.LAST_NAME
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.data.user.FitUser
+import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
+import com.portalpirates.cufit.datamodel.data.user.UserField
 import com.portalpirates.cufit.datamodel.manager.Manager
 import java.lang.Exception
 
@@ -59,6 +60,40 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
         })
     }
 
+    fun createFireStoreUser(builder: FitUserBuilder, callback: (success: Boolean) -> Unit) {
+        userCloudInterface.createFireStoreUser(builder.convertFieldsToHashMap(), callback)
+    }
+
+    fun updateFireStoreUser(fields: HashMap<UserField, Any?>, callback: (success: Boolean) -> Unit) {
+        val strMap = HashMap<String, Any?>()
+        for (key in fields.keys) {
+            strMap[key.fieldName] = fields[key]
+        }
+        userCloudInterface.updateFireStoreUser(strMap, callback)
+    }
+
+    fun updateUserEmail(email: String, callback: (success: Boolean) -> Unit) {
+        userCloudInterface.updateUserEmail(email, callback)
+    }
+
+    fun updateUserPassword(password: String, callback: (success: Boolean) -> Unit) {
+        userCloudInterface.updateUserPassword(password, callback)
+    }
+
+    fun sendVerificationEmail(callback: (success: Boolean) -> Unit) {
+        userCloudInterface.sendVerificationEmail(callback)
+    }
+
+    fun sendPasswordResetEmail(email: String, callback: (success: Boolean) -> Unit) {
+        userCloudInterface.sendPasswordResetEmail(email, callback)
+    }
+
+    fun deleteUser(callback: (success: Boolean) -> Unit) {
+        // Ask cloud if they'd rather us delete the fireStore or fireBase user, then the other
+        // could be deleted automatically on cloud
+        userCloudInterface.deleteUser(callback)
+        userCloudInterface.deleteFireStoreUser(callback)
+    }
 
     /**
      * Authenticate user
@@ -68,7 +103,11 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
         userCloudInterface.authenticateUser(email, password, callback)
     }
 
-    private fun createUserFromDocument(doc: DocumentSnapshot): FitUser? {
+    fun reAuthenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+        userCloudInterface.reAuthenticateUser(email, password, callback)
+    }
+
+    private fun createUserFromDocument(doc: DocumentSnapshot) : FitUser? {
         return try {
             FitUser(
                 doc.getDate(BIRTH_DATE)!!,

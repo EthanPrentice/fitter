@@ -14,7 +14,6 @@ internal abstract class DataProcessor(protected val manager: Manager) {
     protected val cloudInterface: CloudInterface
         get() = manager.cloudInterface
 
-
     /**
      * Runs [func] with the [cloudInterface]'s firestore instance as a parameter
      */
@@ -29,4 +28,5 @@ internal abstract class DataProcessor(protected val manager: Manager) {
     protected fun processAndUpdateProvider(func: (provider: Provider) -> Unit) {
         func(provider)
     }
+
 }
