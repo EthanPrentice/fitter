@@ -153,6 +153,24 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         // TODO delete sub-collections
     }
 
+    fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "Create user with email is successful.")
+                    // val user = auth.currentUser
+                    // updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "Create user with email failed.", task.exception)
+                    // Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    // updateUI(null)
+                }
+                callback(task.isSuccessful)
+            }
+    }
+
     fun authenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->

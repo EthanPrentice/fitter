@@ -53,6 +53,15 @@ class UserReceiver(manager: Manager) : Receiver(manager) {
         userDataProcessor.deleteUser(callback)
     }
 
+    fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+        // Must be non-empty
+        if (email.isEmpty() || password.isEmpty()) {
+            callback(false)
+            return
+        }
+        userDataProcessor.signUpUser(email, password, callback)
+    }
+
     fun authenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
         // Must be non-empty
         if (email.isEmpty() || password.isEmpty()) {

@@ -96,6 +96,15 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
     }
 
     /**
+     * Sign Up user
+     * TODO: if we're doing input validation on the client, add that here
+     * Such as verifying that the new account's password was correctly typed and meets the complexity reqs
+     */
+    fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+        userCloudInterface.signUpUser(email, password, callback)
+    }
+
+    /**
      * Authenticate user
      * TODO: if we're doing input validation on the client, add that here
      */

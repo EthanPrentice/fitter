@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.manager.UserManager
+import kotlinx.android.synthetic.main.login_layout.*
 
 class SignUpFragment private constructor() : AuthFragment() {
 
@@ -45,8 +48,31 @@ class SignUpFragment private constructor() : AuthFragment() {
      * Attempts to sign up a user in based on the information filled out in the UI
      */
     private fun signUp() {
-        onIncorrectInput()
-    }
+        val email = emailAddrInput.text
+        val password = passwordInput.text
+        val confirmPassword = confirmPasswordInput.text
+
+        if (password != confirmPassword) {
+            onIncorrectInput()
+            return
+        }
+
+        // Put userManager in the view model later when it's written
+        val userManager = UserManager()
+        userManager.receiver.signUpUser(email, password) { success ->
+            if (success) {
+                userManager.provider.getCurrentUser { user ->
+                    if (user == null) {
+                        onIncorrectInput()
+                    } else {
+                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                onIncorrectInput()
+            }
+        }
+}
 
     companion object {
         const val TAG = "SignUpFragment"
