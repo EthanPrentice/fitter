@@ -10,8 +10,4 @@ open class FitUser(var birthDate: Date, var firstName: String, var lastName: Str
     val fullName: String
         get() = "$firstName $lastName"
 
-    fun addPreviousWeight(weight: Weight) {
-        previousWeights.add(weight)
-    }
-
 }

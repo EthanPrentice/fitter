@@ -18,8 +18,8 @@ class UserProvider(manager: Manager) : Provider(manager) {
         userDataProcessor.getUserByUid(uid, callback)
     }
 
-    fun getCurrentUser(callback: (AuthenticatedUser?) -> Unit) {
-        userDataProcessor.getCurrentUser(callback)
+    fun getAuthenticatedUser(callback: (AuthenticatedUser?) -> Unit) {
+        userDataProcessor.getAuthenticatedUser(callback)
     }
 
     fun getFirebaseUser(): FirebaseUser? {

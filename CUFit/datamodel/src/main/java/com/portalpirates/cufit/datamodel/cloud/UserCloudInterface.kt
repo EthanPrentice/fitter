@@ -8,7 +8,7 @@ import com.portalpirates.cufit.datamodel.manager.Manager
 
 internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
 
-    fun getCurrentUser(): FirebaseUser? {
+    fun getFirebaseUser(): FirebaseUser? {
         return auth.currentUser
     }
 
@@ -27,8 +27,12 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
             }
     }
 
-    fun createFireStoreUser(user: HashMap<String, Any?>, callback: (success: Boolean) -> Unit) {
-        val currUser = getCurrentUser()
+    /**
+     * Creates a user in FireStore.  This user has already been created from a server-side script after an auth user is created
+     * so we just populate it here
+     */
+    fun createFireStoreUser(fields: HashMap<String, Any?>, callback: (success: Boolean) -> Unit) {
+        val currUser = getFirebaseUser()
         if (currUser == null) {
             callback(false)
         } else {
@@ -36,7 +40,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
                 if (doc == null) {
                     callback(false)
                 } else {
-                    doc.reference.set(user)
+                    doc.reference.set(fields)
                         .addOnSuccessListener {
                             Log.d(TAG, "FireStoreUser successfully created.")
                             callback(true)
@@ -52,8 +56,11 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         }
     }
 
-    fun updateFireStoreUser(user: HashMap<String, Any?>, callback: (success: Boolean) -> Unit) {
-        val currUser = getCurrentUser()
+    /**
+     * Updates the currently authenticated user's fields with the entries in [fields]
+     */
+    fun updateFireStoreUser(fields: HashMap<String, Any?>, callback: (success: Boolean) -> Unit) {
+        val currUser = getFirebaseUser()
         if (currUser == null) {
             callback(false)
         } else {
@@ -61,7 +68,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
                 if (doc == null) {
                     callback(false)
                 } else {
-                    doc.reference.update(user)
+                    doc.reference.update(fields)
                         .addOnSuccessListener {
                             Log.d(TAG, "FireStoreUser successfully updated.")
                             callback(true)
@@ -77,8 +84,11 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         }
     }
 
+    /**
+     * Updates the currently authenticated user's email address
+     */
     fun updateUserEmail(email: String, callback: (success: Boolean) -> Unit) {
-        getCurrentUser()?.updateEmail(email)
+        getFirebaseUser()?.updateEmail(email)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User email address updated.")
@@ -87,8 +97,11 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
             }
     }
 
+    /**
+     * Updates the currently authenticated user's password
+     */
     fun updateUserPassword(password: String, callback: (success: Boolean) -> Unit) {
-        getCurrentUser()?.updatePassword(password)
+        getFirebaseUser()?.updatePassword(password)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User password update.")
@@ -98,7 +111,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
     }
 
     fun sendVerificationEmail(callback: (success: Boolean) -> Unit) {
-        getCurrentUser()?.sendEmailVerification()
+        getFirebaseUser()?.sendEmailVerification()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "Email verification sent.")
@@ -117,18 +130,25 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
             }
     }
 
+    /**
+     * Deletes the currently authenticated user from auth and FireStore
+     */
     fun deleteUser(callback: (success: Boolean) -> Unit) {
-        getCurrentUser()?.delete()
+        getFirebaseUser()?.delete()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User account deleted.")
+                    deleteFireStoreUser(callback)
                 }
-                callback(task.isSuccessful)
             }
     }
 
-    fun deleteFireStoreUser(callback: (success: Boolean) -> Unit) {
-        val currUser = getCurrentUser()
+    /**
+     * Deletes the currently authenticated user from FireStore
+     * Should only be called when also deleting user from authentication
+     */
+    private fun deleteFireStoreUser(callback: (success: Boolean) -> Unit) {
+        val currUser = getFirebaseUser()
         if (currUser == null) {
             callback(false)
         } else {
@@ -153,21 +173,22 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         // TODO delete sub-collections
     }
 
+    /**
+     * Signs the user up, adding them to the authentication server
+     * Then a server-side script with create a FireStore user for us to populate later
+     */
     fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener() { task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "Create user with email is successful.")
-                    // val user = auth.currentUser
-                    // updateUI(user)
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w(TAG, "Create user with email failed.", task.exception)
-                    // Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                    // updateUI(null)
                 }
                 callback(task.isSuccessful)
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, e.message ?: "Error signing up a new user")
             }
     }
 
@@ -185,7 +206,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
 
     fun reAuthenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
         val credential = EmailAuthProvider.getCredential(email, password)
-        getCurrentUser()?.reauthenticate(credential)
+        getFirebaseUser()?.reauthenticate(credential)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User re-authenticated.")

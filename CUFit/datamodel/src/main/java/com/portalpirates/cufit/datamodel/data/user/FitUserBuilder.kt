@@ -1,5 +1,6 @@
 package com.portalpirates.cufit.datamodel.data.user
 
+import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
 import com.portalpirates.cufit.datamodel.data.weight.Weight
 import java.lang.IllegalStateException
 import java.util.*
@@ -48,11 +49,11 @@ class FitUserBuilder {
 
     fun convertFieldsToHashMap(): HashMap<String, Any?> {
         return hashMapOf<String, Any?>(
-            "birth_date" to birthDate,
-            "current_weight" to currentWeight,
-            "name.first" to firstName,
-            "name.last" to lastName,
-            "weight_goal" to weightGoal
+            UserCloudInterface.BIRTH_DATE to birthDate,
+            UserCloudInterface.CURRENT_WEIGHT to currentWeight,
+            UserCloudInterface.FIRST_NAME to firstName,
+            UserCloudInterface.LAST_NAME to lastName,
+            UserCloudInterface.WEIGHT_GOAL to weightGoal
             // TODO: previous weights
         )
     }

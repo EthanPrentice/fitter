@@ -21,8 +21,8 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
         get() = cloudInterface as UserCloudInterface
 
 
-    fun getCurrentUser(callback: (AuthenticatedUser?) -> Unit) {
-        val firebaseUser = userCloudInterface.getCurrentUser()
+    fun getAuthenticatedUser(callback: (AuthenticatedUser?) -> Unit) {
+        val firebaseUser = userCloudInterface.getFirebaseUser()
         if (firebaseUser == null) {
             callback(null)
         } else {
@@ -38,7 +38,7 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
     }
 
     fun getFirebaseUser(): FirebaseUser? {
-        return userCloudInterface.getCurrentUser()
+        return userCloudInterface.getFirebaseUser()
     }
 
     /**
@@ -73,10 +73,22 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
     }
 
     fun updateUserEmail(email: String, callback: (success: Boolean) -> Unit) {
+        // Must be non-empty
+        if (email.isEmpty()) {
+            callback(false)
+            return
+        }
+
         userCloudInterface.updateUserEmail(email, callback)
     }
 
     fun updateUserPassword(password: String, callback: (success: Boolean) -> Unit) {
+        // Must be non-empty
+        if (password.isEmpty()) {
+            callback(false)
+            return
+        }
+
         userCloudInterface.updateUserPassword(password, callback)
     }
 
@@ -85,6 +97,12 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
     }
 
     fun sendPasswordResetEmail(email: String, callback: (success: Boolean) -> Unit) {
+        // Must be non-empty
+        if (email.isEmpty()) {
+            callback(false)
+            return
+        }
+
         userCloudInterface.sendPasswordResetEmail(email, callback)
     }
 
@@ -92,7 +110,6 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
         // Ask cloud if they'd rather us delete the fireStore or fireBase user, then the other
         // could be deleted automatically on cloud
         userCloudInterface.deleteUser(callback)
-        userCloudInterface.deleteFireStoreUser(callback)
     }
 
     /**
@@ -101,6 +118,12 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
      * Such as verifying that the new account's password was correctly typed and meets the complexity reqs
      */
     fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+        // Must be non-empty
+        if (email.isEmpty() || password.isEmpty()) {
+            callback(false)
+            return
+        }
+
         userCloudInterface.signUpUser(email, password, callback)
     }
 
@@ -109,10 +132,21 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
      * TODO: if we're doing input validation on the client, add that here
      */
     fun authenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+        // Must be non-empty
+        if (email.isEmpty() || password.isEmpty()) {
+            callback(false)
+            return
+        }
+
         userCloudInterface.authenticateUser(email, password, callback)
     }
 
-    fun reAuthenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+    fun reAuthenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {        // Must be non-empty
+        if (email.isEmpty() || password.isEmpty()) {
+            callback(false)
+            return
+        }
+
         userCloudInterface.reAuthenticateUser(email, password, callback)
     }
 

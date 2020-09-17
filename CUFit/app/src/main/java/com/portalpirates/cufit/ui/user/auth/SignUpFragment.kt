@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.manager.UserManager
-import kotlinx.android.synthetic.main.login_layout.*
+import com.portalpirates.cufit.ui.FitApplication
 
 class SignUpFragment private constructor() : AuthFragment() {
 
@@ -58,16 +57,20 @@ class SignUpFragment private constructor() : AuthFragment() {
         }
 
         // Put userManager in the view model later when it's written
-        val userManager = UserManager()
+        val userManager = FitApplication.instance.userManager
         userManager.receiver.signUpUser(email, password) { success ->
             if (success) {
-                userManager.provider.getCurrentUser { user ->
-                    if (user == null) {
-                        onIncorrectInput()
-                    } else {
-                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                val fbUser = userManager.provider.getFirebaseUser()
+                Toast.makeText(context, "Authenticated as user with uid ${fbUser?.uid ?: -1}", Toast.LENGTH_SHORT).show()
+
+                // we can't get an auth user yet, the required fields aren't populated.
+//                userManager.provider.getAuthenticatedUser { user ->
+//                    if (user == null) {
+//                        onIncorrectInput()
+//                    } else {
+//                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
             } else {
                 onIncorrectInput()
             }

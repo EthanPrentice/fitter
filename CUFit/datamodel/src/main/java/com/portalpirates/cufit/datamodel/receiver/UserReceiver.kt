@@ -19,20 +19,10 @@ class UserReceiver(manager: Manager) : Receiver(manager) {
     }
 
     fun updateUserEmail(email: String, callback: (success: Boolean) -> Unit) {
-        // Must be non-empty
-        if (email.isEmpty()) {
-            callback(false)
-            return
-        }
         userDataProcessor.updateUserEmail(email, callback)
     }
 
     fun updateUserPassword(password: String, callback: (success: Boolean) -> Unit) {
-        // Must be non-empty
-        if (password.isEmpty()) {
-            callback(false)
-            return
-        }
         userDataProcessor.updateUserPassword(password, callback)
     }
 
@@ -41,11 +31,6 @@ class UserReceiver(manager: Manager) : Receiver(manager) {
     }
 
     fun sendPasswordResetEmail(email: String, callback: (success: Boolean) -> Unit) {
-        // Must be non-empty
-        if (email.isEmpty()) {
-            callback(false)
-            return
-        }
         userDataProcessor.sendPasswordResetEmail(email, callback)
     }
 
@@ -54,29 +39,14 @@ class UserReceiver(manager: Manager) : Receiver(manager) {
     }
 
     fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
-        // Must be non-empty
-        if (email.isEmpty() || password.isEmpty()) {
-            callback(false)
-            return
-        }
         userDataProcessor.signUpUser(email, password, callback)
     }
 
     fun authenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
-        // Must be non-empty
-        if (email.isEmpty() || password.isEmpty()) {
-            callback(false)
-            return
-        }
         userDataProcessor.authenticateUser(email, password, callback)
     }
 
     fun reAuthenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
-        // Must be non-empty
-        if (email.isEmpty() || password.isEmpty()) {
-            callback(false)
-            return
-        }
         userDataProcessor.reAuthenticateUser(email, password, callback)
     }
 
