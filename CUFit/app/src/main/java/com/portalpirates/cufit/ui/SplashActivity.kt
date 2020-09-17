@@ -9,7 +9,7 @@ import android.view.Window
 import android.widget.ImageView
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.ui.user.auth.LoginActivity
+import com.portalpirates.cufit.ui.user.auth.AuthActivity
 
 class SplashActivity : FitActivity() {
 
@@ -17,14 +17,15 @@ class SplashActivity : FitActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
         setContentView(R.layout.splash_layout)
 
         window.exitTransition = null
-        window.addFlags(Window.FEATURE_ACTIVITY_TRANSITIONS)
 
         handler.postDelayed({
-            val logoView = findViewById<ImageView>(R.id.logo)
-            val intent = Intent(this, LoginActivity::class.java)
+            val logoView = findViewById<ImageView>(R.id.add_photo_btn)
+            val intent = Intent(this, AuthActivity::class.java)
             val options = ActivityOptions.makeSceneTransitionAnimation(this, logoView, resources.getString(R.string.tr_logo))
             startActivity(intent, options.toBundle())
         }, DELAY_MS)

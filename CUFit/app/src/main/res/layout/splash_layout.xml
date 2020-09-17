@@ -5,7 +5,7 @@
     android:background="@drawable/splash_bg">
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/add_photo_btn"
         android:transitionName="@string/tr_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

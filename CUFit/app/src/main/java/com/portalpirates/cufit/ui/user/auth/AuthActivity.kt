@@ -2,6 +2,7 @@ package com.portalpirates.cufit.ui.user.auth
 
 import android.os.Bundle
 import android.view.View
+import android.view.Window
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
@@ -10,7 +11,7 @@ import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
 
 
-class LoginActivity : FitActivity() {
+class AuthActivity : FitActivity() {
 
     lateinit var fragContainer: FrameLayout
 
@@ -20,6 +21,8 @@ class LoginActivity : FitActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
         setContentView(R.layout.frag_only_layout)
 
         postponeEnterTransition()

@@ -1,5 +1,6 @@
 package com.portalpirates.cufit
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -12,8 +13,8 @@ import com.portalpirates.cufit.datamodel.manager.UserManager
  */
 abstract class FitActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         Log.i(TAG, "onCreate called for ${javaClass.name}")
     }
 
@@ -37,10 +38,27 @@ abstract class FitActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    override fun startActivity(intent: Intent) {
+        super.startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
     companion object {
         private const val TAG = "FitActivity"
 
+        // Bundle args
         const val HAS_ACTIVITY_SHARED_ELEM_TRANSITION = "com.portalpirates.cufit.ui.FitFragment:hasActivitySharedElemTransition"
+
+        // Result codes
+        const val REQUEST_LOAD_IMAGE = 0
+        const val RESULT_LOAD_IMAGE = 1
+
+        const val ACTIVITY_TRANSITION_MS = 300L
     }
 
 }
