@@ -13,7 +13,7 @@ import com.portalpirates.cufit.ui.FitFragment
 import com.portalpirates.cufit.ui.view.FitButton
 import com.portalpirates.cufit.ui.view.FitEditText
 
-abstract class AuthFragment protected constructor() : FitFragment() {
+abstract class AuthFragment : FitFragment() {
 
     protected enum class AuthMode {
         LOG_IN,
@@ -47,7 +47,7 @@ abstract class AuthFragment protected constructor() : FitFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logo = view.findViewById(R.id.logo)
+        logo = view.findViewById(R.id.add_photo_btn)
 
         userInputs = view.findViewById(R.id.credentials)
         emailAddrInput = userInputs.findViewById(R.id.email_input)
@@ -142,8 +142,6 @@ abstract class AuthFragment protected constructor() : FitFragment() {
         const val TAG = "AuthFragment"
 
         protected const val BUNDLE_EMAIL_TEXT = "com.portalpirates.cufit.ui.user.auth.AuthFragment:email"
-
-        private const val FRAG_TRANSITION_MS = 300L
     }
 
 }

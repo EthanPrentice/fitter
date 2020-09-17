@@ -21,6 +21,7 @@
     <string name="tr_bottom_tray">bottom_tray</string>
     <string name="tr_switch_mode_btn">switch_mode_btn</string>
     <string name="tr_message">message</string>
+    <string name="tr_top_text">top_text</string>
 
 
 </resources>

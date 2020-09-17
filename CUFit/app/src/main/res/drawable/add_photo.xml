@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="oval">
+            <size android:width="@dimen/LU_10" android:height="@dimen/LU_10"/>
+            <solid android:color="@color/overlay_light"/>
+            <stroke android:color="@color/icon_primary" android:width="@dimen/LU_0_5"/>
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/ic_camera"
+        android:top="@dimen/LU_4_5"
+        android:left="@dimen/LU_4_5"
+        android:bottom="@dimen/LU_4_5"
+        android:right="@dimen/LU_4_5"/>
+
+</layer-list>

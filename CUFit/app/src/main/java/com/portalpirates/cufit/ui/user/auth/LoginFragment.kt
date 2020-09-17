@@ -17,7 +17,7 @@ import com.portalpirates.cufit.ui.view.FitButton
 import kotlinx.android.synthetic.main.button_layout.view.*
 
 
-class LoginFragment private constructor() : AuthFragment() {
+class LoginFragment : AuthFragment() {
 
     private var activityTransitionEnded = false
 

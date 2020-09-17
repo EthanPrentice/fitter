@@ -19,4 +19,7 @@ abstract class FitFragment : Fragment() {
         }
     }
 
+    companion object {
+        const val FRAG_TRANSITION_MS = 300L
+    }
 }
