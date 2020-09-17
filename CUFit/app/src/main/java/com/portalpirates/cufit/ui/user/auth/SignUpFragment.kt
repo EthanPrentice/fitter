@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 import android.util.Pair as UtilPair
 
@@ -51,6 +53,38 @@ class SignUpFragment : AuthFragment() {
      * Attempts to sign up a user in based on the information filled out in the UI
      */
     private fun signUp() {
+        val email = emailAddrInput.text
+        val password = passwordInput.text
+        val confirmPassword = confirmPasswordInput.text
+
+        /* Disable this for now, until we have welcome workflow done
+        
+        if (password != confirmPassword) {
+            onIncorrectInput()
+            return
+        }
+
+        // Put userManager in the view model later when it's written
+        val userManager = FitApplication.instance.userManager
+        userManager.receiver.signUpUser(email, password) { success ->
+            if (success) {
+                val fbUser = userManager.provider.getFirebaseUser()
+                Toast.makeText(context, "Authenticated as user with uid ${fbUser?.uid ?: -1}", Toast.LENGTH_SHORT).show()
+
+                // we can't get an auth user yet, the required fields aren't populated.
+//                userManager.provider.getAuthenticatedUser { user ->
+//                    if (user == null) {
+//                        onIncorrectInput()
+//                    } else {
+//                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+            } else {
+                onIncorrectInput()
+            }
+        }
+        */
+
         val intent = Intent(requireContext(), WelcomeActivity::class.java)
 
         val sharedElements = arrayOf<UtilPair<View, String>>(
