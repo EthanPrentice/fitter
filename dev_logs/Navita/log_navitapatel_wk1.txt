@@ -1,0 +1,13 @@
+- Setup JIRA account, project and access 
+
+- Setup firebase project for app and setup cloud firestore dummy collection
+
+- Ramp up on Android Studio/App architecture, components 
+
+- Ramp up on google firebase , especially firestore and cloud functions to support backend
+
+- Prepare Deliverable 1 drafts 
+
+- Understand app  design, models, view and workflow
+
+- Create jira stories for backend work on CUF-5 (User Profiling) 
