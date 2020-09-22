@@ -1,4 +1,4 @@
-package com.portalpirates.cufit.model.data
+package com.portalpirates.cufit.datamodel.data.preferences
 
 class UserPreferences(var measurementUnits: MeasurementUnits = MeasurementUnits.KILOGRAMS) : Preferences() {
 

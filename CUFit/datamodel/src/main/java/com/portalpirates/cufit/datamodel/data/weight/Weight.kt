@@ -1,8 +1,7 @@
-package com.portalpirates.cufit.model.data
+package com.portalpirates.cufit.datamodel.data.weight
 
+import com.portalpirates.cufit.datamodel.data.preferences.MeasurementUnits
 import java.util.*
-
-const val CONVERSION_FACTOR = 2.20462262
 
 class Weight(var mass: Double, var measurementUnits: MeasurementUnits = MeasurementUnits.KILOGRAMS, val dateLogged : Date) {
 
@@ -20,4 +19,7 @@ class Weight(var mass: Double, var measurementUnits: MeasurementUnits = Measurem
         }
     }
 
+    companion object {
+        const val CONVERSION_FACTOR = 2.20462262
+    }
 }

@@ -113,7 +113,7 @@ class LoginFragment : AuthFragment() {
         val userManager = UserManager()
         userManager.receiver.authenticateUser(email, password) { success ->
             if (success) {
-                userManager.provider.getCurrentUser { user ->
+                userManager.provider.getAuthenticatedUser { user ->
                     if (user == null) {
                         onIncorrectInput()
                     } else {

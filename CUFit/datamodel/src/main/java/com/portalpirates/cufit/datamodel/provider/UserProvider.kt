@@ -8,22 +8,22 @@ import com.portalpirates.cufit.datamodel.processing.UserDataProcessor
 
 class UserProvider(manager: Manager) : Provider(manager) {
 
-    private val dataProcessor: UserDataProcessor
+    private val userDataProcessor: UserDataProcessor
         get() = manager.dataProcessor as UserDataProcessor
-
 
     /**
      * Runs [callback] with the [FitUser]? provided by [UserDataProcessor]
      */
     fun getUserByUid(uid: String, callback: (user: FitUser?) -> Unit) {
-        dataProcessor.getUserByUid(uid, callback)
+        userDataProcessor.getUserByUid(uid, callback)
     }
 
-    fun getCurrentUser(callback: (AuthenticatedUser?) -> Unit) {
-        dataProcessor.getCurrentUser(callback)
+    fun getAuthenticatedUser(callback: (AuthenticatedUser?) -> Unit) {
+        userDataProcessor.getAuthenticatedUser(callback)
     }
 
     fun getFirebaseUser(): FirebaseUser? {
-        return dataProcessor.getFirebaseUser()
+        return userDataProcessor.getFirebaseUser()
     }
+
 }

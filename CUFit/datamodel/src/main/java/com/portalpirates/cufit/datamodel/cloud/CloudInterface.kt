@@ -9,8 +9,7 @@ internal abstract class CloudInterface(protected val manager: Manager) {
 
     val db = Firebase.firestore
     val auth = Firebase.auth
-
-
+    
     companion object {
         // Store all common field names as constants here
         // Any unique field names, store in their corresponding CloudInterface subclass
