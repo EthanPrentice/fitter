@@ -2,6 +2,7 @@ package com.portalpirates.cufit.ui.user.auth
 
 import android.os.Bundle
 import android.transition.*
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
@@ -41,7 +42,12 @@ abstract class AuthFragment : FitFragment() {
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         // don't save passwords here
-        savedInstanceState.putString(BUNDLE_EMAIL_TEXT, emailAddrInput.text)
+        try {
+            savedInstanceState.putString(BUNDLE_EMAIL_TEXT, emailAddrInput.text)
+        }
+        catch (e: UninitializedPropertyAccessException) {
+            Log.w(TAG, e.message ?: "")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

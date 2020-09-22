@@ -16,17 +16,18 @@ class AuthActivity : FitActivity() {
     lateinit var fragContainer: FrameLayout
 
     init {
-        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
+        window.enterTransition = null
+        window.exitTransition = null
 
         setContentView(R.layout.frag_only_layout)
 
         postponeEnterTransition()
-        window.enterTransition = null
 
         fragContainer = findViewById(R.id.frag_container)
 

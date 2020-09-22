@@ -20,6 +20,7 @@
         android:text="Welcome to"
         android:textAlignment="center"
         android:textAppearance="@style/header1"
+        android:textColor="@color/text_primary"
         android:layout_marginTop="@dimen/LU_4"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
