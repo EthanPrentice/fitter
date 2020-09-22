@@ -5,12 +5,12 @@ const admin = require('firebase-admin');
 export const addBlankUserOnRegister = functions.auth.user().onCreate( async user => {
 
     return admin.firestore().collection('users').add({
-        age : null,
         birth_date : null,
         name : {
             first : null,
             last : null
         },
+        gender: null,
         owned_workouts : [],
         subscribed_workouts : [],
         personal_records : {},
