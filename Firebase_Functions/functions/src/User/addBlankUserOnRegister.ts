@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 // Adds a blank user into the database when they are registered
 export const addBlankUserOnRegister = functions.auth.user().onCreate( async user => {
 
-    return admin.firestore().collection('users').add({
+    const blankUser = {
         birth_date : null,
         name : {
             first : null,
@@ -15,7 +15,12 @@ export const addBlankUserOnRegister = functions.auth.user().onCreate( async user
         subscribed_workouts : [],
         personal_records : {},
         current_weight : null,
-        weight_goal : {}
-    });
-        
+        weight_goal : {},
+        user_preferences : {
+            weight_unit : null
+        }
+    }
+
+    return admin.firestore().collection('users').doc(user.uid).set(blankUser);
+    
 })
