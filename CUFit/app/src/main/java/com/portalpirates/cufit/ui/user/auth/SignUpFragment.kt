@@ -56,8 +56,6 @@ class SignUpFragment : AuthFragment() {
         val email = emailAddrInput.text
         val password = passwordInput.text
         val confirmPassword = confirmPasswordInput.text
-
-        /* Disable this for now, until we have welcome workflow done
         
         if (password != confirmPassword) {
             onIncorrectInput()
@@ -83,22 +81,6 @@ class SignUpFragment : AuthFragment() {
                 onIncorrectInput()
             }
         }
-        */
-
-        val intent = Intent(requireContext(), WelcomeActivity::class.java)
-
-        val sharedElements = arrayOf<UtilPair<View, String>>(
-            UtilPair.create(logo, resources.getString(R.string.tr_logo)),
-            UtilPair.create(actionBtn, resources.getString(R.string.tr_action_btn))
-        )
-
-        // prevent flashing for shared element transition
-        requireActivity().window.exitTransition = null
-
-        val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(), *sharedElements)
-        startActivity(intent, options.toBundle())
-
-        // onIncorrectInput()
     }
 
     companion object {
