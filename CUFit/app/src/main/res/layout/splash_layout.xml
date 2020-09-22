@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_margin="@dimen/LU_5"
-        android:src="@drawable/icon_text_logo"
+        android:src="@drawable/icon_text_logo_mixed"
         android:layout_gravity="center"/>
 
 </FrameLayout>

@@ -18,7 +18,7 @@ abstract class FitFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { args ->
-            hasActivitySharedElemTransition = args.getBoolean(FitActivity.HAS_ACTIVITY_SHARED_ELEM_TRANSITION, false)
+            hasActivitySharedElemTransition = savedInstanceState == null && args.getBoolean(FitActivity.HAS_ACTIVITY_SHARED_ELEM_TRANSITION, false)
             hasFragSharedElemTransition = savedInstanceState == null && args.getBoolean(HAS_FRAG_SHARED_ELEM_TRANSITION, false)
         }
     }

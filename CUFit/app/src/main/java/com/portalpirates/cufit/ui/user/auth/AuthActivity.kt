@@ -16,7 +16,7 @@ class AuthActivity : FitActivity() {
     lateinit var fragContainer: FrameLayout
 
     init {
-        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

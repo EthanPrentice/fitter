@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">#EDF2F4</color>
-    <color name="background_translucent">#D9EDF2F4</color>
+<!--    <color name="splash_overlay">#D9EDF2F4</color>-->
+    <color name="splash_overlay">#D989BCC7</color>
 
     <color name="icon_primary">#000000</color>
     <color name="icon_secondary">#CC000000</color>

@@ -18,7 +18,7 @@
         android:transitionName="@string/tr_top_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="First, lets get a photo set up"
+        android:text="@string/photo_setup"
         android:textAlignment="center"
         android:textAppearance="@style/header1"
         android:textColor="@color/text_primary"
