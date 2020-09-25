@@ -11,6 +11,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 import android.util.Pair as UtilPair
@@ -62,21 +63,31 @@ class SignUpFragment : AuthFragment() {
         
         if (password != confirmPassword) {
             onIncorrectInput()
+            showMessage("Passwords do not match")
             return
         }
 
         // Put userManager in the view model later when it's written
         val userManager = FitApplication.instance.userManager
-        userManager.receiver.signUpUser(email, password) { success ->
-            if (success) {
+        userManager.receiver.signUpUser(email, password, object : TaskListener<Unit?> {
+            override fun onSuccess(value: Unit?) {
+                hideMessage()
+
                 val fbUser = userManager.provider.getFirebaseUser()
                 if (fbUser != null) {
                     listener?.onSignUp(fbUser.uid)
+                    hideMessage()
                 }
-            } else {
-                onIncorrectInput()
             }
-        }
+
+            override fun onFailure(e: Exception?) {
+                onIncorrectInput()
+                hideMessage()
+                e?.message?.let { msg ->
+                    showMessage(msg)
+                }
+            }
+        })
     }
 
     interface SignUpListener {

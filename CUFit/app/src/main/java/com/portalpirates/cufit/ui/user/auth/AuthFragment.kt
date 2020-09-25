@@ -80,6 +80,9 @@ abstract class AuthFragment : FitFragment() {
         setImeListeners()
         setActionOnClickListener()
         setSwitchModeOnClickListener()
+
+        // for marquee
+        message.isSelected = true
     }
 
     /**
@@ -99,6 +102,16 @@ abstract class AuthFragment : FitFragment() {
 
     protected open fun onIncorrectInput() {
         userInputs.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+    }
+
+    protected fun showMessage(msg: String) {
+        message.visibility = View.VISIBLE
+        message.text = msg
+    }
+
+    protected fun hideMessage() {
+        message.visibility = View.INVISIBLE
+        message.text = ""
     }
 
     /**

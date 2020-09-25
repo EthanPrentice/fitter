@@ -79,14 +79,20 @@
     <TextView
         android:id="@+id/message"
         android:transitionName="@string/tr_message"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/LU_1_5"
         android:textAppearance="@style/bold_body_text"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:maxLines="1"
-        android:ellipsize="end"
+
+        android:maxLines="2"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:scrollHorizontally="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+
         app:layout_constraintBottom_toTopOf="@id/action_btn"
         app:layout_constraintLeft_toLeftOf="@id/credentials"
         app:layout_constraintRight_toRightOf="@id/credentials"

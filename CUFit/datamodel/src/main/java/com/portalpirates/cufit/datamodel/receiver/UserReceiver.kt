@@ -1,5 +1,6 @@
 package com.portalpirates.cufit.datamodel.receiver
 
+import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.datamodel.data.user.UserField
 import com.portalpirates.cufit.datamodel.manager.Manager
@@ -10,44 +11,44 @@ class UserReceiver(manager: Manager) : Receiver(manager) {
     private val userDataProcessor: UserDataProcessor
         get() = manager.dataProcessor as UserDataProcessor
 
-    fun createFireStoreUser(builder: FitUserBuilder, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.createFireStoreUser(builder, callback)
+    fun createFireStoreUser(builder: FitUserBuilder, listener: TaskListener<Unit?>) {
+        userDataProcessor.createFireStoreUser(builder, listener)
     }
 
-    fun updateFireStoreUser(fields: HashMap<UserField, Any?>, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.updateFireStoreUser(fields, callback)
+    fun updateFireStoreUser(fields: HashMap<UserField, Any?>, listener: TaskListener<Unit?>) {
+        userDataProcessor.updateFireStoreUser(fields, listener)
     }
 
-    fun updateUserEmail(email: String, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.updateUserEmail(email, callback)
+    fun updateUserEmail(email: String, listener: TaskListener<Unit?>) {
+        userDataProcessor.updateUserEmail(email, listener)
     }
 
-    fun updateUserPassword(password: String, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.updateUserPassword(password, callback)
+    fun updateUserPassword(password: String, listener: TaskListener<Unit?>) {
+        userDataProcessor.updateUserPassword(password, listener)
     }
 
-    fun sendVerificationEmail(callback: (success: Boolean) -> Unit) {
-        userDataProcessor.sendVerificationEmail(callback)
+    fun sendVerificationEmail(listener: TaskListener<Unit?>) {
+        userDataProcessor.sendVerificationEmail(listener)
     }
 
-    fun sendPasswordResetEmail(email: String, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.sendPasswordResetEmail(email, callback)
+    fun sendPasswordResetEmail(email: String, listener: TaskListener<Unit?>) {
+        userDataProcessor.sendPasswordResetEmail(email, listener)
     }
 
-    fun deleteUser(callback: (success: Boolean) -> Unit) {
-        userDataProcessor.deleteUser(callback)
+    fun deleteUser(listener: TaskListener<Unit?>) {
+        userDataProcessor.deleteUser(listener)
     }
 
-    fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.signUpUser(email, password, callback)
+    fun signUpUser(email: String, password: String, listener: TaskListener<Unit?>) {
+        userDataProcessor.signUpUser(email, password, listener)
     }
 
-    fun authenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.authenticateUser(email, password, callback)
+    fun authenticateUser(email: String, password: String, listener: TaskListener<Unit?>) {
+        userDataProcessor.authenticateUser(email, password, listener)
     }
 
-    fun reAuthenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
-        userDataProcessor.reAuthenticateUser(email, password, callback)
+    fun reAuthenticateUser(email: String, password: String, listener: TaskListener<Unit?>) {
+        userDataProcessor.reAuthenticateUser(email, password, listener)
     }
 
 }
