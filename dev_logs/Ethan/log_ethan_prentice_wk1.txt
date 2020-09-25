@@ -1,0 +1,22 @@
+Tasks
+  Met with team to discuss project details and progress
+  Met with team again to explain the client data model to the cloud team and align on cloud model
+  Discussed project ideas and features with team
+  
+  Programmed the base class structure of the model with an example for user authentication to use while explaining the model to Simon
+  
+  Designed and programmed authentication screens for sign-up and login, the model now supports sign-up but calls must be added to the UI to support this which should be minimal effort
+  Authentication screens transition and have clean animations
+  Authentication screens also use all color reference for clean dark mode
+  Activities and fragments confirmed to save instance state in-case of recreations
+  Part of doing this also required programming generic ui components that will be used throughout the app:
+    Views:
+      FitButton.kt
+      FitEditText.kt
+     Animations:
+      ResizeAnimation.kt
+  
+  Discussed welcome flow and how to handle the creation of users between auth and firestore
+  
+  
+Project time allocation: 13hrs
