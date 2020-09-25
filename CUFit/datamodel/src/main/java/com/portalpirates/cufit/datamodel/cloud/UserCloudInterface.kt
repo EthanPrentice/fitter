@@ -4,7 +4,8 @@ import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.SetOptions
+import com.portalpirates.cufit.datamodel.cloud.exception.FitFirebaseException
+import com.portalpirates.cufit.datamodel.cloud.exception.UnauthorizedUserException
 import com.portalpirates.cufit.datamodel.manager.Manager
 
 internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
@@ -13,13 +14,20 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         return auth.currentUser
     }
 
-    fun getUserByUid(uid: String, onSuccess: (doc: DocumentSnapshot?) -> Unit, onFailure: ((e: Exception) -> Unit)? = null) {
+    fun getUserByUid(uid: String, listener: TaskListener<DocumentSnapshot>) {
         db.collection(COLLECTION).document(uid).get()
             .addOnSuccessListener { result ->
-                onSuccess(result)
+                if (result == null) {
+                    listener.onFailure(
+                        FitFirebaseException(
+                            "Could not find a FitUser with UID=$uid"
+                        )
+                    )
+                }
+                listener.onSuccess(result)
             }
             .addOnFailureListener { e ->
-                onFailure?.invoke(e)
+                listener.onFailure(e)
             }
     }
 
@@ -27,114 +35,120 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
      * Creates a user in FireStore.  This user has already been created from a server-side script after an auth user is created
      * so we just populate it here
      */
-    fun createFireStoreUser(fields: HashMap<String, Any?>, callback: (success: Boolean) -> Unit) {
+    fun createFireStoreUser(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
         val currUser = getFirebaseUser()
         if (currUser == null) {
-            callback(false)
+            listener.onFailure(UnauthorizedUserException())
         } else {
-            getUserByUid(currUser.uid, { doc ->
-                if (doc == null) {
-                    callback(false)
-                } else {
-                    doc.reference.update(fields)
+            getUserByUid(currUser.uid, object : TaskListener<DocumentSnapshot> {
+                override fun onSuccess(value: DocumentSnapshot) {
+                    value.reference.update(fields)
                         .addOnSuccessListener {
                             Log.d(TAG, "FireStoreUser successfully created.")
-                            callback(true)
+                            listener.onSuccess(null)
                         }
                         .addOnFailureListener { e ->
                             Log.w(TAG, "Error creating FireStoreUser", e)
-                            callback(false)
+                            listener.onSuccess(null)
                         }
                 }
-            }) {
-                callback(false)
-            }
+
+                override fun onFailure(e: Exception?) {
+                    listener.onFailure(e)
+                }
+            })
         }
     }
 
     /**
      * Updates the currently authenticated user's fields with the entries in [fields]
      */
-    fun updateFireStoreUser(fields: HashMap<String, Any?>, callback: (success: Boolean) -> Unit) {
+    fun updateFireStoreUser(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
         val currUser = getFirebaseUser()
         if (currUser == null) {
-            callback(false)
+            listener.onFailure(null)
         } else {
-            getUserByUid(currUser.uid, { doc ->
-                if (doc == null) {
-                    callback(false)
-                } else {
-                    doc.reference.update(fields)
+            getUserByUid(currUser.uid, object : TaskListener<DocumentSnapshot> {
+                override fun onSuccess(value: DocumentSnapshot) {
+                    value.reference.update(fields)
                         .addOnSuccessListener {
                             Log.d(TAG, "FireStoreUser successfully updated.")
-                            callback(true)
+                            listener.onSuccess(null)
                         }
                         .addOnFailureListener { e ->
                             Log.w(TAG, "Error updating FireStoreUser", e)
-                            callback(false)
+                            listener.onFailure(e)
                         }
                 }
-            }) {
-                callback(false)
-            }
+
+                override fun onFailure(e: Exception?) {
+                    listener.onFailure(e)
+                }
+            })
         }
     }
 
     /**
      * Updates the currently authenticated user's email address
      */
-    fun updateUserEmail(email: String, callback: (success: Boolean) -> Unit) {
+    fun updateUserEmail(email: String, listener: TaskListener<Unit?>) {
         getFirebaseUser()?.updateEmail(email)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "User email address updated.")
-                }
-                callback(task.isSuccessful)
+            ?.addOnSuccessListener {
+                Log.d(TAG, "User email address updated.")
+                listener.onSuccess(null)
+            }
+            ?.addOnFailureListener { e ->
+                listener.onFailure(e)
             }
     }
 
     /**
      * Updates the currently authenticated user's password
      */
-    fun updateUserPassword(password: String, callback: (success: Boolean) -> Unit) {
+    fun updateUserPassword(password: String, listener: TaskListener<Unit?>) {
         getFirebaseUser()?.updatePassword(password)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "User password update.")
-                }
-                callback(task.isSuccessful)
+            ?.addOnSuccessListener {
+                Log.d(TAG, "User password update.")
+                listener.onSuccess(null)
+            }
+            ?.addOnFailureListener { e ->
+                listener.onFailure(e)
             }
     }
 
-    fun sendVerificationEmail(callback: (success: Boolean) -> Unit) {
-        getFirebaseUser()?.sendEmailVerification()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Email verification sent.")
+    fun sendVerificationEmail(listener: TaskListener<Unit?>) {
+        getFirebaseUser()?.let { fbUser ->
+            fbUser.sendEmailVerification()
+                .addOnSuccessListener {
+                    Log.d(TAG, "Email verification sent to ${fbUser.email}")
+                    listener.onSuccess(null)
                 }
-                callback(task.isSuccessful)
-            }
+                .addOnFailureListener { e ->
+                    listener.onFailure(e)
+                }
+        }
     }
 
-    fun sendPasswordResetEmail(email: String, callback: (success: Boolean) -> Unit) {
+    fun sendPasswordResetEmail(email: String, listener: TaskListener<Unit?>) {
         auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Email password reset sent.")
-                }
-                callback(task.isSuccessful)
+            .addOnSuccessListener {
+                Log.d(TAG, "Email password reset sent to ${email}")
+                listener.onSuccess(null)
+            }
+            .addOnFailureListener { e ->
+                listener.onFailure(e)
             }
     }
 
     /**
      * Deletes the currently authenticated user from auth and FireStore
      */
-    fun deleteUser(callback: (success: Boolean) -> Unit) {
+    fun deleteUser(listener: TaskListener<Unit?>) {
         getFirebaseUser()?.delete()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User account deleted.")
-                    deleteFireStoreUser(callback)
+                    deleteFireStoreUser(listener)
                 }
             }
     }
@@ -143,28 +157,26 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
      * Deletes the currently authenticated user from FireStore
      * Should only be called when also deleting user from authentication
      */
-    private fun deleteFireStoreUser(callback: (success: Boolean) -> Unit) {
+    private fun deleteFireStoreUser(listener: TaskListener<Unit?>) {
         val currUser = getFirebaseUser()
         if (currUser == null) {
-            callback(false)
+            listener.onFailure(UnauthorizedUserException())
         } else {
-            getUserByUid(currUser.uid, { doc ->
-                if (doc == null) {
-                    callback(false)
-                } else {
-                    doc.reference.delete()
+            getUserByUid(currUser.uid, object : TaskListener<DocumentSnapshot> {
+                override fun onSuccess(value: DocumentSnapshot) {
+                    value.reference.delete()
                         .addOnSuccessListener {
                             Log.d(TAG, "FireStoreUser successfully deleted.")
-                            callback(true)
+                            listener.onSuccess(null)
                         }
                         .addOnFailureListener { e ->
                             Log.w(TAG, "Error deleting FireStoreUser", e)
-                            callback(false)
+                            listener.onFailure(e)
                         }
                 }
-            }) {
-                callback(false)
-            }
+
+                override fun onFailure(e: Exception?) = listener.onFailure(e)
+            })
         }
         // TODO delete sub-collections
     }
@@ -173,41 +185,39 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
      * Signs the user up, adding them to the authentication server
      * Then a server-side script with create a FireStore user for us to populate later
      */
-    fun signUpUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+    fun signUpUser(email: String, password: String, listener: TaskListener<Unit?>) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Create user with email is successful.")
-                } else {
-                    Log.w(TAG, "Create user with email failed.", task.exception)
-                }
-                callback(task.isSuccessful)
+            .addOnSuccessListener {
+                Log.d(TAG, "Create user with email is successful.")
+                listener.onSuccess(null)
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, e.message ?: "Error signing up a new user")
+                listener.onFailure(e)
             }
     }
 
-    fun authenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+    fun authenticateUser(email: String, password: String, listener: TaskListener<Unit?>) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Sign in with email is successful.")
-                } else {
-                    Log.w(TAG, "Sign in with email failed.", task.exception)
-                }
-                callback(task.isSuccessful)
+            .addOnSuccessListener {
+                Log.d(TAG, "Sign in with email is successful.")
+                listener.onSuccess(null)
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Sign in with email failed.", e)
+                listener.onFailure(e)
             }
     }
 
-    fun reAuthenticateUser(email: String, password: String, callback: (success: Boolean) -> Unit) {
+    fun reAuthenticateUser(email: String, password: String, listener: TaskListener<Unit?>) {
         val credential = EmailAuthProvider.getCredential(email, password)
         getFirebaseUser()?.reauthenticate(credential)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "User re-authenticated.")
-                }
-                callback(task.isSuccessful)
+            ?.addOnSuccessListener {
+                Log.d(TAG, "User re-authenticated.")
+                listener.onSuccess(null)
+            }
+            ?.addOnFailureListener { e ->
+                listener.onFailure(e)
             }
     }
 

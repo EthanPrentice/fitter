@@ -1,6 +1,7 @@
 package com.portalpirates.cufit.datamodel.data.user
 
 import android.graphics.Bitmap
+import com.portalpirates.cufit.datamodel.FitException
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
 import com.portalpirates.cufit.datamodel.data.weight.Weight
 import java.lang.IllegalStateException
@@ -78,10 +79,8 @@ class FitUserBuilder {
         )
     }
 
-    class UserBuildException(s: String?, cause: Throwable?) : IllegalStateException(s, cause) {
-        constructor(s: String?) : this(s, null)
-        constructor(cause: Throwable?) : this(null, cause)
-        constructor() : this(null, null)
+    class UserBuildException(s: String, cause: Throwable?) : FitException(s, cause) {
+        constructor(s: String) : this(s, null)
     }
 
 }

@@ -11,6 +11,8 @@ import android.view.animation.Animation
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.cloud.TaskListener
+import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.manager.UserManager
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.animation.ResizeAnimation
@@ -111,19 +113,40 @@ class LoginFragment : AuthFragment() {
         val password = passwordInput.text
 
         val userManager = FitApplication.instance.userManager
-        userManager.receiver.authenticateUser(email, password) { success ->
-            if (success) {
-                userManager.provider.getAuthenticatedUser { user ->
-                    if (user == null) {
-                        onIncorrectInput()
-                    } else {
-                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
-                    }
+
+        val listener = object : TaskListener<AuthenticatedUser?> {
+            override fun onSuccess(value: AuthenticatedUser?) {
+                hideMessage()
+                if (value == null) {
+                    onIncorrectInput()
+                } else {
+                    hideForgotPassword()
+                    Toast.makeText(
+                        context,
+                        "Authenticated as ${value.fullName}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            } else {
+            }
+
+            override fun onFailure(e: Exception?) {
                 onIncorrectInput()
+                hideMessage()
+                e?.message?.let { msg ->
+                    showMessage(msg)
+                }
             }
         }
+
+        userManager.receiver.authenticateUser(email, password, object : TaskListener<Unit?> {
+            override fun onSuccess(value: Unit?) {
+                userManager.provider.getAuthenticatedUser(listener)
+            }
+
+            override fun onFailure(e: Exception?) {
+                listener.onFailure(e)
+            }
+        })
     }
 
     override fun onIncorrectInput() {
@@ -154,7 +177,7 @@ class LoginFragment : AuthFragment() {
         if (!isForgotPasswordShowing) {
             return
         }
-        val anim = ResizeAnimation(forgotPasswordBtn, 0, forgotPasswordBtn.measuredWidth, ResizeAnimation.Mode.WIDTH).apply {
+        val anim = ResizeAnimation(forgotPasswordBtn, 0f, 0.5f, ResizeAnimation.Mode.WEIGHT).apply {
             duration = 200
             interpolator = AccelerateDecelerateInterpolator()
             setAnimationListener(object : Animation.AnimationListener {

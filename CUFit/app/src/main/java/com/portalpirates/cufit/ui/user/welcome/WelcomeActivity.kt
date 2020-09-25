@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.ui.FitApplication
@@ -73,9 +75,15 @@ class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
     }
 
     override fun userReadyToBuild(builder: FitUserBuilder) {
-        FitApplication.instance.userManager.receiver.createFireStoreUser(builder) { success ->
-            Toast.makeText(this, "Account creation successful!\nWelcome ${builder.firstName}!", Toast.LENGTH_SHORT).show()
-        }
+        FitApplication.instance.userManager.receiver.createFireStoreUser(builder, object : TaskListener<Unit?> {
+            override fun onSuccess(value: Unit?) {
+                Toast.makeText(this@WelcomeActivity, "Account creation successful!\nWelcome ${builder.firstName}!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(e: Exception?) {
+                Log.e(TAG, e.toString())
+            }
+        })
     }
 
     @Throws(IOException::class)
@@ -86,6 +94,11 @@ class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
         parcelFileDescriptor.close()
 
         return image
+    }
+
+
+    companion object {
+        const val TAG = "WelcomeActivity"
     }
 
 }

@@ -85,4 +85,12 @@
         <item name="android:calendarViewShown">false</item>
     </style>
 
+    <style name="marquee_message" parent="Widget.AppCompat.TextView">
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
 </resources>
