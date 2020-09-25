@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.SetOptions
 import com.portalpirates.cufit.datamodel.manager.Manager
 
 internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
@@ -13,14 +14,9 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
     }
 
     fun getUserByUid(uid: String, onSuccess: (doc: DocumentSnapshot?) -> Unit, onFailure: ((e: Exception) -> Unit)? = null) {
-        db.collection(COLLECTION).whereEqualTo(UID, uid).limit(1).get()
+        db.collection(COLLECTION).document(uid).get()
             .addOnSuccessListener { result ->
-                result.forEach { document ->
-                    onSuccess(document)
-                }
-                if (result.isEmpty) {
-                    onSuccess(null)
-                }
+                onSuccess(result)
             }
             .addOnFailureListener { e ->
                 onFailure?.invoke(e)
@@ -40,7 +36,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
                 if (doc == null) {
                     callback(false)
                 } else {
-                    doc.reference.set(fields)
+                    doc.reference.update(fields)
                         .addOnSuccessListener {
                             Log.d(TAG, "FireStoreUser successfully created.")
                             callback(true)
@@ -226,6 +222,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         const val LAST_NAME = "name.last"
         const val CURRENT_WEIGHT = "current_weight"
         const val WEIGHT_GOAL = "weight_goal"
+        const val SEX = "gender"
     }
 
 }

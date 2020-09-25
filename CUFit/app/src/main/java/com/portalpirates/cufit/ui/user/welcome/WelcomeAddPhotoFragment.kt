@@ -9,7 +9,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.ui.FitFragment
 import com.portalpirates.cufit.ui.view.ChooseImageButton
 
 class WelcomeAddPhotoFragment : WelcomeFragment() {
@@ -24,7 +23,7 @@ class WelcomeAddPhotoFragment : WelcomeFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.welcome_layout2, container, false)
+        return inflater.inflate(R.layout.welcome_photo, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +58,7 @@ class WelcomeAddPhotoFragment : WelcomeFragment() {
     private fun toNextFrag() {
         val b = Bundle()
         b.putBoolean(HAS_FRAG_SHARED_ELEM_TRANSITION, true)
-        val frag = WelcomeSelectSexFragment.newInstance(b)
+        val frag = WelcomePersonalFragment.newInstance(b)
 
         val transition = AutoTransition().apply {
             ordering = TransitionSet.ORDERING_TOGETHER
@@ -77,11 +76,10 @@ class WelcomeAddPhotoFragment : WelcomeFragment() {
             .addSharedElement(chooseImageButton, resources.getString(R.string.tr_choose_photo_btn))
             .addSharedElement(chooseImageButton.imageView, chooseImageButton.imageView.transitionName)
             .addSharedElement(chooseImageButton.editBtn, chooseImageButton.editBtn.transitionName)
-            .replace(R.id.frag_container, frag, WelcomeSelectSexFragment.TAG)
+            .replace(R.id.frag_container, frag, WelcomePersonalFragment.TAG)
             .addToBackStack(null)
             .commit()
     }
-
 
     companion object {
         const val TAG = "WelcomeAddPhotoFragment"

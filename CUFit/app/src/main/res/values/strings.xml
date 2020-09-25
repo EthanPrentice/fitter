@@ -2,18 +2,37 @@
     <string name="app_name">CU Fit</string>
 
 
-    <!-- User facing / content -->
+    <!-- User related -->
+        <!-- Auth -->
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="forgot_password">Forgot Password?</string>
-
-    <!-- Sexes -->
+        <!-- Fields -->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="birth_date">Birth Date</string>
+        <!-- Sexes -->
     <string name="man">Man</string>
     <string name="woman">Woman</string>
     <string name="other">Other</string>
+
+
+    <!-- Formatting -->
+    <string name="date_format">%1$2d/%2$2d/%3$2d</string>
+
+
+    <!-- Generic button text -->
+    <string name="get_started_btn">Get Started</string>
+    <string name="continue_btn">Continue</string>
+    <string name="finished_btn">Finished</string>
+
+
+    <!-- Welcome flow specific -->
+    <string name="welcome_to">Welcome to</string>
+    <string name="set_up_photo">First, lets get a photo set up</string>
 
 
     <!-- Shared element transition IDs -->

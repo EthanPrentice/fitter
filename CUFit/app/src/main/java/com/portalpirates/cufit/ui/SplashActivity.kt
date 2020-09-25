@@ -31,7 +31,7 @@ class SplashActivity : FitActivity() {
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
         handler.postDelayed({
-            val logoView = findViewById<ImageView>(R.id.add_photo_btn)
+            val logoView = findViewById<ImageView>(R.id.logo)
             val intent = Intent(this, AuthActivity::class.java)
             val options = ActivityOptions.makeSceneTransitionAnimation(this, logoView, resources.getString(R.string.tr_logo))
 

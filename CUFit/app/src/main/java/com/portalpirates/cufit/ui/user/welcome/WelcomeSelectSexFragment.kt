@@ -6,12 +6,12 @@ import android.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.ui.view.ChooseImageButton
 import com.portalpirates.cufit.ui.view.adapter.SingleSelectAdapter
 
@@ -31,13 +31,13 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.welcome_layout3, container, false)
+        return inflater.inflate(R.layout.welcome_sex, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        singleSelects = view.findViewById(R.id.single_select)
+        singleSelects = view.findViewById(R.id.inputs)
         chooseImageButton = view.findViewById(R.id.choose_photo_btn)
 
         // If we have an enter animation for this frag, set singleSelects alpha to 0, to be faded in later
@@ -56,10 +56,8 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
 
         // If there's already a chosen sex for the user and we recreate this frag, use what's in the view model as default
         var defaultSex: String? = null
-        model.userSex.observe(requireActivity(), Observer { str ->
-            if (str != null) {
-                defaultSex = str
-            }
+        model.userSex.observe(requireActivity(), Observer { userSex ->
+            defaultSex = userSex.secondaryName
         })
 
         singleSelects.adapter = SingleSelectAdapter(requireContext(), R.array.sexes, defaultSex).apply {
@@ -73,6 +71,11 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
                 chooseImageButton.setImageBitmap(bmp)
             }
         })
+
+
+        actionBtn.setOnClickListener {
+            listener?.userReadyToBuild(model.getBuilder())
+        }
 
         if (savedInstanceState == null) {
             requireActivity().startPostponedEnterTransition()

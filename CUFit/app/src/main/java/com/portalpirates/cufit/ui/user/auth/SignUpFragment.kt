@@ -17,6 +17,9 @@ import android.util.Pair as UtilPair
 
 class SignUpFragment : AuthFragment() {
 
+    val listener: SignUpListener?
+        get() = activity as? SignUpListener
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.signup_layout, container, false)
     }
@@ -56,8 +59,6 @@ class SignUpFragment : AuthFragment() {
         val email = emailAddrInput.text
         val password = passwordInput.text
         val confirmPassword = confirmPasswordInput.text
-
-        /* Disable this for now, until we have welcome workflow done
         
         if (password != confirmPassword) {
             onIncorrectInput()
@@ -69,36 +70,17 @@ class SignUpFragment : AuthFragment() {
         userManager.receiver.signUpUser(email, password) { success ->
             if (success) {
                 val fbUser = userManager.provider.getFirebaseUser()
-                Toast.makeText(context, "Authenticated as user with uid ${fbUser?.uid ?: -1}", Toast.LENGTH_SHORT).show()
-
-                // we can't get an auth user yet, the required fields aren't populated.
-//                userManager.provider.getAuthenticatedUser { user ->
-//                    if (user == null) {
-//                        onIncorrectInput()
-//                    } else {
-//                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
+                if (fbUser != null) {
+                    listener?.onSignUp(fbUser.uid)
+                }
             } else {
                 onIncorrectInput()
             }
         }
-        */
+    }
 
-        val intent = Intent(requireContext(), WelcomeActivity::class.java)
-
-        val sharedElements = arrayOf<UtilPair<View, String>>(
-            UtilPair.create(logo, resources.getString(R.string.tr_logo)),
-            UtilPair.create(actionBtn, resources.getString(R.string.tr_action_btn))
-        )
-
-        // prevent flashing for shared element transition
-        requireActivity().window.exitTransition = null
-
-        val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(), *sharedElements)
-        startActivity(intent, options.toBundle())
-
-        // onIncorrectInput()
+    interface SignUpListener {
+        fun onSignUp(uid: String)
     }
 
     companion object {

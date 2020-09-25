@@ -1,5 +1,6 @@
 package com.portalpirates.cufit.datamodel.data.user
 
+import android.graphics.Bitmap
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
 import com.portalpirates.cufit.datamodel.data.weight.Weight
 import java.lang.IllegalStateException
@@ -9,16 +10,18 @@ import kotlin.collections.HashMap
 class FitUserBuilder {
 
     // required
-    private var birthDate: Date? = null
-    private var firstName: String? = null
-    private var lastName: String? = null
+    var birthDate: Date? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var sex: UserSex? = null
 
     // optional
-    private var currentWeight: Weight? = null
-    private var weightGoal: Weight? = null
+    var imageBmp: Bitmap? = null
+    var currentWeight: Weight? = null
+    var weightGoal: Weight? = null
 
     @Throws(UserBuildException::class)
-    fun build() : FitUser {
+    fun build(): FitUser {
         if (hasRequiredInputs()) {
             return FitUser(birthDate!!, firstName!!, lastName!!, currentWeight, weightGoal)
         } else {
@@ -31,20 +34,36 @@ class FitUserBuilder {
         return this
     }
 
-    fun setFirstName(name: String) : FitUserBuilder {
+    fun setBirthDate(date: Date): FitUserBuilder {
+        birthDate = date
+        return this
+    }
+
+    fun setFirstName(name: String): FitUserBuilder {
         firstName = name
         return this
     }
 
-    fun setLastName(name: String) : FitUserBuilder {
+    fun setLastName(name: String): FitUserBuilder {
         lastName = name
+        return this
+    }
+
+    fun setSex(sex: UserSex): FitUserBuilder {
+        this.sex = sex
+        return this
+    }
+
+    fun setImage(bmp: Bitmap?): FitUserBuilder {
+        imageBmp = bmp
         return this
     }
 
     fun hasRequiredInputs(): Boolean {
         return birthDate != null &&
                 firstName != null &&
-                lastName != null
+                lastName != null &&
+                sex != null
     }
 
     fun convertFieldsToHashMap(): HashMap<String, Any?> {
@@ -53,7 +72,8 @@ class FitUserBuilder {
             UserCloudInterface.CURRENT_WEIGHT to currentWeight,
             UserCloudInterface.FIRST_NAME to firstName,
             UserCloudInterface.LAST_NAME to lastName,
-            UserCloudInterface.WEIGHT_GOAL to weightGoal
+            UserCloudInterface.WEIGHT_GOAL to weightGoal,
+            UserCloudInterface.SEX to sex!!.char.toString()
             // TODO: previous weights
         )
     }

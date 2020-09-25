@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.TextView
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.ui.user.auth.AuthFragment
-import com.portalpirates.cufit.ui.view.FitButton
 
 class WelcomeIntroFragment : WelcomeFragment() {
 
@@ -19,7 +16,7 @@ class WelcomeIntroFragment : WelcomeFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.welcome_layout1, container, false)
+        return inflater.inflate(R.layout.welcome_intro, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +36,7 @@ class WelcomeIntroFragment : WelcomeFragment() {
     }
 
 
-    fun toNextFrag() {
+    private fun toNextFrag() {
         val frag = WelcomeAddPhotoFragment.newInstance()
 
         val transition = TransitionSet().apply {

@@ -7,18 +7,21 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.view.Window
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.data.user.FitUser
+import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
+import com.portalpirates.cufit.ui.FitApplication
 import java.io.IOException
 
 
-class WelcomeActivity : FitActivity() {
+class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
 
     private lateinit var fragContainer: FrameLayout
 
@@ -66,6 +69,12 @@ class WelcomeActivity : FitActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    override fun userReadyToBuild(builder: FitUserBuilder) {
+        FitApplication.instance.userManager.receiver.createFireStoreUser(builder) { success ->
+            Toast.makeText(this, "Account creation successful!\nWelcome ${builder.firstName}!", Toast.LENGTH_SHORT).show()
         }
     }
 

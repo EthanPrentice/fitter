@@ -11,8 +11,24 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50" />
+        app:layout_constraintGuide_percent="0.50"/>
 
+    <TextView
+        android:id="@+id/top_text"
+        android:transitionName="@string/tr_top_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_up_photo"
+        android:textAlignment="center"
+        android:textAppearance="@style/header1"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="@dimen/LU_2"
+        android:paddingHorizontal="@dimen/LU_4_5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/choose_photo_btn"
+        app:layout_constraintVertical_bias="0.5"/>
 
     <com.portalpirates.cufit.ui.view.ChooseImageButton
         android:id="@+id/choose_photo_btn"
@@ -20,27 +36,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:layout_marginHorizontal="@dimen/LU_4"
-        android:layout_marginVertical="@dimen/LU_5"
-        app:layout_constraintLeft_toLeftOf="@id/single_select"
-        app:layout_constraintRight_toRightOf="@id/single_select"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/single_select"
-        app:layout_constraintVertical_bias="1.0"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/single_select"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/LU_6"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_50"
-        app:layout_constraintBottom_toTopOf="@id/action_btn"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_50"
         app:layout_constraintVertical_bias="0.0"/>
-
-
 
     <com.portalpirates.cufit.ui.view.FitButton
         android:id="@+id/action_btn"
@@ -50,12 +51,13 @@
         android:layout_marginHorizontal="@dimen/LU_4_5"
         android:layout_marginVertical="@dimen/LU_4"
         app:buttonType="primary"
-        app:text="Continue"
+        app:text="@string/continue_btn"
         app:icon="@drawable/ic_arrow_right"
         app:iconOn="right"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choose_photo_btn"
         app:layout_constraintVertical_bias="1.0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

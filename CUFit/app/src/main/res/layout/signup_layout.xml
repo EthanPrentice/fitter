@@ -13,7 +13,7 @@
         app:layout_constraintGuide_percent="0.55"/>
 
     <ImageView
-        android:id="@+id/add_photo_btn"
+        android:id="@+id/logo"
         android:transitionName="@string/tr_logo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

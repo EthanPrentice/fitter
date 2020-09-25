@@ -61,7 +61,12 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
     }
 
     fun createFireStoreUser(builder: FitUserBuilder, callback: (success: Boolean) -> Unit) {
-        userCloudInterface.createFireStoreUser(builder.convertFieldsToHashMap(), callback)
+        if (builder.hasRequiredInputs()) {
+            userCloudInterface.createFireStoreUser(builder.convertFieldsToHashMap(), callback)
+        } else {
+            Log.w(TAG, "FitUserBuilder got to UserDataProcessor without proper inputs!")
+            callback(false)
+        }
     }
 
     fun updateFireStoreUser(fields: HashMap<UserField, Any?>, callback: (success: Boolean) -> Unit) {

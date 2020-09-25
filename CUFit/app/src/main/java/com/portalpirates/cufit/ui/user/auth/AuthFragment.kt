@@ -53,7 +53,7 @@ abstract class AuthFragment : FitFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logo = view.findViewById(R.id.add_photo_btn)
+        logo = view.findViewById(R.id.logo)
 
         userInputs = view.findViewById(R.id.credentials)
         emailAddrInput = userInputs.findViewById(R.id.email_input)

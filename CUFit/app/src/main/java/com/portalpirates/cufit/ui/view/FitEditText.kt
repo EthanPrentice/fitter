@@ -15,11 +15,11 @@ import com.google.android.material.textfield.TextInputLayout
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.ui.util.ColorUtil
 
-class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : TextInputLayout(context, attrs, defStyle) {
+open class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : TextInputLayout(context, attrs, defStyle) {
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    private enum class EditTextType(private val value: Int) {
+    protected enum class EditTextType(private val value: Int) {
         PRIMARY(0),
         SECONDARY(1);
         companion object {
@@ -47,8 +47,8 @@ class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : TextI
         }
 
 
-    private val editTextType: EditTextType
-    private val editText: TextInputEditText = TextInputEditText(context)
+    protected val editTextType: EditTextType
+    protected val editText: TextInputEditText = TextInputEditText(context)
 
     var text: String
         get() = editText.text?.toString() ?: ""

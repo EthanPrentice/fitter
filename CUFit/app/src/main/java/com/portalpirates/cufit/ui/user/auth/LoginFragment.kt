@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.manager.UserManager
+import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.animation.ResizeAnimation
 import com.portalpirates.cufit.ui.view.FitButton
 import kotlinx.android.synthetic.main.button_layout.view.*
@@ -109,8 +110,7 @@ class LoginFragment : AuthFragment() {
         val email = emailAddrInput.text
         val password = passwordInput.text
 
-        // Put userManager in the view model later when it's written
-        val userManager = UserManager()
+        val userManager = FitApplication.instance.userManager
         userManager.receiver.authenticateUser(email, password) { success ->
             if (success) {
                 userManager.provider.getAuthenticatedUser { user ->
