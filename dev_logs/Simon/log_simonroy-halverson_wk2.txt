@@ -1,0 +1,8 @@
+Tasks:
+  Met with team Sept 25 to discuss current status of project
+
+  Implemented the Welcome_Measurements View and edited the Data Model [CUF-50]
+
+  Edited D2
+
+Project time allocation: 5hrs
