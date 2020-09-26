@@ -16,6 +16,7 @@ export const addBlankUserOnRegister = functions.auth.user().onCreate( async user
         subscribed_workouts : [],
         personal_records : {},
         current_weight : null,
+        current_height : null,
         weight_goal : {}
     });
 
