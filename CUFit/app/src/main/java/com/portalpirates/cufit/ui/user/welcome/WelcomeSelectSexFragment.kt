@@ -11,10 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.ui.view.ChooseImageButton
 import com.portalpirates.cufit.ui.view.adapter.SingleSelectAdapter
-
 
 class WelcomeSelectSexFragment : WelcomeFragment() {
 

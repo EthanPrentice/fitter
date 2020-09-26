@@ -3,8 +3,8 @@ package com.portalpirates.cufit.datamodel.data.user
 import android.graphics.Bitmap
 import com.portalpirates.cufit.datamodel.FitException
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
+import com.portalpirates.cufit.datamodel.data.height.Height
 import com.portalpirates.cufit.datamodel.data.weight.Weight
-import java.lang.IllegalStateException
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -19,12 +19,13 @@ class FitUserBuilder {
     // optional
     var imageBmp: Bitmap? = null
     var currentWeight: Weight? = null
+    var currentHeight: Height? = null
     var weightGoal: Weight? = null
 
     @Throws(UserBuildException::class)
     fun build(): FitUser {
         if (hasRequiredInputs()) {
-            return FitUser(birthDate!!, firstName!!, lastName!!, currentWeight, weightGoal)
+            return FitUser(birthDate!!, firstName!!, lastName!!, currentWeight, currentHeight, weightGoal)
         } else {
             throw UserBuildException("All required fields have not been provided for user! Cannot build!")
         }
@@ -32,6 +33,16 @@ class FitUserBuilder {
 
     fun setCurrentWeight(weight: Weight) : FitUserBuilder {
         currentWeight = weight
+        return this
+    }
+
+    fun setCurrentHeight(height: Height) : FitUserBuilder {
+        currentHeight = height
+        return this
+    }
+
+    fun setWeightGoal(weight: Weight) : FitUserBuilder {
+        weightGoal = weight
         return this
     }
 
@@ -71,11 +82,13 @@ class FitUserBuilder {
         return hashMapOf<String, Any?>(
             UserCloudInterface.BIRTH_DATE to birthDate,
             UserCloudInterface.CURRENT_WEIGHT to currentWeight,
+            UserCloudInterface.CURRENT_HEIGHT to currentHeight,
             UserCloudInterface.FIRST_NAME to firstName,
             UserCloudInterface.LAST_NAME to lastName,
             UserCloudInterface.WEIGHT_GOAL to weightGoal,
             UserCloudInterface.SEX to sex!!.char.toString()
             // TODO: previous weights
+            // TODO: previous heights
         )
     }
 

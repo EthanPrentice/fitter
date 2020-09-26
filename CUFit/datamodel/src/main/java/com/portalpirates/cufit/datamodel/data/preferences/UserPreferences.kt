@@ -1,16 +1,28 @@
 package com.portalpirates.cufit.datamodel.data.preferences
 
-class UserPreferences(var measurementUnits: MeasurementUnits = MeasurementUnits.KILOGRAMS) : Preferences() {
+class UserPreferences(var weightUnits: MeasurementUnits = MeasurementUnits.KILOGRAMS, var heightUnits: MeasurementUnits = MeasurementUnits.METERS) : Preferences() {
 
-    fun setMeasurementUnitsToPounds() {
-        if (this.measurementUnits == MeasurementUnits.KILOGRAMS) {
-            this.measurementUnits = MeasurementUnits.POUNDS
+    fun setWeightUnitsToPounds() {
+        if (this.weightUnits == MeasurementUnits.KILOGRAMS) {
+            this.weightUnits = MeasurementUnits.POUNDS
         }
     }
 
-    fun setMeasurementUnitsToKilograms() {
-        if (this.measurementUnits == MeasurementUnits.POUNDS) {
-            this.measurementUnits = MeasurementUnits.KILOGRAMS
+    fun setWeightUnitsToKilograms() {
+        if (this.weightUnits == MeasurementUnits.POUNDS) {
+            this.weightUnits = MeasurementUnits.KILOGRAMS
+        }
+    }
+
+    fun setHeightUnitsToFeet() {
+        if (this.heightUnits == MeasurementUnits.METERS) {
+            this.heightUnits = MeasurementUnits.FEET
+        }
+    }
+
+    fun setHeightUnitsToMeters() {
+        if (this.heightUnits == MeasurementUnits.FEET) {
+            this.heightUnits = MeasurementUnits.METERS
         }
     }
 

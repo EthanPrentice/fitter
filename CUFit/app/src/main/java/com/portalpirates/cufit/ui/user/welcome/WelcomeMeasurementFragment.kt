@@ -1,33 +1,32 @@
 package com.portalpirates.cufit.ui.user.welcome
 
-import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
-import android.transition.AutoTransition
 import android.transition.Transition
-import android.transition.TransitionSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.LinearLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.data.height.Height
+import com.portalpirates.cufit.datamodel.data.preferences.MeasurementUnits
+import com.portalpirates.cufit.datamodel.data.weight.Weight
 import com.portalpirates.cufit.ui.view.ChooseImageButton
-import com.portalpirates.cufit.ui.view.FitDatePicker
 import com.portalpirates.cufit.ui.view.FitEditText
+import java.util.*
 
-class WelcomePersonalFragment : WelcomeFragment() {
+class WelcomeMeasurementFragment : WelcomeFragment() {
 
     private var fragTransitionEnded = false
 
     private lateinit var chooseImageButton: ChooseImageButton
     private lateinit var inputs: LinearLayout
 
-    private lateinit var firstNameInput: FitEditText
-    private lateinit var lastNameInput: FitEditText
-    private lateinit var birthDateInput: FitDatePicker
+    private lateinit var currentWeightInput : FitEditText
+    private lateinit var currentHeightInput : FitEditText
+    private lateinit var weightGoalInput : FitEditText
 
     private val model: WelcomeViewModel by activityViewModels()
 
@@ -37,16 +36,16 @@ class WelcomePersonalFragment : WelcomeFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.welcome_personal, container, false)
+        return inflater.inflate(R.layout.welcome_measurement, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         inputs = view.findViewById(R.id.inputs)
-        firstNameInput = inputs.findViewById(R.id.first_name_input)
-        lastNameInput = inputs.findViewById(R.id.last_name_input)
-        birthDateInput = inputs.findViewById(R.id.birth_date_input)
+        currentWeightInput = inputs.findViewById(R.id.current_weight_input)
+        currentHeightInput = inputs.findViewById(R.id.current_height_input)
+        weightGoalInput = inputs.findViewById(R.id.weight_goal_input)
 
         chooseImageButton = view.findViewById(R.id.choose_photo_btn)
 
@@ -70,14 +69,14 @@ class WelcomePersonalFragment : WelcomeFragment() {
             toNextFrag()
         }
 
-        model.userFirstName.observe(requireActivity(), Observer { firstName ->
-            firstNameInput.text = firstName ?: ""
+        model.userCurrentWeight.observe(requireActivity(), Observer { currentWeight ->
+            currentWeightInput.text = (currentWeight?.mass ?: "").toString()
         })
-        model.userLastName.observe(requireActivity(), Observer { lastName ->
-            lastNameInput.text = lastName ?: ""
+        model.userCurrentHeight.observe(requireActivity(), Observer { currentHeight ->
+            currentHeightInput.text = (currentHeight?.length ?: "").toString()
         })
-        model.userBirthDate.observe(requireActivity(), Observer { birthDate ->
-            birthDateInput.date = birthDate
+        model.userWeightGoal.observe(requireActivity(), Observer { weightGoal ->
+            weightGoalInput.text = (weightGoal?.mass ?: "").toString()
         })
 
         if (savedInstanceState == null) {
@@ -110,7 +109,7 @@ class WelcomePersonalFragment : WelcomeFragment() {
         super.onPause()
 
         // Transition ends and does not update the listener on-pause
-        // If the fragment is paused and the transition has not finished, show the views
+        // If the fragment is paused and the transition has no finished, show the views
         if (hasActivitySharedElemTransition && !fragTransitionEnded) {
             inputs.alpha = 1f
         }
@@ -135,62 +134,33 @@ class WelcomePersonalFragment : WelcomeFragment() {
             }
         }
 
-        ifEmptyThenNull(firstNameInput.text)?.let {
-            model.setUserFirstName(it)
+        ifEmptyThenNull(currentWeightInput.text)?.let {
+            val userCurrentWeight = Weight(it.toDouble(), MeasurementUnits.KILOGRAMS, Calendar.getInstance().time)
+            model.setUserCurrentWeight(userCurrentWeight)
         }
-        ifEmptyThenNull(lastNameInput.text)?.let {
-            model.setUserLastName(it)
+        ifEmptyThenNull(currentHeightInput.text)?.let {
+            val userCurrentHeight = Height(it.toDouble(), MeasurementUnits.METERS, Calendar.getInstance().time)
+            model.setUserCurrentHeight(userCurrentHeight)
         }
-        birthDateInput.date?.let {
-            model.setUserBirthDate(it)
+        ifEmptyThenNull(weightGoalInput.text)?.let {
+            val userWeightGoal = Weight(it.toDouble(), MeasurementUnits.KILOGRAMS, Calendar.getInstance().time)
+            model.setUserWeightGoal(userWeightGoal)
         }
     }
 
     private fun toNextFrag() {
         pushToViewModel()
 
-        val b = Bundle()
-        b.putBoolean(HAS_FRAG_SHARED_ELEM_TRANSITION, true)
-        val frag = WelcomeSelectSexFragment.newInstance(b)
-
-        val transition = AutoTransition().apply {
-            ordering = TransitionSet.ORDERING_TOGETHER
-            duration = FRAG_TRANSITION_MS
-            interpolator = AccelerateDecelerateInterpolator()
-        }
-
-        frag.sharedElementEnterTransition = transition
-        frag.sharedElementReturnTransition = transition
-
-        val transaction = requireActivity().supportFragmentManager
-            .beginTransaction()
-            .setReorderingAllowed(true)
-            .addSharedElement(actionBtn, resources.getString(R.string.tr_action_btn))
-            .addSharedElement(chooseImageButton, resources.getString(R.string.tr_choose_photo_btn))
-            .addSharedElement(chooseImageButton.imageView, chooseImageButton.imageView.transitionName)
-            .addSharedElement(chooseImageButton.editBtn, chooseImageButton.editBtn.transitionName)
-            .replace(R.id.frag_container, frag, WelcomeSelectSexFragment.TAG)
-            .addToBackStack(null)
-
-        // Fade out inputs then start transaction
-        inputs.animate().alpha(0f).setDuration(FRAG_TRANSITION_MS).setListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) { }
-            override fun onAnimationRepeat(animation: Animator?) { }
-            override fun onAnimationEnd(animation: Animator?) {
-                transaction.commit()
-            }
-            override fun onAnimationCancel(animation: Animator?) = onAnimationEnd(animation)
-        }).start()
     }
 
-
     companion object {
-        const val TAG = "WelcomePersonalFragment"
+        const val TAG = "WelcomeMeasurementFragment"
 
-        fun newInstance(bundle: Bundle? = null): WelcomePersonalFragment {
-            val frag = WelcomePersonalFragment()
+        fun newInstance(bundle: Bundle? = null): WelcomeMeasurementFragment {
+            val frag = WelcomeMeasurementFragment()
             frag.arguments = bundle
             return frag
         }
     }
+
 }
