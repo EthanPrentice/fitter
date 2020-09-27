@@ -1,0 +1,10 @@
+Tasks:
+  Met with team Sept 15 to discuss D1
+  Met with team Sept 18 to review D1 and rehearse presentation
+  Met with team Sept 20 to present Data Model
+
+  Implemented the Data Model Epics [CUF-21 - CUF-33]
+
+  Edited & Submitted D1
+
+Project time allocation: 8hrs

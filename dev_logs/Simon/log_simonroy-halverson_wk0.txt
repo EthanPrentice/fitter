@@ -1,0 +1,15 @@
+Tasks:
+  Met with team Sept 7 to discuss general project details
+  Met with team Sept 11 to discuss D0
+  Discussed project ideas and features with team
+
+  Helped choose & set up project infrastructure and tools:
+    Communication:  Discord
+
+  Coordinated team meetings
+
+  Edited & Submitted D0
+
+  Created Epics for the data model
+
+Project time allocation: 8hrs
