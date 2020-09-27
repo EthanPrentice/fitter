@@ -1,0 +1,3 @@
+Understand deleting users from firebase documentation
+Understand async/await in javascript
+Implemented Delete user logic CUF-41
