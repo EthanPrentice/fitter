@@ -1,1 +1,15 @@
-placeholder - write this on 9/26/2020
+Added Welcome workflow to sign user up (bulk of the work)
+Added a lot of custom views to support the welcome workflow
+
+Discussed future features w/ team
+
+Attached the UI of the welcome workflow to the model - sign up functionality now working with Firebase
+
+Made minor changes to the model for how we handle callbacks
+
+Added messages to the AuthFragments for any exceptions that arise from Firebase or other means to make errors clear to the user
+
+Teaching other group members a bit about the Android lifecyce, hopefully move on to custom views and resources later on
+
+
+Total time spent on project: 9hrs
