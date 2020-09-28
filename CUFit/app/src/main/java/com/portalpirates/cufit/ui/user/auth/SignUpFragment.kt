@@ -67,27 +67,30 @@ class SignUpFragment : AuthFragment() {
             return
         }
 
-        // Put userManager in the view model later when it's written
-        val userManager = FitApplication.instance.userManager
-        userManager.receiver.signUpUser(email, password, object : TaskListener<Unit?> {
-            override fun onSuccess(value: Unit?) {
-                hideMessage()
+        listener?.onSignUp("")
 
-                val fbUser = userManager.provider.getFirebaseUser()
-                if (fbUser != null) {
-                    listener?.onSignUp(fbUser.uid)
-                    hideMessage()
-                }
-            }
 
-            override fun onFailure(e: Exception?) {
-                onIncorrectInput()
-                hideMessage()
-                e?.message?.let { msg ->
-                    showMessage(msg)
-                }
-            }
-        })
+//        // Put userManager in the view model later when it's written
+//        val userManager = FitApplication.instance.userManager
+//        userManager.receiver.signUpUser(email, password, object : TaskListener<Unit?> {
+//            override fun onSuccess(value: Unit?) {
+//                hideMessage()
+//
+//                val fbUser = userManager.provider.getFirebaseUser()
+//                if (fbUser != null) {
+//                    listener?.onSignUp(fbUser.uid)
+//                    hideMessage()
+//                }
+//            }
+//
+//            override fun onFailure(e: Exception?) {
+//                onIncorrectInput()
+//                hideMessage()
+//                e?.message?.let { msg ->
+//                    showMessage(msg)
+//                }
+//            }
+//        })
     }
 
     interface SignUpListener {

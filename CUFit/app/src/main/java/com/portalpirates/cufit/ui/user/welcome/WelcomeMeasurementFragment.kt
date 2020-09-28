@@ -136,6 +136,8 @@ class WelcomeMeasurementFragment : WelcomeFragment() {
 
                 val measure = factory(number, editText.measureUnit, currTime)
                 setter(measure)
+            } else {
+                setter(null)
             }
         }
 
