@@ -92,11 +92,6 @@ class WelcomePersonalFragment : WelcomeFragment() {
         }
     }
 
-    override fun onDestroy() {
-        pushToViewModel()
-        super.onDestroy()
-    }
-
     override fun onActionClicked() {
         val b = Bundle()
         b.putBoolean(HAS_FRAG_SHARED_ELEM_TRANSITION, true)
