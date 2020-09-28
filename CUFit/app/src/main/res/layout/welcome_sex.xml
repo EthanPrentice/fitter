@@ -50,7 +50,7 @@
         android:layout_marginHorizontal="@dimen/LU_4_5"
         android:layout_marginVertical="@dimen/LU_4"
         app:buttonType="primary"
-        app:text="@string/finished_btn"
+        app:text="@string/continue_btn"
         app:icon="@drawable/ic_arrow_right"
         app:iconOn="right"
         app:layout_constraintLeft_toLeftOf="parent"

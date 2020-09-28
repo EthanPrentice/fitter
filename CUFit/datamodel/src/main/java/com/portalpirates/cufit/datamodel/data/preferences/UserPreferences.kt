@@ -1,29 +1,46 @@
 package com.portalpirates.cufit.datamodel.data.preferences
 
-class UserPreferences(var weightUnits: MeasurementUnits = MeasurementUnits.KILOGRAMS, var heightUnits: MeasurementUnits = MeasurementUnits.METERS) : Preferences() {
+import android.icu.util.MeasureUnit
+import android.util.Log
+import com.portalpirates.cufit.datamodel.data.measure.Height
+import com.portalpirates.cufit.datamodel.data.measure.Weight
 
-    fun setWeightUnitsToPounds() {
-        if (this.weightUnits == MeasurementUnits.KILOGRAMS) {
-            this.weightUnits = MeasurementUnits.POUNDS
+class UserPreferences(_weightUnit: MeasureUnit, _heightUnit: MeasureUnit) : Preferences() {
+
+    var weightUnit = _weightUnit
+        set(value) {
+            if (value.type != Weight.type) {
+                Log.e(TAG, "Cannot assign the user's weight units to $value")
+            } else {
+                field = value
+            }
+        }
+
+    var heightUnit = _heightUnit
+        set(value) {
+            if (value.type != Height.type) {
+                Log.e(TAG, "Cannot assign the user's weight units to $value")
+            } else {
+                field = value
+            }
+        }
+
+    init {
+        // If the values are invalid then the heightUnit and weightUnit will not be set.
+        // If this is the first time we instantiate this object and they are invalid, assign them to be
+        //    the relevant base units instead.
+        if (_weightUnit.type != Weight.type) {
+            weightUnit = Weight.BASE_UNIT
+        }
+        if (_heightUnit.type != Height.type) {
+            heightUnit = Height.BASE_UNIT
         }
     }
 
-    fun setWeightUnitsToKilograms() {
-        if (this.weightUnits == MeasurementUnits.POUNDS) {
-            this.weightUnits = MeasurementUnits.KILOGRAMS
-        }
+
+    companion object {
+        private const val TAG = "UserPreferences"
     }
 
-    fun setHeightUnitsToFeet() {
-        if (this.heightUnits == MeasurementUnits.METERS) {
-            this.heightUnits = MeasurementUnits.FEET
-        }
-    }
-
-    fun setHeightUnitsToMeters() {
-        if (this.heightUnits == MeasurementUnits.FEET) {
-            this.heightUnits = MeasurementUnits.METERS
-        }
-    }
 
 }

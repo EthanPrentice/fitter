@@ -1,7 +1,7 @@
 package com.portalpirates.cufit.datamodel.data.user
 
-import com.portalpirates.cufit.datamodel.data.height.Height
-import com.portalpirates.cufit.datamodel.data.weight.Weight
+import com.portalpirates.cufit.datamodel.data.measure.Height
+import com.portalpirates.cufit.datamodel.data.measure.Weight
 import java.util.*
 
 open class FitUser(

@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.portalpirates.cufit.datamodel.data.height.Height
+import com.portalpirates.cufit.datamodel.data.measure.Height
 import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.datamodel.data.user.UserSex
-import com.portalpirates.cufit.datamodel.data.weight.Weight
+import com.portalpirates.cufit.datamodel.data.measure.Weight
 import java.util.*
 
 class WelcomeViewModel : ViewModel() {
@@ -87,9 +87,9 @@ class WelcomeViewModel : ViewModel() {
             .setLastName(userLastName.value ?: throw getException())
             .setBirthDate(userBirthDate.value ?: throw getException())
             .setSex(userSex.value ?: throw getException())
-            .setCurrentWeight(userCurrentWeight.value ?: throw getException())
-            .setCurrentHeight(userCurrentHeight.value ?: throw getException())
-            .setWeightGoal(userWeightGoal.value ?: throw getException())
+            .setCurrentWeight(userCurrentWeight.value)
+            .setCurrentHeight(userCurrentHeight.value)
+            .setWeightGoal(userWeightGoal.value)
     }
 
     companion object {

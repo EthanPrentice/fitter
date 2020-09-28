@@ -39,31 +39,31 @@
         app:layout_constraintBottom_toTopOf="@id/action_btn"
         app:layout_constraintVertical_bias="0.0">
 
-    <com.portalpirates.cufit.ui.view.FitEditText
+    <com.portalpirates.cufit.ui.view.MeasuredEditText
         android:id="@+id/current_weight_input"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:nextFocusForward="@id/current_height_input"
         android:imeOptions="actionNext"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:hint="@string/current_weight"/>
 
-    <com.portalpirates.cufit.ui.view.FitEditText
+    <com.portalpirates.cufit.ui.view.MeasuredEditText
         android:id="@+id/current_height_input"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="@dimen/LU_2"
         android:imeOptions="actionNext"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:hint="@string/current_height"/>
 
-    <com.portalpirates.cufit.ui.view.FitEditText
+    <com.portalpirates.cufit.ui.view.MeasuredEditText
         android:id="@+id/weight_goal_input"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="@dimen/LU_2"
-        android:imeOptions="actionNext"
-        android:inputType="number"
+        android:imeOptions="actionDone"
+        android:inputType="numberDecimal"
         android:hint="@string/weight_goal"/>
 
     </LinearLayout>

@@ -1,34 +1,35 @@
 package com.portalpirates.cufit.ui.user.welcome
 
 import android.content.Context
+import android.icu.text.NumberFormat
+import android.icu.util.MeasureUnit
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.fragment.app.activityViewModels
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.data.height.Height
-import com.portalpirates.cufit.datamodel.data.preferences.MeasurementUnits
-import com.portalpirates.cufit.datamodel.data.weight.Weight
-import com.portalpirates.cufit.ui.view.ChooseImageButton
-import com.portalpirates.cufit.ui.view.FitEditText
+import com.portalpirates.cufit.datamodel.data.measure.FitMeasure
+import com.portalpirates.cufit.datamodel.data.measure.Height
+import com.portalpirates.cufit.datamodel.data.measure.Weight
+import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
+import com.portalpirates.cufit.ui.view.MeasuredEditText
 import java.util.*
 
 class WelcomeMeasurementFragment : WelcomeFragment() {
 
     private var fragTransitionEnded = false
 
-    private lateinit var chooseImageButton: ChooseImageButton
     private lateinit var inputs: LinearLayout
 
-    private lateinit var currentWeightInput : FitEditText
-    private lateinit var currentHeightInput : FitEditText
-    private lateinit var weightGoalInput : FitEditText
-
-    private val model: WelcomeViewModel by activityViewModels()
+    private lateinit var currentWeightInput : MeasuredEditText
+    private lateinit var currentHeightInput : MeasuredEditText
+    private lateinit var weightGoalInput : MeasuredEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,36 +48,36 @@ class WelcomeMeasurementFragment : WelcomeFragment() {
         currentHeightInput = inputs.findViewById(R.id.current_height_input)
         weightGoalInput = inputs.findViewById(R.id.weight_goal_input)
 
-        chooseImageButton = view.findViewById(R.id.choose_photo_btn)
+        // set measure units
+        // TODO: set these from preferences?  Since we aren't authenticated we should probably set these based on locale here instead though
+        currentWeightInput.measureUnit = MeasureUnit.POUND
+        currentHeightInput.measureUnit = MeasureUnit.CENTIMETER
+        weightGoalInput.measureUnit = MeasureUnit.POUND
+
+        // text listeners
+        currentWeightInput.editText?.addTextChangedListener(
+            ViewModelPusher(currentWeightInput, model::setUserCurrentWeight, ::Weight)
+        )
+        currentHeightInput.editText?.addTextChangedListener(
+            ViewModelPusher(currentHeightInput, model::setUserCurrentHeight, ::Height)
+        )
+        weightGoalInput.editText?.addTextChangedListener(
+            ViewModelPusher(weightGoalInput, model::setUserWeightGoal, ::Weight)
+        )
 
         // If we have an enter animation for this frag, set singleSelects alpha to 0, to be faded in later
         if (savedInstanceState == null && hasFragSharedElemTransition && !fragTransitionEnded) {
             inputs.alpha = 0f
         }
 
-        chooseImageButton.setOnClickListener {
-            chooseImageButton.selectPhotoFromGallery(requireActivity())
-        }
-
-        model.userImage.observe(requireActivity(), Observer { bmp ->
-            if (bmp != null) {
-                chooseImageButton.setImageBitmap(bmp)
-            }
-        })
-
-        actionBtn = view.findViewById(R.id.action_btn)
-        actionBtn.setOnClickListener {
-            toNextFrag()
-        }
-
         model.userCurrentWeight.observe(requireActivity(), Observer { currentWeight ->
-            currentWeightInput.text = (currentWeight?.mass ?: "").toString()
+            currentWeightInput.measure = currentWeight
         })
         model.userCurrentHeight.observe(requireActivity(), Observer { currentHeight ->
-            currentHeightInput.text = (currentHeight?.length ?: "").toString()
+            currentHeightInput.measure = currentHeight
         })
         model.userWeightGoal.observe(requireActivity(), Observer { weightGoal ->
-            weightGoalInput.text = (weightGoal?.mass ?: "").toString()
+            weightGoalInput.measure = weightGoal
         })
 
         if (savedInstanceState == null) {
@@ -115,42 +116,31 @@ class WelcomeMeasurementFragment : WelcomeFragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        pushToViewModel()
+    override fun onActionClicked() {
+        try {
+            listener?.userReadyToBuild(model.getBuilder())
+        } catch(e: FitUserBuilder.UserBuildException) {
+            Toast.makeText(context, "Please make sure required fields are filled", Toast.LENGTH_LONG).show()
+        }
     }
 
-    override fun onDestroy() {
-        pushToViewModel()
-        super.onDestroy()
-    }
+    /**
+     * Parses changes from a [MeasuredEditText] to push to the [WelcomeViewModel] using [setter]
+     */
+    class ViewModelPusher<T : FitMeasure>(private val editText: MeasuredEditText, private val setter: (T?) -> Unit, private val factory: (Number, MeasureUnit?, Date) -> T) : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            if(editText.text.isNotBlank()) {
+                val currTime = Calendar.getInstance().time
 
-    private fun pushToViewModel() {
-        fun ifEmptyThenNull(str: String?): String? {
-            return if (str.isNullOrBlank()) {
-                null
-            } else {
-                str.toString()
+                val number = NumberFormat.getInstance().parse(editText.text)
+
+                val measure = factory(number, editText.measureUnit, currTime)
+                setter(measure)
             }
         }
 
-        ifEmptyThenNull(currentWeightInput.text)?.let {
-            val userCurrentWeight = Weight(it.toDouble(), MeasurementUnits.KILOGRAMS, Calendar.getInstance().time)
-            model.setUserCurrentWeight(userCurrentWeight)
-        }
-        ifEmptyThenNull(currentHeightInput.text)?.let {
-            val userCurrentHeight = Height(it.toDouble(), MeasurementUnits.METERS, Calendar.getInstance().time)
-            model.setUserCurrentHeight(userCurrentHeight)
-        }
-        ifEmptyThenNull(weightGoalInput.text)?.let {
-            val userWeightGoal = Weight(it.toDouble(), MeasurementUnits.KILOGRAMS, Calendar.getInstance().time)
-            model.setUserWeightGoal(userWeightGoal)
-        }
-    }
-
-    private fun toNextFrag() {
-        pushToViewModel()
-
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
 
     companion object {

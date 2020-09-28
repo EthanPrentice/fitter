@@ -3,8 +3,8 @@ package com.portalpirates.cufit.datamodel.data.user
 import android.graphics.Bitmap
 import com.portalpirates.cufit.datamodel.FitException
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
-import com.portalpirates.cufit.datamodel.data.height.Height
-import com.portalpirates.cufit.datamodel.data.weight.Weight
+import com.portalpirates.cufit.datamodel.data.measure.Height
+import com.portalpirates.cufit.datamodel.data.measure.Weight
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -31,17 +31,17 @@ class FitUserBuilder {
         }
     }
 
-    fun setCurrentWeight(weight: Weight) : FitUserBuilder {
+    fun setCurrentWeight(weight: Weight?) : FitUserBuilder {
         currentWeight = weight
         return this
     }
 
-    fun setCurrentHeight(height: Height) : FitUserBuilder {
+    fun setCurrentHeight(height: Height?) : FitUserBuilder {
         currentHeight = height
         return this
     }
 
-    fun setWeightGoal(weight: Weight) : FitUserBuilder {
+    fun setWeightGoal(weight: Weight?) : FitUserBuilder {
         weightGoal = weight
         return this
     }
