@@ -79,7 +79,7 @@ class SignUpFragment : AuthFragment() {
                     hideMessage()
                 }
             }
-
+          
             override fun onFailure(e: Exception?) {
                 onIncorrectInput()
                 hideMessage()
