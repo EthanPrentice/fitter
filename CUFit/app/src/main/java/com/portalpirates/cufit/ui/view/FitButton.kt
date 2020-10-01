@@ -126,6 +126,9 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
             IconLocation.RIGHT -> findViewById(R.id.btn_icon_right)
         }
 
+        textView.transitionName = "$transitionName:textView"
+        imageView.transitionName = "$transitionName:imageView"
+
         icon = typedArr.getDrawable(R.styleable.FitButton_icon)
         typedArr.recycle()
 

@@ -52,7 +52,7 @@ abstract class FitActivity : AppCompatActivity() {
         private const val TAG = "FitActivity"
 
         // Bundle args
-        const val HAS_ACTIVITY_SHARED_ELEM_TRANSITION = "com.portalpirates.cufit.ui.FitFragment:hasActivitySharedElemTransition"
+        const val HAS_ACTIVITY_SHARED_ELEM_TRANSITION = "com.portalpirates.cufit.ui.FitActivity:hasActivitySharedElemTransition"
 
         // Result codes
         const val REQUEST_LOAD_IMAGE = 0

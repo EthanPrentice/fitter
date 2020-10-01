@@ -2,6 +2,10 @@
     <!-- Base application theme. -->
     <style name="FitTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="buttonTextStyle">@style/button_text</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
+
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="FitTheme.Login">
@@ -10,7 +14,7 @@
 
     <style name="FitTheme.Splash">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@drawable/splash_bg</item>
+        <item name="android:windowBackground">@android:color/black</item>
     </style>
 
 
@@ -76,5 +80,17 @@
 
 
     <!-- Component styles -->
+    <style name="BirthDatePicker" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+    </style>
+
+    <style name="marquee_message" parent="Widget.AppCompat.TextView">
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
 
 </resources>

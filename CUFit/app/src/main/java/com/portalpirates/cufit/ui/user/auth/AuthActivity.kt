@@ -1,6 +1,9 @@
 package com.portalpirates.cufit.ui.user.auth
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
+import android.util.Pair
 import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
@@ -9,24 +12,26 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
 
-class AuthActivity : FitActivity() {
+class AuthActivity : FitActivity(), SignUpFragment.SignUpListener {
 
     lateinit var fragContainer: FrameLayout
 
     init {
-        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
+        window.enterTransition = null
+        window.exitTransition = null
 
         setContentView(R.layout.frag_only_layout)
 
         postponeEnterTransition()
-        window.enterTransition = null
 
         fragContainer = findViewById(R.id.frag_container)
 
@@ -47,4 +52,21 @@ class AuthActivity : FitActivity() {
         }
     }
 
+    override fun onSignUp(uid: String) {
+        val intent = Intent(this, WelcomeActivity::class.java)
+
+        val logo = findViewById<View>(R.id.logo)
+        val actionBtn = findViewById<View>(R.id.action_btn)
+
+        val sharedElements = arrayOf<Pair<View, String>>(
+            Pair.create(logo, resources.getString(R.string.tr_logo)),
+            Pair.create(actionBtn, resources.getString(R.string.tr_action_btn))
+        )
+
+        // prevent flashing for shared element transition
+        window.exitTransition = null
+
+        val options = ActivityOptions.makeSceneTransitionAnimation(this, *sharedElements)
+        startActivity(intent, options.toBundle())
+    }
 }
