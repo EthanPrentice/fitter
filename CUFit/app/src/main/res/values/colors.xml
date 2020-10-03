@@ -19,6 +19,9 @@
     <color name="component_fg_inverse">#000000</color>
     <color name="component_fg_secondary_inverse">#CC000000</color>
 
+    <color name="card_background">#FFFFFF</color>
+
     <color name="overlay_dark">#66000000</color>
     <color name="overlay_light">#AAFFFFFF</color>
+    <color name="divider">#33000000</color>
 </resources>

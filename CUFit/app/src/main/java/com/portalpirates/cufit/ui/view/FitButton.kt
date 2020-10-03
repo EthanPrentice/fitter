@@ -1,6 +1,7 @@
 package com.portalpirates.cufit.ui.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -85,11 +86,11 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
             else -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
         }
 
-    private val btnForegroundColor: Int
+    private val btnForegroundColor: ColorStateList
         get() = when(buttonType) {
-            ButtonType.PRIMARY -> ColorUtil.getInvertibleColor(context, R.color.component_fg, inverted)
-            ButtonType.SECONDARY -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
-            ButtonType.TERTIARY -> ContextCompat.getColor(context, R.color.tertiary_btn_text)
+            ButtonType.PRIMARY -> ColorStateList.valueOf(ColorUtil.getInvertibleColor(context, R.color.component_fg, inverted))
+            ButtonType.SECONDARY -> ColorStateList.valueOf(ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted))
+            ButtonType.TERTIARY -> ContextCompat.getColorStateList(context, R.color.tertiary_btn_text)!!
         }
 
     private val rippleColor: Int
@@ -193,7 +194,7 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
     private fun initImageView() {
         icon?.let {
             if (isTintEnabled) {
-                it.setTint(btnForegroundColor)
+                it.setTintList(btnForegroundColor)
             }
             imageView.setImageDrawable(it)
             imageView.visibility = View.VISIBLE

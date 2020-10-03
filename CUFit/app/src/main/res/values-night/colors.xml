@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#363636</color>
+    <color name="background">#262626</color>
     <color name="background_translucent">#D9363636</color>
 
     <color name="icon_primary">#FFFFFF</color>
@@ -19,6 +19,9 @@
     <color name="component_fg_inverse">#FFFFFF</color>
     <color name="component_fg_secondary_inverse">#CCFFFFFF</color>
 
+    <color name="card_background">#3C3C3C</color>
+
     <color name="overlay_dark">#AAFFFFFF</color>
     <color name="overlay_light">#66000000</color>
+    <color name="divider">#33FFFFFF</color>
 </resources>

@@ -21,9 +21,12 @@
     <!-- Text Styles -->
     <style name="AppTheme.TextAppearance" parent="TextAppearance.AppCompat"/>
 
+    <style name="subtitle" parent="AppTheme.TextAppearance">
+        <item name="android:textSize">@dimen/subtitle_text_size</item>
+    </style>
+
     <style name="body_text" parent="AppTheme.TextAppearance">
         <item name="android:textSize">@dimen/body_text_size</item>
-        <item name="android:textColor">@color/text_primary</item>
     </style>
 
     <style name="bold_body_text" parent="body_text">
@@ -36,6 +39,7 @@
     </style>
 
     <style name="header2" parent="AppTheme.TextAppearance">
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/header2_text_size</item>
     </style>
 

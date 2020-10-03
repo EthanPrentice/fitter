@@ -22,6 +22,10 @@
     <string name="current_weight">Current Weight</string>
     <string name="current_height">Current Height</string>
     <string name="weight_goal">Target Weight</string>
+        <!-- Card -->
+    <string name="current">Current</string>
+    <string name="goal">Goal</string>
+    <string name="workouts">Workouts</string>
 
 
     <!-- Formatting -->
