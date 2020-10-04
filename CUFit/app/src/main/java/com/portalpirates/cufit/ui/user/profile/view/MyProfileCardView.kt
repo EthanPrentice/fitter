@@ -44,6 +44,8 @@ class MyProfileCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
         profileNameView.text = user.fullName
         workoutsStat.value = "0" // Not implemented yet
 
+        profileImageView.setImageBitmap(user.imageBmp)
+
         // TODO: implement MeasuredTextView and use those in the StatBarItem
         currentWeightStat.setValue(user.currentWeight?.number ?: 0)
         goalWeightStat.setValue(user.weightGoal?.number ?: 0)

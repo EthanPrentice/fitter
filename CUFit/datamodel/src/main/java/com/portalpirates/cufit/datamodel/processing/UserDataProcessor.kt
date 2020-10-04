@@ -9,6 +9,7 @@ import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.BIRT
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.CURRENT_HEIGHT
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.CURRENT_WEIGHT
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.FIRST_NAME
+import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.IMAGE_BMP
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.LAST_NAME
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.SEX
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.WEIGHT_GOAL
@@ -177,6 +178,7 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
                 .setCurrentHeight(currHeight)
                 .setCurrentWeight(currWeight)
                 .setWeightGoal(goalWeight)
+                .setImageBlob(doc.getBlob(IMAGE_BMP)?.toBytes())
                 .build()
 
         } catch(e: Exception) {
