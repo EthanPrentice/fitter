@@ -25,7 +25,7 @@ class FitUserBuilder {
     @Throws(UserBuildException::class)
     fun build(): FitUser {
         if (hasRequiredInputs()) {
-            return FitUser(birthDate!!, firstName!!, lastName!!, currentWeight, currentHeight, weightGoal)
+            return FitUser(birthDate!!, firstName!!, lastName!!, sex!!, currentWeight, currentHeight, weightGoal)
         } else {
             throw UserBuildException("All required fields have not been provided for user! Cannot build!")
         }

@@ -8,6 +8,7 @@ enum class UserField(val fieldName: String) {
     BIRTH_DATE(UserCloudInterface.BIRTH_DATE),
     FIRST_NAME(UserCloudInterface.FIRST_NAME),
     LAST_NAME(UserCloudInterface.LAST_NAME),
+    SEX(UserCloudInterface.SEX),
     CURRENT_WEIGHT(UserCloudInterface.CURRENT_WEIGHT),
     WEIGHT_GOAL(UserCloudInterface.WEIGHT_GOAL);
 
