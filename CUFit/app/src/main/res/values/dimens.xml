@@ -22,7 +22,8 @@
     <dimen name="LU_12">228dp</dimen>
 
     <!-- Text dimensions -->
-    <dimen name="body_text_size">14sp</dimen>
+    <dimen name="body_text_size">16sp</dimen>
+    <dimen name="subtitle_text_size">14sp</dimen>
 
     <dimen name="header1_text_size">30sp</dimen>
     <dimen name="header2_text_size">24sp</dimen>

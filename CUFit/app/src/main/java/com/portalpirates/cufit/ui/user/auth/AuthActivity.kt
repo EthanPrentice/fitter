@@ -12,12 +12,17 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
+import com.portalpirates.cufit.ui.user.profile.UserActivity
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
 
-class AuthActivity : FitActivity(), SignUpFragment.SignUpListener {
+class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment.LogInListener {
 
     lateinit var fragContainer: FrameLayout
+
+    // use to finish the activity post-transition in onStop
+    private var shouldFinish = false
 
     init {
         delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
@@ -52,6 +57,13 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (shouldFinish) {
+            finish()
+        }
+    }
+
     override fun onSignUp(uid: String) {
         val intent = Intent(this, WelcomeActivity::class.java)
 
@@ -68,5 +80,12 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener {
 
         val options = ActivityOptions.makeSceneTransitionAnimation(this, *sharedElements)
         startActivity(intent, options.toBundle())
+        shouldFinish = true
+    }
+
+    override fun onLogIn(authUser: AuthenticatedUser) {
+        val intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
