@@ -60,22 +60,6 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
             }
         }
 
-        model.userImage.observe(requireActivity(), Observer { bmp ->
-            if (bmp != null) {
-                chooseImageButton.setImageBitmap(bmp)
-            }
-        })
-
-
-        actionBtn.setOnClickListener {
-            try {
-                listener?.userReadyToBuild(model.getBuilder())
-            } catch (e: FitUserBuilder.UserBuildException) {
-                Toast.makeText(context, "Required fields are missing!", Toast.LENGTH_SHORT).show()
-                Log.e(TAG, e.message ?: "")
-            }
-        }
-
         if (savedInstanceState == null) {
             requireActivity().startPostponedEnterTransition()
         }
