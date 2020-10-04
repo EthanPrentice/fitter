@@ -8,7 +8,6 @@ open class FitUser(
     var birthDate: Date,
     var firstName: String,
     var lastName: String,
-    var sex: UserSex,
     var currentWeight: Weight? = null,
     var currentHeight: Height? = null,
     var weightGoal: Weight? = null
