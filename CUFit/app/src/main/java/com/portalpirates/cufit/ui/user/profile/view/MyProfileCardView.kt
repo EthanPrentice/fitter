@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.ui.user.profile.view.subview.StatBarItem
@@ -44,7 +45,11 @@ class MyProfileCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
         profileNameView.text = user.fullName
         workoutsStat.value = "0" // Not implemented yet
 
-        profileImageView.setImageBitmap(user.imageBmp)
+        if (user.imageBmp == null) {
+            profileImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.default_avatar))
+        } else {
+            profileImageView.setImageBitmap(user.imageBmp)
+        }
 
         // TODO: implement MeasuredTextView and use those in the StatBarItem
         currentWeightStat.setValue(user.currentWeight?.number ?: 0)
