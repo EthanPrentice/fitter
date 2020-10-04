@@ -3,6 +3,7 @@ package com.portalpirates.cufit.ui.user.auth
 import android.content.Context
 import android.os.Bundle
 import android.transition.Transition
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.animation.ResizeAnimation
 import com.portalpirates.cufit.ui.view.FitButton
 import kotlinx.android.synthetic.main.button_layout.view.*
+import java.lang.IllegalStateException
 
 
 class LoginFragment : AuthFragment() {
@@ -28,6 +30,8 @@ class LoginFragment : AuthFragment() {
         get() = forgotPasswordBtn.visibility == View.VISIBLE
 
     private lateinit var forgotPasswordBtn: FitButton
+
+    private var listener: LogInListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.login_layout, container, false)
@@ -52,6 +56,16 @@ class LoginFragment : AuthFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        requireActivity().let {
+            if (it is LogInListener) {
+                listener = it
+            } else {
+                Log.e(TAG, "Activity must implement LogInListener")
+                throw IllegalStateException("Activity must implement LogInListener")
+            }
+        }
+
 
         // fade views in once the sharedElements are done being animated
         val sharedElementEnterTransition = fitActivity!!.window.sharedElementEnterTransition
@@ -121,11 +135,7 @@ class LoginFragment : AuthFragment() {
                     onIncorrectInput()
                 } else {
                     hideForgotPassword()
-                    Toast.makeText(
-                        context,
-                        "Authenticated as ${value.fullName}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    listener?.onLogIn(value)
                 }
             }
 
@@ -189,6 +199,10 @@ class LoginFragment : AuthFragment() {
             })
         }
         forgotPasswordBtn.startAnimation(anim)
+    }
+
+    interface LogInListener {
+        fun onLogIn(authUser: AuthenticatedUser)
     }
 
     companion object {

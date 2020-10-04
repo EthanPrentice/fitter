@@ -35,7 +35,6 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Full Name"
             android:textAppearance="@style/header2"
             android:textColor="@color/text_primary"
             android:layout_marginTop="@dimen/LU_2"/>

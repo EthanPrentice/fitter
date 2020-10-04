@@ -12,6 +12,8 @@ class UserProvider(manager: Manager) : Provider(manager) {
     private val userDataProcessor: UserDataProcessor
         get() = manager.dataProcessor as UserDataProcessor
 
+    private var cachedAuthenticatedUser: AuthenticatedUser? = null
+
     /**
      * Runs [callback] with the [FitUser]? provided by [UserDataProcessor]
      */
@@ -19,8 +21,22 @@ class UserProvider(manager: Manager) : Provider(manager) {
         userDataProcessor.getUserByUid(uid, listener)
     }
 
-    fun getAuthenticatedUser(listener: TaskListener<AuthenticatedUser?>) {
-        userDataProcessor.getAuthenticatedUser(listener)
+    fun getAuthenticatedUser(listener: TaskListener<AuthenticatedUser?>, allowCached: Boolean = true) {
+        if (allowCached && cachedAuthenticatedUser != null) {
+            listener.onSuccess(cachedAuthenticatedUser)
+            return
+        }
+
+        userDataProcessor.getAuthenticatedUser(object : TaskListener<AuthenticatedUser?> {
+            override fun onSuccess(value: AuthenticatedUser?) {
+                cachedAuthenticatedUser = value
+                listener.onSuccess(value)
+            }
+
+            override fun onFailure(e: Exception?) {
+                listener.onFailure(e)
+            }
+        })
     }
 
     fun getFirebaseUser(): FirebaseUser? {

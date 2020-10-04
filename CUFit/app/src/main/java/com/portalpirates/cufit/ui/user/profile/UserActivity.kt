@@ -1,27 +1,43 @@
 package com.portalpirates.cufit.ui.user.profile
 
 import android.os.Bundle
-import android.view.View
 import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
 
+
 class UserActivity : FitActivity() {
 
+    private lateinit var collapsingToolbar: CollapsingToolbarLayout
+    private lateinit var toolbar: Toolbar
 
     private lateinit var fragContainer: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.enterTransition = null
-
         postponeEnterTransition()
         setContentView(R.layout.main_layout)
 
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        collapsingToolbar = findViewById(R.id.collapsing_toolbar)
+        collapsingToolbar.title = "My Profile"
+        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.bold_body_text)
+        collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        collapsingToolbar.setExpandedTitleTextAppearance(R.style.header1)
+        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(this, R.color.text_primary))
+
+
         fragContainer = findViewById(R.id.frag_container)
 
+        appBar = findViewById(R.id.app_bar)
 
         if (savedInstanceState == null) {
             val bundle = Bundle()

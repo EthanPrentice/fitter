@@ -12,10 +12,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
+import com.portalpirates.cufit.ui.user.profile.UserActivity
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
 
-class AuthActivity : FitActivity(), SignUpFragment.SignUpListener {
+class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment.LogInListener {
 
     lateinit var fragContainer: FrameLayout
 
@@ -68,5 +70,10 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener {
 
         val options = ActivityOptions.makeSceneTransitionAnimation(this, *sharedElements)
         startActivity(intent, options.toBundle())
+    }
+
+    override fun onLogIn(authUser: AuthenticatedUser) {
+        val intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
     }
 }

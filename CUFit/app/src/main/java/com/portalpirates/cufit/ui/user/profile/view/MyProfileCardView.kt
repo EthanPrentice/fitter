@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.ui.user.profile.view.subview.StatBarItem
 import com.portalpirates.cufit.ui.view.FitButton
 import com.portalpirates.cufit.ui.view.FitCardView
@@ -29,6 +30,10 @@ class MyProfileCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
         profileStats = view.findViewById(R.id.profile_stats)
 
         settingsBtn = view.findViewById(R.id.settings_btn)
+    }
+
+    fun setUser(user: FitUser) {
+        profileNameView.text = user.fullName
     }
 
     fun getStatBarItems(): List<StatBarItem> {

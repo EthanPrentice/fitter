@@ -29,10 +29,7 @@
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
 
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
+
 
         </activity>
 
@@ -44,6 +41,10 @@
             android:configChanges="orientation|keyboardHidden"
             android:noHistory="true">
 
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
 
 
         </activity>
