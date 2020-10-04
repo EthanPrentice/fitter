@@ -12,9 +12,6 @@ class UserProvider(manager: Manager) : Provider(manager) {
     private val userDataProcessor: UserDataProcessor
         get() = manager.dataProcessor as UserDataProcessor
 
-    /**
-     * Runs [callback] with the [FitUser]? provided by [UserDataProcessor]
-     */
     fun getUserByUid(uid: String, listener: TaskListener<FitUser?>) {
         userDataProcessor.getUserByUid(uid, listener)
     }
