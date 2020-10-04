@@ -1,0 +1,3 @@
+
+- Working on CUF-53 : auth wrapper for password verification
+- Looking into component diagram tutorials
