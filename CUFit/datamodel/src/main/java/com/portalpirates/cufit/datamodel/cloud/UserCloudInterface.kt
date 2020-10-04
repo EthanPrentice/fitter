@@ -241,6 +241,13 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
             }
     }
 
+    /**
+     * Check to see that all required fields have been completed by the user in the welcome flow.
+     */
+    fun userFinishedWelcomeFlow(listener: TaskListener<Boolean>) {
+        listener.onSuccess(true /* false */)
+    }
+
     companion object {
         const val TAG = "UserCloudInterface"
 

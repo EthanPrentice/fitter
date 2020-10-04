@@ -27,4 +27,8 @@ class UserProvider(manager: Manager) : Provider(manager) {
         return userDataProcessor.getFirebaseUser()
     }
 
+    fun userFinishedWelcomeFlow(listener: TaskListener<Boolean>) {
+        userDataProcessor.userFinishedWelcomeFlow(listener)
+    }
+
 }
