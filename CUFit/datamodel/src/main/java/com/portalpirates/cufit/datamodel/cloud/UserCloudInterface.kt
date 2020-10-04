@@ -10,10 +10,16 @@ import com.portalpirates.cufit.datamodel.manager.Manager
 
 internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
 
+    /**
+     * Gets the current Firebase user.
+     */
     fun getFirebaseUser(): FirebaseUser? {
         return auth.currentUser
     }
 
+    /**
+     * Gets the current user from FireStore by their UID.
+     */
     fun getUserByUid(uid: String, listener: TaskListener<DocumentSnapshot>) {
         db.collection(COLLECTION).document(uid).get()
             .addOnSuccessListener { result ->
@@ -116,6 +122,9 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
             }
     }
 
+    /**
+     * Sends a verification email to the current user.
+     */
     fun sendVerificationEmail(listener: TaskListener<Unit?>) {
         getFirebaseUser()?.let { fbUser ->
             fbUser.sendEmailVerification()
@@ -129,6 +138,9 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         }
     }
 
+    /**
+     * Sends a password reset email to the current user.
+     */
     fun sendPasswordResetEmail(email: String, listener: TaskListener<Unit?>) {
         auth.sendPasswordResetEmail(email)
             .addOnSuccessListener {
@@ -197,6 +209,10 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
             }
     }
 
+    /**
+     * Authenticates the current user based on if their email/password combination is valid
+     * and present in Firebase authentication.
+     */
     fun authenticateUser(email: String, password: String, listener: TaskListener<Unit?>) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
@@ -209,6 +225,10 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
             }
     }
 
+    /**
+     * For certain flows, the user needs to be re-authenticated.
+     * i.e. deleting an account.
+     */
     fun reAuthenticateUser(email: String, password: String, listener: TaskListener<Unit?>) {
         val credential = EmailAuthProvider.getCredential(email, password)
         getFirebaseUser()?.reauthenticate(credential)
