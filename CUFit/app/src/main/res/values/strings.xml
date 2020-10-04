@@ -18,6 +18,10 @@
     <string name="man">Man</string>
     <string name="woman">Woman</string>
     <string name="other">Other</string>
+        <!-- Measurements -->
+    <string name="current_weight">Current Weight</string>
+    <string name="current_height">Current Height</string>
+    <string name="weight_goal">Target Weight</string>
 
 
     <!-- Formatting -->
@@ -32,7 +36,7 @@
 
     <!-- Welcome flow specific -->
     <string name="welcome_to">Welcome to</string>
-    <string name="set_up_photo">First, lets get a photo set up</string>
+    <string name="set_up_photo">First, let\'s setup a photo&#8230;</string>
 
 
     <!-- Shared element transition IDs -->

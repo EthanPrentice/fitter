@@ -35,6 +35,10 @@
         <attr name="android:imeOptions"/>
     </declare-styleable>
 
+    <declare-styleable name="MeasuredEditText">
+        <attr name="decimals" format="integer"/>
+    </declare-styleable>
+
 
 
 </resources>

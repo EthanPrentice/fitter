@@ -6,16 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.ui.view.ChooseImageButton
 
 class WelcomeAddPhotoFragment : WelcomeFragment() {
-
-    private lateinit var chooseImageButton: ChooseImageButton
-
-    private val model: WelcomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,31 +21,17 @@ class WelcomeAddPhotoFragment : WelcomeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        chooseImageButton = view.findViewById(R.id.choose_photo_btn)
-        chooseImageButton.setOnClickListener {
-            chooseImageButton.selectPhotoFromGallery(requireActivity())
-        }
-        chooseImageButton.setOnClearListener { v ->
-            model.setUserImage(null)
-        }
-
-        model.userImage.observe(requireActivity(), Observer { bmp ->
-            if (bmp != null) {
-                chooseImageButton.setImageBitmap(bmp)
-            }
-        })
-
-        actionBtn = view.findViewById(R.id.action_btn)
-
-        actionBtn.setOnClickListener {
-            toNextFrag()
-        }
-
         if (savedInstanceState == null) {
             requireActivity().startPostponedEnterTransition()
         }
         startPostponedEnterTransition()
+    }
+
+    override fun onActionClicked() {
+        val b = Bundle()
+        b.putBoolean(HAS_FRAG_SHARED_ELEM_TRANSITION, true)
+        val frag = WelcomePersonalFragment.newInstance(b)
+        getWelcomeTransaction(frag, WelcomePersonalFragment.TAG).commit()
     }
 
     private fun toNextFrag() {
@@ -69,16 +48,16 @@ class WelcomeAddPhotoFragment : WelcomeFragment() {
         frag.sharedElementEnterTransition = transition
         frag.sharedElementReturnTransition = transition
 
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .setReorderingAllowed(true)
-            .addSharedElement(actionBtn, resources.getString(R.string.tr_action_btn))
-            .addSharedElement(chooseImageButton, resources.getString(R.string.tr_choose_photo_btn))
-            .addSharedElement(chooseImageButton.imageView, chooseImageButton.imageView.transitionName)
-            .addSharedElement(chooseImageButton.editBtn, chooseImageButton.editBtn.transitionName)
-            .replace(R.id.frag_container, frag, WelcomePersonalFragment.TAG)
-            .addToBackStack(null)
-            .commit()
+//        requireActivity().supportFragmentManager
+//            .beginTransaction()
+//            .setReorderingAllowed(true)
+//            .addSharedElement(actionBtn, resources.getString(R.string.tr_action_btn))
+//            .addSharedElement(chooseImageButton, resources.getString(R.string.tr_choose_photo_btn))
+//            .addSharedElement(chooseImageButton.imageView, chooseImageButton.imageView.transitionName)
+//            .addSharedElement(chooseImageButton.editBtn, chooseImageButton.editBtn.transitionName)
+//            .replace(R.id.frag_container, frag, WelcomePersonalFragment.TAG)
+//            .addToBackStack(null)
+//            .commit()
     }
 
     companion object {

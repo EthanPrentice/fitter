@@ -231,6 +231,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         const val FIRST_NAME = "name.first"
         const val LAST_NAME = "name.last"
         const val CURRENT_WEIGHT = "current_weight"
+        const val CURRENT_HEIGHT = "current_height"
         const val WEIGHT_GOAL = "weight_goal"
         const val SEX = "gender"
     }

@@ -5,9 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.portalpirates.cufit.datamodel.data.user.FitUser
+import com.portalpirates.cufit.datamodel.data.measure.Height
 import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.datamodel.data.user.UserSex
+import com.portalpirates.cufit.datamodel.data.measure.Weight
 import java.util.*
 
 class WelcomeViewModel : ViewModel() {
@@ -29,6 +30,14 @@ class WelcomeViewModel : ViewModel() {
     }
     val userSex: LiveData<UserSex> = _userSex
 
+    private val _userCurrentWeight = MutableLiveData<Weight?>()
+    val userCurrentWeight: LiveData<Weight?> = _userCurrentWeight
+
+    private val _userCurrentHeight = MutableLiveData<Height?>()
+    val userCurrentHeight: LiveData<Height?> = _userCurrentHeight
+
+    private val _userWeightGoal = MutableLiveData<Weight?>()
+    val userWeightGoal: LiveData<Weight?> = _userWeightGoal
 
     fun setUserImage(bmp: Bitmap?) {
         _userImage.postValue(bmp)
@@ -55,6 +64,17 @@ class WelcomeViewModel : ViewModel() {
         _userSex.postValue(userSex)
     }
 
+    fun setUserCurrentWeight(currentWeight: Weight?) {
+        _userCurrentWeight.postValue(currentWeight)
+    }
+
+    fun setUserCurrentHeight(currentHeight: Height?) {
+        _userCurrentHeight.postValue(currentHeight)
+    }
+
+    fun setUserWeightGoal(weightGoal: Weight?) {
+        _userWeightGoal.postValue(weightGoal)
+    }
 
     @Throws(FitUserBuilder.UserBuildException::class)
     fun getBuilder(): FitUserBuilder {
@@ -67,9 +87,10 @@ class WelcomeViewModel : ViewModel() {
             .setLastName(userLastName.value ?: throw getException())
             .setBirthDate(userBirthDate.value ?: throw getException())
             .setSex(userSex.value ?: throw getException())
+            .setCurrentWeight(userCurrentWeight.value)
+            .setCurrentHeight(userCurrentHeight.value)
+            .setWeightGoal(userWeightGoal.value)
     }
-
-
 
     companion object {
         const val TAG = "WelcomeViewModel"

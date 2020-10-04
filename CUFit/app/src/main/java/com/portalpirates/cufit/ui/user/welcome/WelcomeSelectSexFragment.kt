@@ -1,5 +1,6 @@
 package com.portalpirates.cufit.ui.user.welcome
 
+import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.transition.Transition
@@ -13,19 +14,15 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.ui.view.ChooseImageButton
 import com.portalpirates.cufit.ui.view.adapter.SingleSelectAdapter
-
 
 class WelcomeSelectSexFragment : WelcomeFragment() {
 
     private var fragTransitionEnded = false
 
-    private lateinit var chooseImageButton: ChooseImageButton
     private lateinit var singleSelects: RecyclerView
 
-    private val model: WelcomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +37,10 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         singleSelects = view.findViewById(R.id.inputs)
-        chooseImageButton = view.findViewById(R.id.choose_photo_btn)
 
         // If we have an enter animation for this frag, set singleSelects alpha to 0, to be faded in later
         if (savedInstanceState == null && hasFragSharedElemTransition && !fragTransitionEnded) {
             singleSelects.alpha = 0f
-        }
-
-        chooseImageButton.setOnClickListener {
-            chooseImageButton.selectPhotoFromGallery(requireActivity())
         }
 
         // Disable scrolling - views will always be fully visible
@@ -118,6 +110,23 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
         if (hasActivitySharedElemTransition && !fragTransitionEnded) {
             singleSelects.alpha = 1f
         }
+    }
+
+    override fun onActionClicked() {
+        val b = Bundle()
+        b.putBoolean(HAS_FRAG_SHARED_ELEM_TRANSITION, true)
+        val frag = WelcomeMeasurementFragment.newInstance(b)
+        val transaction = getWelcomeTransaction(frag, WelcomeMeasurementFragment.TAG)
+
+        // Fade out inputs then start transaction
+        singleSelects.animate().alpha(0f).setDuration(FRAG_TRANSITION_MS).setListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator?) { }
+            override fun onAnimationRepeat(animation: Animator?) { }
+            override fun onAnimationEnd(animation: Animator?) {
+                transaction.commit()
+            }
+            override fun onAnimationCancel(animation: Animator?) = onAnimationEnd(animation)
+        }).start()
     }
 
 
