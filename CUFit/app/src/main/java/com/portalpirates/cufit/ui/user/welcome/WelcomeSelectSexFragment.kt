@@ -4,9 +4,12 @@ import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.transition.Transition
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,6 +57,22 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
         singleSelects.adapter = SingleSelectAdapter(requireContext(), R.array.sexes, defaultSex).apply {
             setOnCheckedChangeListener {
                 model.setUserSex(getChecked())
+            }
+        }
+
+        model.userImage.observe(requireActivity(), Observer { bmp ->
+            if (bmp != null) {
+                chooseImageButton.setImageBitmap(bmp)
+            }
+        })
+
+
+        actionBtn.setOnClickListener {
+            try {
+                listener?.userReadyToBuild(model.getBuilder())
+            } catch (e: FitUserBuilder.UserBuildException) {
+                Toast.makeText(context, "Required fields are missing!", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, e.message ?: "")
             }
         }
 

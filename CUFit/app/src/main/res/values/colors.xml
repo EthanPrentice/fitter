@@ -16,6 +16,8 @@
     <color name="component_fg_secondary">#CCFFFFFF</color>
 
     <color name="component_bg_inverse">#FFFFFF</color>
+    <color name="component_bg_secondary_inverse">#CCFFFFFF</color>
+    <color name="component_bg_tertiary_inverse">#33FFFFFF</color>
     <color name="component_fg_inverse">#000000</color>
     <color name="component_fg_secondary_inverse">#CC000000</color>
 

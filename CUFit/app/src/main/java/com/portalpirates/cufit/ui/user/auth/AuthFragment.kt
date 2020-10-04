@@ -1,6 +1,8 @@
 package com.portalpirates.cufit.ui.user.auth
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.transition.*
 import android.util.Log
 import android.view.View
@@ -78,8 +80,11 @@ abstract class AuthFragment : FitFragment() {
         }
 
         setImeListeners()
+        addInputListeners()
         setActionOnClickListener()
         setSwitchModeOnClickListener()
+
+        updateActionEnabled()
 
         // for marquee
         message.isSelected = true
@@ -102,6 +107,27 @@ abstract class AuthFragment : FitFragment() {
 
     protected open fun onIncorrectInput() {
         userInputs.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+    }
+
+    private fun addInputListeners() {
+        val listener = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                updateActionEnabled()
+            }
+        }
+        emailAddrInput.editText?.addTextChangedListener(listener)
+        passwordInput.editText?.addTextChangedListener(listener)
+        confirmPasswordInput.editText?.addTextChangedListener(listener)
+    }
+
+    private fun updateActionEnabled() {
+        actionBtn.isEnabled = (
+            emailAddrInput.text.isNotBlank()
+                && passwordInput.text.isNotBlank()
+                && (passwordInput.text.isNotBlank() && passwordInput.visibility == View.VISIBLE)
+            )
     }
 
     protected fun showMessage(msg: String) {
