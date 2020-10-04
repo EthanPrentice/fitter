@@ -29,7 +29,7 @@
             android:id="@+id/profile_img"
             android:layout_width="@dimen/LU_6"
             android:layout_height="@dimen/LU_6"
-            android:src="@drawable/ravens_field" />
+            android:src="@drawable/default_avatar" />
 
         <TextView
             android:id="@+id/profile_name"
