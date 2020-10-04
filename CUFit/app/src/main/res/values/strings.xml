@@ -2,6 +2,11 @@
     <string name="app_name">CU Fit</string>
 
 
+    <!-- Nav -->
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="progress">Progress</string>
+
     <!-- User related -->
         <!-- Auth -->
     <string name="log_in">Log In</string>
@@ -26,6 +31,8 @@
     <string name="current">Current</string>
     <string name="goal">Goal</string>
     <string name="workouts">Workouts</string>
+        <!-- Titles -->
+    <string name="my_profile">My Profile</string>
 
 
     <!-- Formatting -->

@@ -18,7 +18,11 @@ class MyProfileCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
 
     val profileImageView: ImageView
     val profileNameView: TextView
+
     val profileStats: LinearLayout
+    val workoutsStat: StatBarItem
+    val currentWeightStat: StatBarItem
+    val goalWeightStat: StatBarItem
 
     val settingsBtn: FitButton
 
@@ -27,13 +31,22 @@ class MyProfileCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
 
         profileImageView = view.findViewById(R.id.profile_img)
         profileNameView = view.findViewById(R.id.profile_name)
+
         profileStats = view.findViewById(R.id.profile_stats)
+        workoutsStat = profileStats.findViewById(R.id.workouts_stat)
+        currentWeightStat = profileStats.findViewById(R.id.current_weight_stat)
+        goalWeightStat = profileStats.findViewById(R.id.goal_weight_stat)
 
         settingsBtn = view.findViewById(R.id.settings_btn)
     }
 
     fun setUser(user: FitUser) {
         profileNameView.text = user.fullName
+        workoutsStat.value = "0" // Not implemented yet
+
+        // TODO: implement MeasuredTextView and use those in the StatBarItem
+        currentWeightStat.setValue(user.currentWeight?.number ?: 0)
+        goalWeightStat.setValue(user.weightGoal?.number ?: 0)
     }
 
     fun getStatBarItems(): List<StatBarItem> {

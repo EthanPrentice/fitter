@@ -2,6 +2,7 @@
 <resources>
     <color name="background">#262626</color>
     <color name="background_translucent">#D9363636</color>
+    <color name="nav_background">#202020</color>
 
     <color name="icon_primary">#FFFFFF</color>
     <color name="icon_secondary">#CCFFFFFF</color>

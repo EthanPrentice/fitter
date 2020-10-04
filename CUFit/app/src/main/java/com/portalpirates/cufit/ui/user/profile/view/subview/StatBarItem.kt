@@ -73,4 +73,8 @@ class StatBarItem(context: Context, attrs: AttributeSet?, defStyle: Int) : Linea
     private fun initPadding() {
         titleView.setPadding(0, 0, 0, resources.getDimensionPixelOffset(R.dimen.LU_0_5))
     }
+
+    fun setValue(n: Number) {
+        value = n.toString()
+    }
 }

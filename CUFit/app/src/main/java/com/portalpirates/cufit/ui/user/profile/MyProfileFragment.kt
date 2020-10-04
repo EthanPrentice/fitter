@@ -67,8 +67,8 @@ class MyProfileFragment : FitFragment() {
                 if (percentCollapsed >= 0.5f && collapsedToolbar.title != user?.fullName) {
                     collapsedToolbar.title = user?.fullName
                 }
-                else if (percentCollapsed <= 0.5f && collapsedToolbar.title != "My Profile") {
-                    collapsedToolbar.title = "My Profile"
+                else if (percentCollapsed <= 0.5f && collapsedToolbar.title != resources.getString(R.string.my_profile)) {
+                    collapsedToolbar.title = resources.getString(R.string.my_profile)
                 }
             }
         })

@@ -20,6 +20,7 @@ import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.ui.FitApplication
+import com.portalpirates.cufit.ui.user.profile.UserActivity
 import java.io.IOException
 
 
@@ -77,7 +78,10 @@ class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
     override fun userReadyToBuild(builder: FitUserBuilder) {
         FitApplication.instance.userManager.receiver.createFireStoreUser(builder, object : TaskListener<Unit?> {
             override fun onSuccess(value: Unit?) {
-                Toast.makeText(this@WelcomeActivity, "Account creation successful!\nWelcome ${builder.firstName}!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(FitApplication.instance.applicationContext, "Account creation successful!\nWelcome ${builder.firstName}!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@WelcomeActivity, UserActivity::class.java)
+                startActivity(intent)
+                finish()
             }
 
             override fun onFailure(e: Exception?) {

@@ -64,25 +64,25 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.portalpirates.cufit.ui.user.profile.view.subview.StatBarItem
+            android:id="@+id/workouts_stat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:title="@string/workouts"
-            app:value="43"/>
+            app:title="@string/workouts" />
 
         <com.portalpirates.cufit.ui.user.profile.view.subview.StatBarItem
+            android:id="@+id/current_weight_stat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:title="@string/current"
-            app:value="123"/>
+            app:title="@string/current" />
 
         <com.portalpirates.cufit.ui.user.profile.view.subview.StatBarItem
+            android:id="@+id/goal_weight_stat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:title="@string/goal"
-            app:value="321"/>
+            app:title="@string/goal" />
 
 
     </LinearLayout>

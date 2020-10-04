@@ -28,7 +28,7 @@ class UserActivity : FitActivity() {
         setSupportActionBar(toolbar)
 
         collapsingToolbar = findViewById(R.id.collapsing_toolbar)
-        collapsingToolbar.title = "My Profile"
+        collapsingToolbar.title = resources.getString(R.string.my_profile)
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.bold_body_text)
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.text_primary))
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.header1)

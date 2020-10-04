@@ -21,6 +21,9 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
 
     lateinit var fragContainer: FrameLayout
 
+    // use to finish the activity post-transition in onStop
+    private var shouldFinish = false
+
     init {
         delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
     }
@@ -54,6 +57,13 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (shouldFinish) {
+            finish()
+        }
+    }
+
     override fun onSignUp(uid: String) {
         val intent = Intent(this, WelcomeActivity::class.java)
 
@@ -70,10 +80,12 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
 
         val options = ActivityOptions.makeSceneTransitionAnimation(this, *sharedElements)
         startActivity(intent, options.toBundle())
+        shouldFinish = true
     }
 
     override fun onLogIn(authUser: AuthenticatedUser) {
         val intent = Intent(this, UserActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }

@@ -6,14 +6,19 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.BIRTH_DATE
+import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.CURRENT_HEIGHT
+import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.CURRENT_WEIGHT
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.FIRST_NAME
 import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.LAST_NAME
+import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.SEX
+import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface.Companion.WEIGHT_GOAL
 import com.portalpirates.cufit.datamodel.cloud.exception.UnauthorizedUserException
-import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
-import com.portalpirates.cufit.datamodel.data.user.FitUser
-import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
-import com.portalpirates.cufit.datamodel.data.user.UserField
+import com.portalpirates.cufit.datamodel.data.measure.FitMeasure
+import com.portalpirates.cufit.datamodel.data.measure.Height
+import com.portalpirates.cufit.datamodel.data.measure.Weight
+import com.portalpirates.cufit.datamodel.data.user.*
 import com.portalpirates.cufit.datamodel.manager.Manager
+import java.lang.IllegalArgumentException
 import kotlin.Exception
 
 internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
@@ -157,13 +162,23 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
         userCloudInterface.reAuthenticateUser(email, password, listener)
     }
 
+    @Throws(IllegalArgumentException::class)
     private fun createUserFromDocument(doc: DocumentSnapshot) : FitUser? {
         return try {
-            FitUser(
-                doc.getDate(BIRTH_DATE)!!,
-                doc.getString(FIRST_NAME)!!,
-                doc.getString(LAST_NAME)!!
-            )
+            val currHeight = FitMeasure.getFromDocument(doc, CURRENT_HEIGHT, ::Height)
+            val currWeight = FitMeasure.getFromDocument(doc, CURRENT_WEIGHT, ::Weight)
+            val goalWeight = FitMeasure.getFromDocument(doc, WEIGHT_GOAL, ::Weight)
+
+            FitUserBuilder()
+                .setFirstName(doc.getString(FIRST_NAME)!!)
+                .setLastName(doc.getString(LAST_NAME)!!)
+                .setSex(UserSex.getFromString(doc.getString(SEX))!!)
+                .setBirthDate(doc.getDate(BIRTH_DATE)!!)
+                .setCurrentHeight(currHeight)
+                .setCurrentWeight(currWeight)
+                .setWeightGoal(goalWeight)
+                .build()
+
         } catch(e: Exception) {
             Log.e(TAG, "Could not create a user from document")
             null

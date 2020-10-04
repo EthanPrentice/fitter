@@ -79,17 +79,20 @@ class FitUserBuilder {
     }
 
     fun convertFieldsToHashMap(): HashMap<String, Any?> {
-        return hashMapOf<String, Any?>(
+        val hashMap = hashMapOf<String, Any?>(
             UserCloudInterface.BIRTH_DATE to birthDate,
-            UserCloudInterface.CURRENT_WEIGHT to currentWeight,
-            UserCloudInterface.CURRENT_HEIGHT to currentHeight,
             UserCloudInterface.FIRST_NAME to firstName,
             UserCloudInterface.LAST_NAME to lastName,
-            UserCloudInterface.WEIGHT_GOAL to weightGoal,
             UserCloudInterface.SEX to sex!!.char.toString()
             // TODO: previous weights
             // TODO: previous heights
         )
+
+        currentWeight?.addFieldsToHashMap(hashMap, UserCloudInterface.CURRENT_WEIGHT)
+        currentHeight?.addFieldsToHashMap(hashMap, UserCloudInterface.CURRENT_HEIGHT)
+        weightGoal?.addFieldsToHashMap(hashMap, UserCloudInterface.WEIGHT_GOAL)
+
+        return hashMap
     }
 
     class UserBuildException(s: String, cause: Throwable?) : FitException(s, cause) {

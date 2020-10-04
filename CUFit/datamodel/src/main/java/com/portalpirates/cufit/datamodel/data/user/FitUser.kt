@@ -12,6 +12,15 @@ open class FitUser(
     var currentHeight: Height? = null,
     var weightGoal: Weight? = null
 ) {
+    // copy constructor
+    constructor(fitUser: FitUser) : this(
+        fitUser.birthDate,
+        fitUser.firstName,
+        fitUser.lastName,
+        fitUser.currentWeight,
+        fitUser.currentHeight,
+        fitUser.weightGoal
+    )
 
     var previousWeights: MutableList<Weight> = mutableListOf()
     var previousHeights: MutableList<Height> = mutableListOf()
