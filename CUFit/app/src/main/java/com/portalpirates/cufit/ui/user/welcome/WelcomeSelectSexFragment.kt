@@ -3,9 +3,11 @@ package com.portalpirates.cufit.ui.user.welcome
 import android.content.Context
 import android.os.Bundle
 import android.transition.Transition
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,7 +76,12 @@ class WelcomeSelectSexFragment : WelcomeFragment() {
 
 
         actionBtn.setOnClickListener {
-            listener?.userReadyToBuild(model.getBuilder())
+            try {
+                listener?.userReadyToBuild(model.getBuilder())
+            } catch (e: FitUserBuilder.UserBuildException) {
+                Toast.makeText(context, "Required fields are missing!", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, e.message ?: "")
+            }
         }
 
         if (savedInstanceState == null) {

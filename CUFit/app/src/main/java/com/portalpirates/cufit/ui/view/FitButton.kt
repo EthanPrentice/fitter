@@ -1,6 +1,7 @@
 package com.portalpirates.cufit.ui.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -12,8 +13,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginLeft
-import androidx.core.view.setMargins
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.ui.util.ColorUtil
 
@@ -72,6 +71,13 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
     private val textView: TextView
     private val imageView: ImageView
 
+    private val btnBackgroundColorDisabled: Int
+        get() = when(buttonType) {
+            ButtonType.PRIMARY -> ColorUtil.getInvertibleColor(context, R.color.component_bg_tertiary, inverted)
+            ButtonType.SECONDARY -> ContextCompat.getColor(context, android.R.color.transparent)
+            ButtonType.TERTIARY -> ContextCompat.getColor(context, android.R.color.transparent)
+        }
+
     private val btnBackgroundColor: Int
         get() = when(buttonType) {
             ButtonType.PRIMARY -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
@@ -83,6 +89,13 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
         get() = when(buttonType) {
             ButtonType.TERTIARY -> ContextCompat.getColor(context, android.R.color.transparent)
             else -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
+        }
+
+    private val btnForegroundColorDisabled: Int
+        get() = when(buttonType) {
+            ButtonType.PRIMARY -> ColorUtil.getInvertibleColor(context, R.color.component_fg, !inverted)
+            ButtonType.SECONDARY -> ColorUtil.getInvertibleColor(context, R.color.component_bg, !inverted)
+            ButtonType.TERTIARY -> ContextCompat.getColor(context, R.color.tertiary_btn_text)
         }
 
     private val btnForegroundColor: Int
@@ -119,6 +132,7 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
         text = typedArr.getString(R.styleable.FitButton_text) ?: ""
         iconLocation = IconLocation.fromValue(typedArr.getInt(R.styleable.FitButton_iconOn, 0))
         isClickable = typedArr.getBoolean(R.styleable.FitButton_android_clickable, true)
+        isEnabled = typedArr.getBoolean(R.styleable.FitButton_android_enabled, true)
         isTintEnabled = typedArr.getBoolean(R.styleable.FitButton_iconTintEnabled, true)
 
         imageView = when (iconLocation) {
@@ -158,6 +172,19 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
         }
     }
 
+    override fun onCreateDrawableState(extraSpace: Int): IntArray? {
+        val drawableState = super.onCreateDrawableState(extraSpace + 2)
+        if (isEnabled) {
+            View.mergeDrawableStates(drawableState, STATE_ENABLED)
+        }
+        return drawableState
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        isClickable = enabled
+    }
+
     private fun setPadding() {
         if (icon != null && text.isEmpty()) { // icon only
             val margin = context.resources.getDimensionPixelOffset(R.dimen.LU_1)
@@ -193,7 +220,16 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
     private fun initImageView() {
         icon?.let {
             if (isTintEnabled) {
-                it.setTint(btnForegroundColor)
+                it.mutate()
+                it.setTintList(ColorStateList(
+                    arrayOf(
+                        intArrayOf(-android.R.attr.state_enabled),
+                        intArrayOf()
+                    ),
+                    intArrayOf(
+                        btnForegroundColorDisabled,
+                        btnForegroundColor
+                    )))
             }
             imageView.setImageDrawable(it)
             imageView.visibility = View.VISIBLE
@@ -207,7 +243,17 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
             textView.text = text
             when (buttonType) {
                 ButtonType.TERTIARY -> textView.setTextColor(resources.getColorStateList(R.color.tertiary_btn_text, null))
-                else -> textView.setTextColor(btnForegroundColor)
+                else -> {
+                    textView.setTextColor(ColorStateList(
+                        arrayOf(
+                            intArrayOf(-android.R.attr.state_enabled),
+                            intArrayOf()
+                        ),
+                        intArrayOf(
+                            btnForegroundColorDisabled,
+                            btnForegroundColor
+                        )))
+                }
             }
             if (underlineText) {
                 textView.paintFlags = textView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -226,8 +272,23 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
 
     private fun initBackground() {
         val backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.rounded_component_background) as GradientDrawable
-        backgroundDrawable.color = ColorUtil.getSingleColorStateList(btnBackgroundColor)
+
+        backgroundDrawable.mutate()
+        backgroundDrawable.color = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_enabled),
+                intArrayOf()
+            ),
+            intArrayOf(
+                btnBackgroundColorDisabled,
+                btnBackgroundColor
+            ))
+
         backgroundDrawable.setStroke(context.resources.getDimensionPixelOffset(R.dimen.LU_0_5), btnStrokeColor)
         background = backgroundDrawable
+    }
+
+    companion object {
+        private val STATE_ENABLED = intArrayOf(android.R.attr.state_enabled)
     }
 }
