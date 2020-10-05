@@ -1,0 +1,8 @@
+Tasks:
+  Met with team Oct 2 to discuss current status of project
+
+  Pair programming with Ethan - watching him implement "My Profile" view
+  Designed potential "My Settings" screens in Figma
+  Welcome Flow Recovery boilerplate
+
+Project time allocation: 2.5hrs

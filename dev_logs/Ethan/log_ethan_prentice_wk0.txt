@@ -1,0 +1,24 @@
+Tasks
+  Met with team Sept 7 to talk about general project details
+  Discussed project ideas and features with team
+  
+  I wrote up project ideas and descriptions of how the features should be structured to reference
+  
+  Helped choose & set up project infrastructure and tools:
+    Issue tracking:  Jira
+    Version Control: GitHub / git
+    UI design:       Figma
+    Cloud:           Firebase
+    
+  Broke the project into subteams for:
+    Cloud / Backend: Eric + Navita
+    Model:           Simon
+    Android / UI:    Ethan
+    
+  Designed v1 of high level architecture for the model to help Simon
+  
+  Created an Epic for each feature discussed in our previous meeting
+  Created example strories in Jira for other team members to reference
+  
+  
+Project time allocation: 8hrs
