@@ -1,0 +1,14 @@
+For the week Sept 28th, 2020
+
+Improved welcome workflow
+
+Added MeasuredEditText to display and convert measurements
+Changed the model to use Android's Measure framework, subclassing Weights and Heights from FitMeasure which extends Measure
+Also created a MeasureConverter singleton for conversions since this is not handled by Android's framework
+
+Designed and programmed the user's "My Profile" screen
+Helped Simon w/ welcome flow recovery
+Taught Simon some more basics on Android wrt custom views, fragments, and activity lifecycles
+
+
+Total time spent on project: 7s
