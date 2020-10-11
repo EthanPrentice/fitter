@@ -99,9 +99,6 @@ class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
 
     companion object {
         const val TAG = "WelcomeActivity"
-
-        // Bundle args
-        const val RECOVERY = "com.portalpirates.cufit.ui.user.welcome.WelcomeActivity:recovery"
     }
 
 }

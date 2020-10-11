@@ -17,6 +17,7 @@ import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.manager.UserManager
+import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
 
@@ -61,7 +62,7 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
         launchWelcomeFlow()
     }
 
-    override fun onLogIn(userManager: UserManager, context: Context?, authUser: AuthenticatedUser) {
+    override fun onLogIn(userManager: UserManager, authUser: AuthenticatedUser) {
         val listener = object : TaskListener<Boolean> {
             override fun onSuccess(value: Boolean) {
                 if (value) {
@@ -69,17 +70,15 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
                     // startActivity(intent)
                     // finish()
                     Toast.makeText(
-                        context,
+                        FitApplication.instance.applicationContext,
                         "Authenticated as ${authUser.fullName}",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    // Get & populate the user info that's already filled
-                    // Recovery key - welcome activity ????
                     Toast.makeText(
-                        context,
+                        FitApplication.instance.applicationContext,
                         "Required fields are missing for ${authUser.fullName}",
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_LONG
                     ).show()
                     launchWelcomeFlow()
                 }
