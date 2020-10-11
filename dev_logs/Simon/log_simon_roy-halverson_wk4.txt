@@ -1,0 +1,7 @@
+Tasks:
+  Met with team Oct 9 to discuss current status of project
+
+  WelcomePersonalFragment Button Enabled/Disabled
+  Welcome Flow Recovery
+
+Project time allocation: 4.5hrs
