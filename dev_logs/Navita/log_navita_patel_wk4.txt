@@ -1,0 +1,3 @@
+- [CUF-53] Looked into feasibility of implementing custom API for handling backend security for user accounts. 
+- [CUF-53] Did research and found that Firebase provides the base minimum and analyzed if advanced security/password authentication was required for our app 
+- Looking into component diagrams 
