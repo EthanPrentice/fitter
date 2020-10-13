@@ -11,4 +11,4 @@ Helped Simon w/ welcome flow recovery
 Taught Simon some more basics on Android wrt custom views, fragments, and activity lifecycles
 
 
-Total time spent on project: 7s
+Total time spent on project: 7hrs
