@@ -50,9 +50,9 @@ class WelcomeMeasurementFragment : WelcomeFragment() {
 
         // set measure units
         // TODO: set these from preferences?  Since we aren't authenticated we should probably set these based on locale here instead though
-        currentWeightInput.measureUnit = MeasureUnit.POUND
+        currentWeightInput.measureUnit = MeasureUnit.KILOGRAM
         currentHeightInput.measureUnit = MeasureUnit.CENTIMETER
-        weightGoalInput.measureUnit = MeasureUnit.POUND
+        weightGoalInput.measureUnit = MeasureUnit.KILOGRAM
 
         // text listeners
         currentWeightInput.editText?.addTextChangedListener(
