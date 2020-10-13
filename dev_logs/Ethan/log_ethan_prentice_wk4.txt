@@ -1,0 +1,19 @@
+For the week of Oct 5th, 2020
+
+Added functionality for cloud to store user avatars as a bitmap blob in firestore
+Added a generic FitCardView that is subclasses by a single card view for the user's profile at the moment
+Designed user's my profile screen and programmed a large chunk of it (now displays one of the cards)
+
+Refactored how measurements are stored in the user class and in the cloud to match the client-side data-model
+(FitMeasure are now stored exactly as-is with dateLogged, units, and number in the cloud.  This makes it locale-aware for conversions)
+
+Added bottom navigation in layouts (currently non-functional)
+
+Added a collapsing toolbar with very basic functionality (just the title right now)
+MyProfileFrag makes use of this for when we scroll down so the user display name is always visible.
+
+Added the UserActivity and linked it in on successful authentication from the AuthActivity.
+This activity only makes use of the MyProfileFrag at the moment.
+
+
+Total time spent on project: 7-8hrs
