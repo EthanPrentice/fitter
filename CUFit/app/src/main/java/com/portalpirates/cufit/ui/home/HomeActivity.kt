@@ -1,4 +1,4 @@
-package com.portalpirates.cufit.ui.user.profile
+package com.portalpirates.cufit.ui.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,11 +7,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.portalpirates.cufit.FitActivity
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.ui.home.HomeActivity
 import com.portalpirates.cufit.ui.progress.ProgressActivity
+import com.portalpirates.cufit.ui.user.profile.MyProfileFragment
+import com.portalpirates.cufit.ui.user.profile.UserActivity
 
-
-class UserActivity : FitActivity() {
+class HomeActivity : FitActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class UserActivity : FitActivity() {
         setSupportActionBar(toolbar)
 
         collapsingToolbar = findViewById(R.id.collapsing_toolbar)
-        collapsingToolbar.title = resources.getString(R.string.my_profile)
+        collapsingToolbar.title = resources.getString(R.string.my_home)
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.bold_body_text)
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.text_primary))
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.header1)
@@ -48,15 +48,15 @@ class UserActivity : FitActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    val intent = Intent(this@UserActivity, HomeActivity::class.java)
+                    return@setOnNavigationItemSelectedListener false
+                }
+                R.id.profile -> {
+                    val intent = Intent(this@HomeActivity, UserActivity::class.java)
                     startActivity(intent)
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.profile -> {
-                    return@setOnNavigationItemSelectedListener false
-                }
                 R.id.progress -> {
-                    val intent = Intent(this@UserActivity, ProgressActivity::class.java)
+                    val intent = Intent(this@HomeActivity, ProgressActivity::class.java)
                     startActivity(intent)
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -64,5 +64,4 @@ class UserActivity : FitActivity() {
             false
         }
     }
-
 }

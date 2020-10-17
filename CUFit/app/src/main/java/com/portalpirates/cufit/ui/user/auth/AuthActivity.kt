@@ -19,8 +19,6 @@ import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
 class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment.LogInListener {
 
-    lateinit var fragContainer: FrameLayout
-
     // use to finish the activity post-transition in onStop
     private var shouldFinish = false
 

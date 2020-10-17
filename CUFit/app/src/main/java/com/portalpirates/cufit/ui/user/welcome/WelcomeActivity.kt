@@ -26,8 +26,6 @@ import java.io.IOException
 
 class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
 
-    private lateinit var fragContainer: FrameLayout
-
     private val model: WelcomeViewModel by viewModels()
 
     init {

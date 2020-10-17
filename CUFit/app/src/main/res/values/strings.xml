@@ -33,6 +33,8 @@
     <string name="workouts">Workouts</string>
         <!-- Titles -->
     <string name="my_profile">My Profile</string>
+    <string name="my_home">Home</string>
+    <string name="my_progress">My Progress</string>
 
 
     <!-- Formatting -->
