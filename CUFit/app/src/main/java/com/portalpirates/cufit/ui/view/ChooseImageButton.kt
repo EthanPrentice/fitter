@@ -11,7 +11,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
-import com.portalpirates.cufit.FitActivity.Companion.RESULT_LOAD_IMAGE
+import com.portalpirates.cufit.ui.FitActivity.Companion.RESULT_LOAD_IMAGE
 import com.portalpirates.cufit.R
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlin.math.abs

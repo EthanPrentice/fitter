@@ -8,19 +8,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.portalpirates.cufit.FitActivity
+import com.portalpirates.cufit.ui.FitActivity
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.cloud.TaskListener
-import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.user.FitUserBuilder
 import com.portalpirates.cufit.ui.FitApplication
-import com.portalpirates.cufit.ui.user.profile.UserActivity
+import com.portalpirates.cufit.ui.nav.NavActivity
 import java.io.IOException
 
 
@@ -77,7 +75,7 @@ class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
         FitApplication.instance.userManager.receiver.createFireStoreUser(builder, object : TaskListener<Unit?> {
             override fun onSuccess(value: Unit?) {
                 Toast.makeText(FitApplication.instance.applicationContext, "Account creation successful!\nWelcome ${builder.firstName}!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@WelcomeActivity, UserActivity::class.java)
+                val intent = Intent(this@WelcomeActivity, NavActivity::class.java)
                 startActivity(intent)
                 finish()
             }
