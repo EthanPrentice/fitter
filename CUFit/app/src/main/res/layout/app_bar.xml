@@ -19,6 +19,7 @@
 
         app:expandedTitleMarginTop="@dimen/LU_3"
         app:expandedTitleMarginStart="@dimen/LU_3"
+        app:expandedTitleMarginBottom="@dimen/LU_3_5"
 
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
