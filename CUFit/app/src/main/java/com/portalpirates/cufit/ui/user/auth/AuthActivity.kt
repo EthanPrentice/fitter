@@ -5,21 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import android.view.View
-import android.view.Window
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.portalpirates.cufit.FitActivity
+import com.portalpirates.cufit.ui.FitActivity
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
-import com.portalpirates.cufit.ui.user.profile.UserActivity
+import com.portalpirates.cufit.ui.nav.NavActivity
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
 
 class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment.LogInListener {
-
-    lateinit var fragContainer: FrameLayout
 
     // use to finish the activity post-transition in onStop
     private var shouldFinish = false
@@ -84,7 +80,7 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
     }
 
     override fun onLogIn(authUser: AuthenticatedUser) {
-        val intent = Intent(this, UserActivity::class.java)
+        val intent = Intent(this, NavActivity::class.java)
         startActivity(intent)
         finish()
     }
