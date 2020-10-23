@@ -24,7 +24,6 @@
     <!-- Text dimensions -->
     <dimen name="body_text_size">16sp</dimen>
     <dimen name="subtitle_text_size">14sp</dimen>
-    <dimen name="swim_lane_text_size">7sp</dimen>
 
     <dimen name="header1_text_size">30sp</dimen>
     <dimen name="header2_text_size">24sp</dimen>
@@ -34,5 +33,7 @@
     <dimen name="metadata_title2_size">20sp</dimen>
     <dimen name="metadata_body1_size">18sp</dimen>
     <dimen name="metadata_body2_size">14sp</dimen>
+    <dimen name="metadata_body3_size">12sp</dimen>
+    <dimen name="metadata_body4_size">10sp</dimen>
 
 </resources>

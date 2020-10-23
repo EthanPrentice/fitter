@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
+import kotlinx.android.synthetic.main.fit_card_layout.view.*
 
 class SwimlaneAdapter(private val context: Context, private val items: List<SwimlaneItem>, private val defaultImg: Drawable, private val onClickListener: ((v: View?, item: SwimlaneItem) -> Unit?)?)
     : RecyclerView.Adapter<SwimlaneAdapter.SwimlaneViewHolder>() {
+
+    var textAppearance: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwimlaneViewHolder {
         val view = SwimlaneItemView(context)
@@ -28,6 +31,9 @@ class SwimlaneAdapter(private val context: Context, private val items: List<Swim
         holder.swimlaneItemView.setImageDrawable(items[position].getDrawable() ?: defaultImg)
         holder.swimlaneItemView.setOnClickListener { v ->
             onClickListener?.invoke(v, items[position])
+        }
+        if (textAppearance != 0) {
+            holder.swimlaneItemView.titleView.setTextAppearance(textAppearance)
         }
     }
 

@@ -10,6 +10,8 @@ class SwimlaneView(context: Context, attrs: AttributeSet?, defStyle: Int) : Recy
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     var visibleItems = 3.25f
+    val swimlaneAdapter: SwimlaneAdapter
+        get() = adapter as SwimlaneAdapter
 
     init {
         layoutManager = object : LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) {
@@ -20,5 +22,9 @@ class SwimlaneView(context: Context, attrs: AttributeSet?, defStyle: Int) : Recy
             }
 
         }
+    }
+
+    fun setTextAppearance(resId: Int) {
+        swimlaneAdapter.textAppearance = resId
     }
 }

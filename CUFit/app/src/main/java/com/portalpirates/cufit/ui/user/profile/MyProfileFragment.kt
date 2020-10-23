@@ -15,6 +15,7 @@ import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
+import com.portalpirates.cufit.ui.user.profile.view.RecentWorkoutsCardView
 import kotlin.math.abs
 
 class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
@@ -22,6 +23,7 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
     var user: AuthenticatedUser? = null
 
     var myProfileCard: MyProfileCardView? = null
+    var recentWorkoutsCard: RecentWorkoutsCardView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +62,9 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         user?.let {
             myProfileCard?.setUser(it)
         }
+
+        recentWorkoutsCard = view.findViewById(R.id.recent_workouts_card)
+        recentWorkoutsCard?.setStatusText("2 week streak")
     }
 
     override fun onPause() {

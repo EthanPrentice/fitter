@@ -25,4 +25,6 @@
     <color name="overlay_dark">#66000000</color>
     <color name="overlay_light">#AAFFFFFF</color>
     <color name="divider">#33000000</color>
+
+    <color name="status_green">#00AA25</color>
 </resources>
