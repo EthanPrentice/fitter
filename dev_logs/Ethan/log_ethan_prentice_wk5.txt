@@ -1,0 +1,6 @@
+ For the week of Oct 12th, 2020
+
+Added nav bar functionality w/ ViewPager
+
+
+Total time spent on project: 5hrs
