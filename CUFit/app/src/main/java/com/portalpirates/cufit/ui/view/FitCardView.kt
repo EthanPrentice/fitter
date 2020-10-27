@@ -30,6 +30,17 @@ open class FitCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
             topBarLayout.visibility = if (value) View.VISIBLE else View.GONE
         }
 
+    var statusColor: Int = ContextCompat.getColor(context, R.color.text_secondary)
+        set(value) {
+            val drawable = statusImageView.drawable
+            drawable?.setTint(value)
+            statusImageView.setImageDrawable(drawable)
+
+            statusTextView.setTextColor(value)
+
+            field = value
+        }
+
     init {
         rootView = inflate(context, R.layout.fit_card_layout, null) as ConstraintLayout
         addView(rootView)
@@ -70,6 +81,7 @@ open class FitCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
     }
 
     fun setStatusIcon(drawable: Drawable?) {
+        drawable?.setTint(statusColor)
         statusImageView.setImageDrawable(drawable)
     }
 }

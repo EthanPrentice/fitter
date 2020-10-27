@@ -34,6 +34,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -50,6 +54,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation(project(":datamodel"))
 }

@@ -50,6 +50,10 @@
         <attr name="image" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="FitLineChart">
+        <attr name="showAxisLabels" format="boolean"/>
+    </declare-styleable>
+
 
 
 </resources>

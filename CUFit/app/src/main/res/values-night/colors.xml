@@ -26,5 +26,9 @@
     <color name="overlay_light">#66000000</color>
     <color name="divider">#33FFFFFF</color>
 
+    <color name="chart_primary">#FF66DD</color>
+    <color name="chart_secondary">#3FFF66DD</color>
+
     <color name="status_green">#00E332</color>
+    <color name="status_red">#FF0000</color>
 </resources>

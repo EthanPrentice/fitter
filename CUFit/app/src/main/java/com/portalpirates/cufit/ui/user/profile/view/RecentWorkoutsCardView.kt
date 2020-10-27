@@ -50,6 +50,7 @@ class RecentWorkoutsCardView(context: Context, attrs: AttributeSet?, defStyle: I
         setContentView(swimlane, (160*1.5f).toInt())
         topBarVisible = true
         setTitle("Workouts")
+        statusColor = ContextCompat.getColor(context, R.color.status_green)
     }
 
 }

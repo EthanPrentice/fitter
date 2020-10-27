@@ -2,7 +2,11 @@
 <resources>
 
     <dimen name="LU_0">0dp</dimen>
+    <dimen name="LU_0_125">0.5dp</dimen>
+    <dimen name="LU_0_25">1dp</dimen>
+    <dimen name="LU_0_375">1.5dp</dimen>
     <dimen name="LU_0_5">2dp</dimen>
+    <dimen name="LU_0_75">3dp</dimen>
     <dimen name="LU_1">4dp</dimen>
     <dimen name="LU_1_5">6dp</dimen>
     <dimen name="LU_2">8dp</dimen>

@@ -13,6 +13,7 @@
         android:layout_marginLeft="@dimen/LU_3"
         android:text="Explore"
         android:textAppearance="@style/header2"
+        android:textColor="@color/text_primary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

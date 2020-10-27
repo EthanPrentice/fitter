@@ -24,6 +24,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -39,4 +43,6 @@ dependencies {
     // For example, to use Firebase Authentication and Cloud Firestore
     api 'com.google.firebase:firebase-auth-ktx:19.4.0'
     api 'com.google.firebase:firebase-firestore-ktx:21.6.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

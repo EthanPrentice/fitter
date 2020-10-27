@@ -13,18 +13,19 @@
         android:id="@+id/my_profile_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/LU_3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        android:layout_marginBottom="@dimen/LU_3" />
 
     <com.portalpirates.cufit.ui.user.profile.view.RecentWorkoutsCardView
         android:id="@+id/recent_workouts_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/LU_3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        android:layout_marginBottom="@dimen/LU_3" />
+
+    <com.portalpirates.cufit.ui.view.chart.LineChartCardView
+        android:id="@+id/progress_chart_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/LU_7_5"
+        app:showAxisLabels="false"/>
 
 </LinearLayout>
