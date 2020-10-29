@@ -1,0 +1,2 @@
+- Understanding how our android architecture maps with components in our app
+- Looking into identifying what our app defines as connectors, interfaces, etc to map it to general components and architecture
