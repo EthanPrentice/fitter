@@ -1,0 +1,2 @@
+- Wroking on preparing draft for deliverable 2
+- Workingo n creating app architecture and component diagrams
