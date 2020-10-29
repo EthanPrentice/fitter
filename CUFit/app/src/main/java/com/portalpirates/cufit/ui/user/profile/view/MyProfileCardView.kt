@@ -28,7 +28,8 @@ class MyProfileCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
     val settingsBtn: FitButton
 
     init {
-        val view = inflate(context, R.layout.my_profile_card, this)
+        val view = inflate(context, R.layout.my_profile_card, null)
+        setContentView(view)
 
         profileImageView = view.findViewById(R.id.profile_img)
         profileNameView = view.findViewById(R.id.profile_name)

@@ -1,5 +1,6 @@
 package com.portalpirates.cufit.ui.user.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,13 +15,15 @@ import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
+import com.portalpirates.cufit.ui.user.profile.view.RecentWorkoutsCardView
 import kotlin.math.abs
 
-class MyProfileFragment : FitFragment() {
+class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
 
     var user: AuthenticatedUser? = null
 
     var myProfileCard: MyProfileCardView? = null
+    var recentWorkoutsCard: RecentWorkoutsCardView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +44,15 @@ class MyProfileFragment : FitFragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        fitActivity?.appBar?.removeOnOffsetChangedListener(this)
+        fitActivity?.setToolbarTitle(R.string.my_profile)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.my_profile_layout, container, false)
+        rootView = inflater.inflate(R.layout.my_profile_layout, container, false)
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,25 +63,31 @@ class MyProfileFragment : FitFragment() {
             myProfileCard?.setUser(it)
         }
 
-        setOffsetChangedListener()
+        recentWorkoutsCard = view.findViewById(R.id.recent_workouts_card)
+        recentWorkoutsCard?.setStatusText("2 week streak")
     }
 
-    private fun setOffsetChangedListener() {
-        val appBar = fitActivity?.appBar
-        val collapsedToolbar = appBar?.findViewById<CollapsingToolbarLayout>(R.id.collapsing_toolbar)
+    override fun onPause() {
+        super.onPause()
+        fitActivity?.appBar?.removeOnOffsetChangedListener(this)
+    }
 
-        appBar?.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (collapsedToolbar != null) {
-                val percentCollapsed = abs(verticalOffset / appBarLayout.totalScrollRange.toFloat())
+    override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+        if (appBarLayout == null) {
+            return
+        }
 
-                if (percentCollapsed >= 0.5f && collapsedToolbar.title != user?.fullName) {
-                    collapsedToolbar.title = user?.fullName
-                }
-                else if (percentCollapsed <= 0.5f && collapsedToolbar.title != resources.getString(R.string.my_profile)) {
-                    collapsedToolbar.title = resources.getString(R.string.my_profile)
-                }
+        val collapsedToolbar = fitActivity?.collapsingToolbar
+        if (collapsedToolbar != null) {
+            val percentCollapsed = abs(verticalOffset / appBarLayout.totalScrollRange.toFloat())
+
+            if (percentCollapsed >= 0.5f && collapsedToolbar.title != user?.fullName) {
+                collapsedToolbar.title = user?.fullName
             }
-        })
+            else if (percentCollapsed <= 0.5f && collapsedToolbar.title != resources.getString(R.string.my_profile)) {
+                collapsedToolbar.title = resources.getString(R.string.my_profile)
+            }
+        }
     }
 
     companion object {
