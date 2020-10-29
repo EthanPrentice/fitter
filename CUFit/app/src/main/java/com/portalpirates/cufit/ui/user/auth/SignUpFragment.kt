@@ -11,11 +11,15 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 import android.util.Pair as UtilPair
 
 class SignUpFragment : AuthFragment() {
+
+    val listener: SignUpListener?
+        get() = activity as? SignUpListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.signup_layout, container, false)
@@ -59,28 +63,35 @@ class SignUpFragment : AuthFragment() {
         
         if (password != confirmPassword) {
             onIncorrectInput()
+            showMessage("Passwords do not match")
             return
         }
 
         // Put userManager in the view model later when it's written
         val userManager = FitApplication.instance.userManager
-        userManager.receiver.signUpUser(email, password) { success ->
-            if (success) {
-                val fbUser = userManager.provider.getFirebaseUser()
-                Toast.makeText(context, "Authenticated as user with uid ${fbUser?.uid ?: -1}", Toast.LENGTH_SHORT).show()
+        userManager.receiver.signUpUser(email, password, object : TaskListener<Unit?> {
+            override fun onSuccess(value: Unit?) {
+                hideMessage()
 
-                // we can't get an auth user yet, the required fields aren't populated.
-//                userManager.provider.getAuthenticatedUser { user ->
-//                    if (user == null) {
-//                        onIncorrectInput()
-//                    } else {
-//                        Toast.makeText(context, "Authenticated as ${user.fullName}", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-            } else {
-                onIncorrectInput()
+                val fbUser = userManager.provider.getFirebaseUser()
+                if (fbUser != null) {
+                    listener?.onSignUp(fbUser.uid)
+                    hideMessage()
+                }
             }
-        }
+          
+            override fun onFailure(e: Exception?) {
+                onIncorrectInput()
+                hideMessage()
+                e?.message?.let { msg ->
+                    showMessage(msg)
+                }
+            }
+        })
+    }
+
+    interface SignUpListener {
+        fun onSignUp(uid: String)
     }
 
     companion object {

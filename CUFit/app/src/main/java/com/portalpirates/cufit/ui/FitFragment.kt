@@ -12,14 +12,20 @@ abstract class FitFragment : Fragment() {
     protected var hasActivitySharedElemTransition = false
         private set
 
+    protected var hasFragSharedElemTransition = false
+        private set
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { args ->
-            hasActivitySharedElemTransition = args.getBoolean(FitActivity.HAS_ACTIVITY_SHARED_ELEM_TRANSITION, false)
+            hasActivitySharedElemTransition = savedInstanceState == null && args.getBoolean(FitActivity.HAS_ACTIVITY_SHARED_ELEM_TRANSITION, false)
+            hasFragSharedElemTransition = savedInstanceState == null && args.getBoolean(HAS_FRAG_SHARED_ELEM_TRANSITION, false)
         }
     }
 
     companion object {
         const val FRAG_TRANSITION_MS = 300L
+
+        const val HAS_FRAG_SHARED_ELEM_TRANSITION = "com.portalpirates.cufit.ui.FitFragment:hasFragmentSharedElemTransition"
     }
 }

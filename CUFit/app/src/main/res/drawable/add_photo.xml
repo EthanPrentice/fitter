@@ -5,7 +5,6 @@
         <shape android:shape="oval">
             <size android:width="@dimen/LU_10" android:height="@dimen/LU_10"/>
             <solid android:color="@color/overlay_light"/>
-            <stroke android:color="@color/icon_primary" android:width="@dimen/LU_0_5"/>
         </shape>
     </item>
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#F2F2F2</color>
+    <color name="background">#EDF2F4</color>
+    <color name="background_translucent">#D9EDF2F4</color>
+    <color name="nav_background">#E5E8EA</color>
 
     <color name="icon_primary">#000000</color>
     <color name="icon_secondary">#CC000000</color>
@@ -9,6 +11,8 @@
     <color name="text_secondary">#66000000</color>
 
     <color name="component_bg">#161825</color>
+    <color name="component_bg_secondary">#CC161825</color>
+    <color name="component_bg_tertiary">#33161825</color>
     <color name="component_fg">#FFFFFF</color>
     <color name="component_fg_secondary">#CCFFFFFF</color>
 
@@ -16,6 +20,9 @@
     <color name="component_fg_inverse">#000000</color>
     <color name="component_fg_secondary_inverse">#CC000000</color>
 
+    <color name="card_background">#FFFFFF</color>
+
     <color name="overlay_dark">#66000000</color>
     <color name="overlay_light">#AAFFFFFF</color>
+    <color name="divider">#33000000</color>
 </resources>

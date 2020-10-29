@@ -2,6 +2,7 @@ package com.portalpirates.cufit.ui.user.auth
 
 import android.os.Bundle
 import android.transition.*
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
@@ -41,13 +42,18 @@ abstract class AuthFragment : FitFragment() {
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         // don't save passwords here
-        savedInstanceState.putString(BUNDLE_EMAIL_TEXT, emailAddrInput.text)
+        try {
+            savedInstanceState.putString(BUNDLE_EMAIL_TEXT, emailAddrInput.text)
+        }
+        catch (e: UninitializedPropertyAccessException) {
+            Log.w(TAG, e.message ?: "")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logo = view.findViewById(R.id.add_photo_btn)
+        logo = view.findViewById(R.id.logo)
 
         userInputs = view.findViewById(R.id.credentials)
         emailAddrInput = userInputs.findViewById(R.id.email_input)
@@ -74,6 +80,9 @@ abstract class AuthFragment : FitFragment() {
         setImeListeners()
         setActionOnClickListener()
         setSwitchModeOnClickListener()
+
+        // for marquee
+        message.isSelected = true
     }
 
     /**
@@ -93,6 +102,16 @@ abstract class AuthFragment : FitFragment() {
 
     protected open fun onIncorrectInput() {
         userInputs.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+    }
+
+    protected fun showMessage(msg: String) {
+        message.visibility = View.VISIBLE
+        message.text = msg
+    }
+
+    protected fun hideMessage() {
+        message.visibility = View.INVISIBLE
+        message.text = ""
     }
 
     /**

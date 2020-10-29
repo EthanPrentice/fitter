@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.appbar.AppBarLayout
 import com.portalpirates.cufit.datamodel.manager.UserManager
 
 /**
@@ -13,9 +16,17 @@ import com.portalpirates.cufit.datamodel.manager.UserManager
  */
 abstract class FitActivity : AppCompatActivity() {
 
+    var appBar: AppBarLayout? = null
+        protected set
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i(TAG, "onCreate called for ${javaClass.name}")
+    }
+
+    override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {
+        super.setContentView(view, params)
+        appBar = findViewById(R.id.app_bar)
     }
 
     override fun onResume() {
@@ -48,11 +59,15 @@ abstract class FitActivity : AppCompatActivity() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
+    fun hasAppBar(): Boolean {
+        return appBar != null
+    }
+
     companion object {
         private const val TAG = "FitActivity"
 
         // Bundle args
-        const val HAS_ACTIVITY_SHARED_ELEM_TRANSITION = "com.portalpirates.cufit.ui.FitFragment:hasActivitySharedElemTransition"
+        const val HAS_ACTIVITY_SHARED_ELEM_TRANSITION = "com.portalpirates.cufit.ui.FitActivity:hasActivitySharedElemTransition"
 
         // Result codes
         const val REQUEST_LOAD_IMAGE = 0

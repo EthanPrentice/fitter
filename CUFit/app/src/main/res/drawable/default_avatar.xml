@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="@dimen/LU_6"
+        android:height="@dimen/LU_6">
+        <shape android:shape="oval">
+            <solid android:color="#CCCCCC"/>
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/ic_person"
+        android:left="@dimen/LU_2"
+        android:top="@dimen/LU_2"
+        android:bottom="@dimen/LU_2"
+        android:right="@dimen/LU_2"/>
+</layer-list>

@@ -18,19 +18,21 @@
         android:transitionName="@string/tr_top_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="First, lets get a photo set up"
+        android:text="@string/set_up_photo"
         android:textAlignment="center"
         android:textAppearance="@style/header1"
-        android:layout_marginTop="@dimen/LU_5"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="@dimen/LU_2"
         android:paddingHorizontal="@dimen/LU_4_5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/add_photo_btn"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintBottom_toTopOf="@id/choose_photo_btn"
+        app:layout_constraintVertical_bias="0.5"/>
 
     <com.portalpirates.cufit.ui.view.ChooseImageButton
         android:id="@+id/choose_photo_btn"
+        android:transitionName="@string/tr_choose_photo_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -49,13 +51,13 @@
         android:layout_marginHorizontal="@dimen/LU_4_5"
         android:layout_marginVertical="@dimen/LU_4"
         app:buttonType="primary"
-        app:text="Continue"
+        app:text="@string/continue_btn"
         app:icon="@drawable/ic_arrow_right"
         app:iconOn="right"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_photo_btn"
+        app:layout_constraintTop_toBottomOf="@id/choose_photo_btn"
         app:layout_constraintVertical_bias="1.0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
