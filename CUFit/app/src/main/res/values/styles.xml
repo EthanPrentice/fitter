@@ -105,11 +105,6 @@
 
 
     <!-- Component styles -->
-    <style name="BirthDatePicker" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="android:datePickerMode">spinner</item>
-        <item name="android:calendarViewShown">false</item>
-    </style>
-
     <style name="marquee_message" parent="Widget.AppCompat.TextView">
         <item name="android:ellipsize">marquee</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>

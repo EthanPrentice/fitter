@@ -74,7 +74,7 @@ class FitDatePicker(context: Context, attrs: AttributeSet?, defStyle: Int) : Fit
         val year = cal.get(Calendar.YEAR)
 
         cal.isLenient = false
-        pickerDialog = DatePickerDialog(context, R.style.BirthDatePicker, this, year, month, day).apply {
+        pickerDialog = DatePickerDialog(context, this, year, month, day).apply {
             datePicker.maxDate = System.currentTimeMillis()
             show()
         }
