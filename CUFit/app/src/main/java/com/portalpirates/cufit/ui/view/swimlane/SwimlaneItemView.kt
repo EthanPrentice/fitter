@@ -6,17 +6,17 @@ import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.portalpirates.cufit.R
-import de.hdodenhof.circleimageview.CircleImageView
+import com.portalpirates.cufit.ui.view.FitCircleImageView
 
 class SwimlaneItemView(context: Context, attrs: AttributeSet?, defStyle: Int) : LinearLayout(context, attrs, defStyle) {
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    val imageView = CircleImageView(context)
+    val rippleView = ImageView(context)
+    val imageView = FitCircleImageView(context)
     val titleView = TextView(context)
 
     var text: String
@@ -42,22 +42,38 @@ class SwimlaneItemView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
         orientation = VERTICAL
         gravity = Gravity.CENTER
 
+        rippleView.setBackgroundResource(R.drawable.circular_ripple)
+        rippleView.isDuplicateParentStateEnabled
+
         // set TextView properties
         titleView.setTextAppearance(R.style.body_text)
         titleView.setTextColor(ContextCompat.getColor(context, textColor))
         titleView.maxLines = 2
         titleView.textAlignment = TEXT_ALIGNMENT_CENTER
         titleView.ellipsize = TextUtils.TruncateAt.END
+        titleView.isDuplicateParentStateEnabled = true
 
-        val imageParams = LayoutParams(LayoutParams.MATCH_PARENT, 0).apply {
+        val imageParams = LayoutParams(LayoutParams.WRAP_CONTENT, 0).apply {
             bottomMargin = resources.getDimensionPixelOffset(R.dimen.LU_1)
             weight = 1f
+            gravity = Gravity.CENTER_HORIZONTAL
         }
         val titleParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
-        addView(imageView, imageParams)
+        val frameLayout = FrameLayout(context).apply {
+            addView(imageView)
+            addView(rippleView)
+            isDuplicateParentStateEnabled = true
+        }
+
+        addView(frameLayout, imageParams)
         addView(titleView, titleParams)
     }
+//
+//    override fun performClick(): Boolean {
+//        rippleView.performClick()
+//        return super.performClick()
+//    }
 
     fun setImageBitmap(bmp: Bitmap?) {
         imageView.setImageBitmap(bmp)
