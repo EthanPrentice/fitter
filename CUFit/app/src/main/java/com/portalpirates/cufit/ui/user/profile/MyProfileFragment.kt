@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.android.material.appbar.AppBarLayout
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.cloud.TaskListener
@@ -64,7 +65,7 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         }
 
         recentWorkoutsCard = view.findViewById(R.id.recent_workouts_card)
-        recentWorkoutsCard?.setStatusText("2 week streak")
+        initRecentWorkoutsCard()
 
         progressCard = view.findViewById(R.id.progress_chart_test)
         initProgressCard()
@@ -72,25 +73,19 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
     }
 
     private fun initProgressCard() {
-        // TODO: Populate with real data when workouts are done in data model & cloud
-        val data = mapOf(
-            1 to 164,
-            2 to 165,
-            3 to 163,
-            4 to 161,
-            5 to 162,
-            6 to 164,
-            7 to 164,
-            8 to 163,
-            9 to 163,
-            10 to 161,
-            11 to 160
-        )
-        val lineData = LineDataUtil.toLineDataSet(data, "Test")
+        val lineData = FitApplication.instance.userManager.provider.getBodyWeightLineDataSet()
         progressCard?.apply {
             setData(lineData)
             setTitle("Progress")
-            isIncreaseGood = false
+            isIncreaseGood = false // TODO: read this from user preferences when programmed
+        }
+    }
+
+    private fun initRecentWorkoutsCard() {
+        val recentWorkouts = FitApplication.instance.userManager.provider.getRecentWorkouts()
+        recentWorkoutsCard?.setSwimlaneItems(recentWorkouts)
+        recentWorkoutsCard?.setOnItemClickListener { v, item ->
+            Toast.makeText(context, "${item.getTitle()} was pressed", Toast.LENGTH_SHORT).show()
         }
     }
 

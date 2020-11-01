@@ -35,16 +35,12 @@ class SwimlaneItemView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
         if (imageResId != 0) {
             setImageResource(imageResId)
         }
-        val textColor = typedArr.getResourceId(R.styleable.SwimlaneItemView_android_textColor, R.color.text_secondary)
+        val textColor = typedArr.getResourceId(R.styleable.SwimlaneItemView_android_textColor, R.color.text_primary)
         typedArr.recycle()
 
         // set LinearLayout properties
         orientation = VERTICAL
         gravity = Gravity.CENTER
-
-        // set CircleImageView properties
-        imageView.setCircleBackgroundColorResource(R.color.icon_secondary)
-        imageView.borderWidth = resources.getDimensionPixelOffset(R.dimen.LU_0)
 
         // set TextView properties
         titleView.setTextAppearance(R.style.body_text)
