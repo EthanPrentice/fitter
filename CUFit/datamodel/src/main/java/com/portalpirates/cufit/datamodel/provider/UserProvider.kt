@@ -47,6 +47,10 @@ class UserProvider(manager: Manager) : Provider(manager) {
         return userDataProcessor.getFirebaseUser()
     }
 
+    fun userFinishedWelcomeFlow(listener: TaskListener<Boolean>) {
+        userDataProcessor.userFinishedWelcomeFlow(listener)
+    }
+
     fun getRecentWorkouts(): List<Workout> {
         // TODO: un-hardcode this after the demo
         return List(5) {

@@ -1,16 +1,23 @@
 package com.portalpirates.cufit.ui.user.auth
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import android.view.View
+import android.view.Window
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.portalpirates.cufit.ui.FitActivity
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
+import com.portalpirates.cufit.datamodel.manager.UserManager
+import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.nav.NavActivity
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
@@ -61,6 +68,40 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
     }
 
     override fun onSignUp(uid: String) {
+        launchWelcomeFlow()
+    }
+
+    override fun onLogIn(userManager: UserManager, authUser: AuthenticatedUser) {
+        val listener = object : TaskListener<Boolean> {
+            override fun onSuccess(value: Boolean) {
+                if (value) {
+                    // val intent = Intent(this, UserActivity::class.java)
+                    // startActivity(intent)
+                    // finish()
+                    Toast.makeText(
+                        FitApplication.instance.applicationContext,
+                        "Authenticated as ${authUser.fullName}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        FitApplication.instance.applicationContext,
+                        "Required fields are missing for ${authUser.fullName}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    launchWelcomeFlow()
+                }
+            }
+
+            override fun onFailure(e: Exception?) {
+                // TODO - will handle UserCloudInterface onFailure case; will this present message to the user? How?
+            }
+        }
+
+        userManager.provider.userFinishedWelcomeFlow(listener)
+    }
+
+    private fun launchWelcomeFlow() {
         val intent = Intent(this, WelcomeActivity::class.java)
 
         val logo = findViewById<View>(R.id.logo)

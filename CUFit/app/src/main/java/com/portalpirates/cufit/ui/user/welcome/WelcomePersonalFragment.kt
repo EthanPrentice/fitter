@@ -3,6 +3,8 @@ package com.portalpirates.cufit.ui.user.welcome
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
@@ -59,6 +61,9 @@ class WelcomePersonalFragment : WelcomeFragment() {
             requireActivity().startPostponedEnterTransition()
         }
         startPostponedEnterTransition()
+
+        addInputListeners()
+        updateActionEnabled()
     }
 
     override fun onAttach(context: Context) {
@@ -124,6 +129,26 @@ class WelcomePersonalFragment : WelcomeFragment() {
         }
     }
 
+    private fun addInputListeners() {
+        val listener = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                updateActionEnabled()
+            }
+        }
+        firstNameInput.editText?.addTextChangedListener(listener)
+        lastNameInput.editText?.addTextChangedListener(listener)
+        birthDateInput.editText?.addTextChangedListener(listener)
+    }
+
+    private fun updateActionEnabled() {
+        actionBtn.isEnabled = (
+             firstNameInput.text.isNotBlank()
+                 && lastNameInput.text.isNotBlank()
+                 && birthDateInput.dateSelected
+            )
+    }
 
     companion object {
         const val TAG = "WelcomePersonalFragment"

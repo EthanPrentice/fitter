@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
@@ -65,7 +64,6 @@ class LoginFragment : AuthFragment() {
                 throw IllegalStateException("Activity must implement LogInListener")
             }
         }
-
 
         // fade views in once the sharedElements are done being animated
         val sharedElementEnterTransition = fitActivity!!.window.sharedElementEnterTransition
