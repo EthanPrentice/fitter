@@ -163,10 +163,6 @@ internal class UserDataProcessor(manager: Manager) : DataProcessor(manager) {
         userCloudInterface.reAuthenticateUser(email, password, listener)
     }
 
-    fun userFinishedWelcomeFlow(listener: TaskListener<Boolean>) {
-        userCloudInterface.userFinishedWelcomeFlow(listener)
-    }
-
     @Throws(IllegalArgumentException::class)
     private fun createUserFromDocument(doc: DocumentSnapshot) : FitUser? {
         return try {
