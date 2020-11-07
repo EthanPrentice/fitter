@@ -19,7 +19,6 @@
             <enum name="inverted" value="1"/>
         </attr>
         <attr name="android:clickable" format="boolean"/>
-        <attr name="android:enabled" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="FitEditText">

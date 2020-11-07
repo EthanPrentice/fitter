@@ -16,18 +16,17 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="forgot_password">Forgot Password?</string>
         <!-- Fields -->
-    <string name="first_name">First Name (Required)</string>
-    <string name="last_name">Last Name (Required)</string>
-    <string name="birth_date">Birth Date (Required)</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="birth_date">Birth Date</string>
         <!-- Sexes -->
     <string name="man">Man</string>
     <string name="woman">Woman</string>
     <string name="other">Other</string>
         <!-- Measurements -->
-
-    <string name="current_weight">Current Weight (Optional)</string>
-    <string name="current_height">Current Height (Optional)</string>
-    <string name="weight_goal">Target Weight (Optional)</string>
+    <string name="current_weight">Current Weight</string>
+    <string name="current_height">Current Height</string>
+    <string name="weight_goal">Target Weight</string>
         <!-- Card -->
     <string name="current">Current</string>
     <string name="goal">Goal</string>
@@ -36,7 +35,6 @@
     <string name="my_profile">My Profile</string>
     <string name="my_home">Home</string>
     <string name="my_progress">My Progress</string>
-
 
 
     <!-- Formatting -->

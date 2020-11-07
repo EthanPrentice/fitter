@@ -9,8 +9,6 @@ object ColorUtil {
 
     private val invertibleColors = mapOf(
         R.color.component_bg to R.color.component_bg_inverse,
-        R.color.component_bg_secondary to R.color.component_bg_secondary_inverse,
-        R.color.component_bg_tertiary to R.color.component_bg_tertiary_inverse,
         R.color.component_fg to R.color.component_fg_inverse,
         R.color.component_fg_secondary to R.color.component_fg_secondary_inverse,
         R.color.overlay_dark to R.color.overlay_light,
