@@ -133,7 +133,7 @@ class LoginFragment : AuthFragment() {
                     onIncorrectInput()
                 } else {
                     hideForgotPassword()
-                    listener?.onLogIn(userManager, value)
+                    listener?.onLogIn(value)
                 }
             }
 
@@ -200,7 +200,7 @@ class LoginFragment : AuthFragment() {
     }
 
     interface LogInListener {
-        fun onLogIn(userManager: UserManager, authUser: AuthenticatedUser)
+        fun onLogIn(authUser: AuthenticatedUser)
     }
 
     companion object {

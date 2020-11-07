@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/LU_4"
+    android:paddingRight="@dimen/LU_4"
+    android:paddingBottom="@dimen/LU_4"
+    android:background="@color/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
+        android:id="@+id/my_profile_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3" />
+
+    <com.portalpirates.cufit.ui.user.profile.view.RecentWorkoutsCardView
+        android:id="@+id/recent_workouts_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3" />
+
+    <com.portalpirates.cufit.ui.view.chart.LineChartCardView
+        android:id="@+id/progress_chart_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/LU_7_5"
+        app:showAxisLabels="false"/>
+
+</LinearLayout>

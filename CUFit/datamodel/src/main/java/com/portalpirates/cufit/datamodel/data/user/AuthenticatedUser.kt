@@ -6,12 +6,7 @@ import com.portalpirates.cufit.datamodel.data.measure.Weight
 import com.portalpirates.cufit.datamodel.data.preferences.UserPreferences
 import java.util.*
 
-class AuthenticatedUser(val fbUser: FirebaseUser, birthDate: Date, firstName: String, lastName: String) : FitUser(
-    birthDate, firstName, lastName
-) {
-    constructor(fbUser: FirebaseUser, fitUser: FitUser) : this(
-        fbUser, fitUser.birthDate, fitUser.firstName, fitUser.lastName
-    )
+class AuthenticatedUser(val fbUser: FirebaseUser, fitUser: FitUser) : FitUser(fitUser) {
 
 
     fun addPreviousWeight(weight: Weight) {

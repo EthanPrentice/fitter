@@ -12,18 +12,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.portalpirates.cufit.FitActivity
+import com.portalpirates.cufit.ui.FitActivity
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.cloud.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.manager.UserManager
 import com.portalpirates.cufit.ui.FitApplication
+import com.portalpirates.cufit.ui.nav.NavActivity
 import com.portalpirates.cufit.ui.user.welcome.WelcomeActivity
 
 
 class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment.LogInListener {
 
-    lateinit var fragContainer: FrameLayout
+    // use to finish the activity post-transition in onStop
+    private var shouldFinish = false
 
     init {
         delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
@@ -55,6 +57,13 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
             val transaction: FragmentTransaction = manager.beginTransaction()
             transaction.add(R.id.frag_container, frag, LoginFragment.TAG)
             transaction.commit()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (shouldFinish) {
+            finish()
         }
     }
 
@@ -108,5 +117,12 @@ class AuthActivity : FitActivity(), SignUpFragment.SignUpListener, LoginFragment
 
         val options = ActivityOptions.makeSceneTransitionAnimation(this, *sharedElements)
         startActivity(intent, options.toBundle())
+        shouldFinish = true
+    }
+
+    override fun onLogIn(authUser: AuthenticatedUser) {
+        val intent = Intent(this, NavActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

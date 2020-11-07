@@ -1,9 +1,11 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="FitTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="FitTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="buttonTextStyle">@style/button_text</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
+
+        <item name="actionBarSize">80dp</item>
 
         <item name="android:windowActivityTransitions">true</item>
     </style>
@@ -17,60 +19,83 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
+    <style name="FitTheme.AppBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="elevation">0dp</item>
+    </style>
 
     <!-- Text Styles -->
-    <style name="AppTheme.TextAppearance" parent="TextAppearance.AppCompat"/>
+    <style name="FitTheme.TextAppearance"/>
 
-    <style name="body_text" parent="AppTheme.TextAppearance">
+    <style name="subtitle" parent="FitTheme.TextAppearance">
+        <item name="android:textSize">@dimen/subtitle_text_size</item>
+    </style>
+
+    <style name="body_text" parent="FitTheme.TextAppearance">
         <item name="android:textSize">@dimen/body_text_size</item>
-        <item name="android:textColor">@color/text_primary</item>
     </style>
 
     <style name="bold_body_text" parent="body_text">
         <item name="fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="header1" parent="AppTheme.TextAppearance">
+    <style name="header1" parent="FitTheme.TextAppearance">
         <item name="android:textSize">@dimen/header1_text_size</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="header2" parent="AppTheme.TextAppearance">
+    <style name="header2" parent="FitTheme.TextAppearance">
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/header2_text_size</item>
     </style>
 
-    <style name="header3" parent="AppTheme.TextAppearance">
+    <style name="header3_bold" parent="FitTheme.TextAppearance">
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/header3_text_size</item>
     </style>
+
+    <style name="header3" parent="FitTheme.TextAppearance">
+        <item name="android:textSize">@dimen/header3_text_size</item>
+    </style>
+
 
     <style name="button_text" parent="header3">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="metadata_title1" parent="AppTheme.TextAppearance">
+    <style name="metadata_title1" parent="FitTheme.TextAppearance">
         <item name="android:textSize">@dimen/metadata_title1_size</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="metadata_title2" parent="AppTheme.TextAppearance">
+    <style name="metadata_title2" parent="FitTheme.TextAppearance">
         <item name="android:textSize">@dimen/metadata_title2_size</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="metadata_body1_primary" parent="AppTheme.TextAppearance">
+    <style name="metadata_body1_primary" parent="FitTheme.TextAppearance">
         <item name="android:textSize">@dimen/metadata_body1_size</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
 
-    <style name="metadata_body1_secondary" parent="AppTheme.TextAppearance">
+    <style name="metadata_body1_secondary" parent="FitTheme.TextAppearance">
         <item name="android:textSize">@dimen/metadata_body1_size</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="metadata_body2" parent="AppTheme.TextAppearance">
+    <style name="metadata_body2" parent="FitTheme.TextAppearance">
         <item name="android:textSize">@dimen/metadata_body2_size</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="metadata_body3" parent="FitTheme.TextAppearance">
+        <item name="android:textSize">@dimen/metadata_body3_size</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="metadata_body4" parent="FitTheme.TextAppearance">
+        <item name="android:textSize">@dimen/metadata_body4_size</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 

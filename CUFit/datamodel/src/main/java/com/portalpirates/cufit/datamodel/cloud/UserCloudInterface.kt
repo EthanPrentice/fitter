@@ -254,6 +254,7 @@ internal class UserCloudInterface(manager: Manager) : CloudInterface(manager) {
         const val COLLECTION = "users"
 
         // Fields
+        const val IMAGE_BMP = "avatar_blob"
         const val BIRTH_DATE = "birth_date"
         const val FIRST_NAME = "name.first"
         const val LAST_NAME = "name.last"

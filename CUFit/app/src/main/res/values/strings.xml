@@ -2,6 +2,11 @@
     <string name="app_name">CU Fit</string>
 
 
+    <!-- Nav -->
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="progress">Progress</string>
+
     <!-- User related -->
         <!-- Auth -->
     <string name="log_in">Log In</string>
@@ -19,9 +24,19 @@
     <string name="woman">Woman</string>
     <string name="other">Other</string>
         <!-- Measurements -->
+
     <string name="current_weight">Current Weight (Optional)</string>
     <string name="current_height">Current Height (Optional)</string>
     <string name="weight_goal">Target Weight (Optional)</string>
+        <!-- Card -->
+    <string name="current">Current</string>
+    <string name="goal">Goal</string>
+    <string name="workouts">Workouts</string>
+        <!-- Titles -->
+    <string name="my_profile">My Profile</string>
+    <string name="my_home">Home</string>
+    <string name="my_progress">My Progress</string>
+
 
 
     <!-- Formatting -->
