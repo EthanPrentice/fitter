@@ -17,7 +17,7 @@ open class FitCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
 
     protected var contentView: View? = null
         private set
-    private val rootView: ConstraintLayout
+    protected val rootView: ConstraintLayout
 
     protected val topBarLayout: ConstraintLayout
     protected val titleView: TextView
@@ -33,10 +33,14 @@ open class FitCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
     var statusColor: Int = ContextCompat.getColor(context, R.color.text_secondary)
         set(value) {
             val drawable = statusImageView.drawable
-            drawable?.setTint(value)
-            statusImageView.setImageDrawable(drawable)
+            if (value == 0) {
+                drawable?.setTintList(null)
+            } else {
+                drawable?.setTint(value)
+                statusImageView.setImageDrawable(drawable)
 
-            statusTextView.setTextColor(value)
+                statusTextView.setTextColor(value)
+            }
 
             field = value
         }
@@ -72,7 +76,7 @@ open class FitCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
     /**
      * Sets title in the [topBarLayout]
      */
-    fun setTitle(title: String) {
+    open fun setTitle(title: String) {
         titleView.text = title
     }
 

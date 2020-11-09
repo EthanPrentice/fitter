@@ -8,7 +8,7 @@
     <color name="icon_secondary">#CC000000</color>
 
     <color name="text_primary">#000000</color>
-    <color name="text_secondary">#66000000</color>
+    <color name="text_secondary">#CC000000</color>
 
     <color name="component_bg">#161825</color>
     <color name="component_bg_secondary">#CC161825</color>

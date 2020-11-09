@@ -26,4 +26,46 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <TextView
+        android:id="@+id/recent_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/LU_2"
+        android:layout_marginLeft="@dimen/LU_3"
+        android:text="Recent"
+        android:textAppearance="@style/header2"
+        android:textColor="@color/text_primary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/swimlane"/>
+
+    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
+        android:id="@+id/fake_workout_view1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/LU_2"
+        android:layout_marginHorizontal="@dimen/LU_3"
+        app:layout_constraintTop_toBottomOf="@id/recent_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
+        android:id="@+id/fake_workout_view2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/LU_3"
+        android:layout_marginHorizontal="@dimen/LU_3"
+        app:layout_constraintTop_toBottomOf="@id/fake_workout_view1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
+        android:id="@+id/fake_workout_view3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/LU_3"
+        android:layout_marginHorizontal="@dimen/LU_3"
+        app:layout_constraintTop_toBottomOf="@id/fake_workout_view2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

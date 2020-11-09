@@ -8,6 +8,8 @@
         <item name="actionBarSize">80dp</item>
 
         <item name="android:windowActivityTransitions">true</item>
+
+        <item name="chipStyle">@style/FitChipStyle</item>
     </style>
 
     <style name="FitTheme.Login">
@@ -116,6 +118,14 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="FitChipStyle" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="chipStrokeColor">@color/text_secondary</item>
+        <item name="chipStrokeWidth">@dimen/LU_0_25</item>
+        <item name="chipBackgroundColor">@android:color/transparent</item>
+        <item name="chipSurfaceColor">@android:color/transparent</item>
     </style>
 
 </resources>

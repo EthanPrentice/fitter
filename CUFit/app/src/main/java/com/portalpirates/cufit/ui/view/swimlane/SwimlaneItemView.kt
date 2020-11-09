@@ -46,12 +46,15 @@ class SwimlaneItemView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
         rippleView.isDuplicateParentStateEnabled
 
         // set TextView properties
-        titleView.setTextAppearance(R.style.body_text)
+        titleView.setTextAppearance(R.style.subtitle)
         titleView.setTextColor(ContextCompat.getColor(context, textColor))
-        titleView.maxLines = 2
+        titleView.maxLines = 1
         titleView.textAlignment = TEXT_ALIGNMENT_CENTER
         titleView.ellipsize = TextUtils.TruncateAt.END
         titleView.isDuplicateParentStateEnabled = true
+
+        val titlePadding = resources.getDimensionPixelOffset(R.dimen.LU_2)
+        titleView.setPadding(titlePadding, 0, titlePadding, 0)
 
         val imageParams = LayoutParams(LayoutParams.WRAP_CONTENT, 0).apply {
             bottomMargin = resources.getDimensionPixelOffset(R.dimen.LU_1)
@@ -69,11 +72,6 @@ class SwimlaneItemView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
         addView(frameLayout, imageParams)
         addView(titleView, titleParams)
     }
-//
-//    override fun performClick(): Boolean {
-//        rippleView.performClick()
-//        return super.performClick()
-//    }
 
     fun setImageBitmap(bmp: Bitmap?) {
         imageView.setImageBitmap(bmp)
