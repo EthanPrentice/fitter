@@ -1,5 +1,7 @@
 package com.portalpirates.cufit.datamodel.data.exercise
 
+import com.portalpirates.cufit.datamodel.data.musclegroup.MuscleGroup
+
 open class Exercise(
         var name: String,
         var description: String? = null,

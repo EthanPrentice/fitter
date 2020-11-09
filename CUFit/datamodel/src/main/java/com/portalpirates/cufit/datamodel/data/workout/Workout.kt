@@ -2,6 +2,7 @@ package com.portalpirates.cufit.datamodel.data.workout
 
 import android.graphics.drawable.Drawable
 import com.portalpirates.cufit.datamodel.data.exercise.Exercise
+import com.portalpirates.cufit.datamodel.data.musclegroup.MuscleGroup
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
 
