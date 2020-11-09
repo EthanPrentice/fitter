@@ -1,5 +1,6 @@
 package com.portalpirates.cufit.datamodel.data.workout
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.portalpirates.cufit.datamodel.data.exercise.Exercise
 import com.portalpirates.cufit.datamodel.data.musclegroup.MuscleGroup
@@ -13,7 +14,8 @@ open class Workout(
         var public: Boolean,
         var subscribers: List<FitUser>? = null,
         var exercises: List<Exercise>? = null,
-        var targetMuscleGroups: List<MuscleGroup>? = null
+        var targetMuscleGroups: List<MuscleGroup>? = null,
+        var imageBmp: Bitmap? = null
 ) : SwimlaneItem {
     // copy constructor
     constructor(workout: Workout) : this(
@@ -23,7 +25,8 @@ open class Workout(
             workout.public,
             workout.subscribers,
             workout.exercises,
-            workout.targetMuscleGroups
+            workout.targetMuscleGroups,
+            workout.imageBmp
     )
 
     override fun getTitle(): String {
