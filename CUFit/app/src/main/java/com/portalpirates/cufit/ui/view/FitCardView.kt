@@ -85,6 +85,7 @@ open class FitCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
     }
 
     fun setStatusIcon(drawable: Drawable?) {
+        drawable?.mutate()
         drawable?.setTint(statusColor)
         statusImageView.setImageDrawable(drawable)
     }

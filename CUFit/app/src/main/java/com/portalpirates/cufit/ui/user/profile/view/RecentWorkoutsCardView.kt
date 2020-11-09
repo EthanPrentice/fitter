@@ -1,6 +1,9 @@
 package com.portalpirates.cufit.ui.user.profile.view
 
 import android.content.Context
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
