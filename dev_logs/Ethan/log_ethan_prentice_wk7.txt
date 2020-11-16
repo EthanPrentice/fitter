@@ -5,4 +5,6 @@ Added foundation for workouts to data model so I could mock data for the demo
 Added onclick effects to swimlane
 Added a FitCircleImageView that restricts the measured size of the CircleImageView to a square
 
-Total time spent on project: 6hrs
+Wrote the component diagram for our demo, wrote a portion of D2 explaining the client-side code and proofread the D2 write up.
+
+Total time spent on project: 10hrs
