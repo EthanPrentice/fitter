@@ -1,0 +1,8 @@
+For the week of Oct 26th (reading week) and November 2nd, 2020
+
+Added progress graphing using third party library and subclassed FitCardView for a prpgress graphing card on the user profile
+Added foundation for workouts to data model so I could mock data for the demo
+Added onclick effects to swimlane
+Added a FitCircleImageView that restricts the measured size of the CircleImageView to a square
+
+Total time spent on project: 6hrs
