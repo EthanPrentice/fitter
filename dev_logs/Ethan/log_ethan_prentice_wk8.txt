@@ -1,0 +1,7 @@
+For the week of Nov 9th, 2020
+
+Added functionality on the front end for workout cards (subclassing FitCardView)
+Added functionality to actually populate the above views, but since data model code wasn't complete I had to simulate the data with client side code
+Made minor visual updates to the swimlane
+
+Total time spent on project: 4hrs
