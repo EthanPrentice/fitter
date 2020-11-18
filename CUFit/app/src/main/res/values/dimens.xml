@@ -2,7 +2,11 @@
 <resources>
 
     <dimen name="LU_0">0dp</dimen>
+    <dimen name="LU_0_125">0.5dp</dimen>
+    <dimen name="LU_0_25">1dp</dimen>
+    <dimen name="LU_0_375">1.5dp</dimen>
     <dimen name="LU_0_5">2dp</dimen>
+    <dimen name="LU_0_75">3dp</dimen>
     <dimen name="LU_1">4dp</dimen>
     <dimen name="LU_1_5">6dp</dimen>
     <dimen name="LU_2">8dp</dimen>
@@ -22,7 +26,8 @@
     <dimen name="LU_12">228dp</dimen>
 
     <!-- Text dimensions -->
-    <dimen name="body_text_size">14sp</dimen>
+    <dimen name="body_text_size">16sp</dimen>
+    <dimen name="subtitle_text_size">14sp</dimen>
 
     <dimen name="header1_text_size">30sp</dimen>
     <dimen name="header2_text_size">24sp</dimen>
@@ -32,5 +37,7 @@
     <dimen name="metadata_title2_size">20sp</dimen>
     <dimen name="metadata_body1_size">18sp</dimen>
     <dimen name="metadata_body2_size">14sp</dimen>
+    <dimen name="metadata_body3_size">12sp</dimen>
+    <dimen name="metadata_body4_size">10sp</dimen>
 
 </resources>

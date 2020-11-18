@@ -1,6 +1,7 @@
 package com.portalpirates.cufit.ui.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -9,8 +10,11 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginLeft
+import androidx.core.view.setMargins
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.ui.util.ColorUtil
 
@@ -82,11 +86,11 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
             else -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
         }
 
-    private val btnForegroundColor: Int
+    private val btnForegroundColor: ColorStateList
         get() = when(buttonType) {
-            ButtonType.PRIMARY -> ColorUtil.getInvertibleColor(context, R.color.component_fg, inverted)
-            ButtonType.SECONDARY -> ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted)
-            ButtonType.TERTIARY -> ContextCompat.getColor(context, R.color.tertiary_btn_text)
+            ButtonType.PRIMARY -> ColorStateList.valueOf(ColorUtil.getInvertibleColor(context, R.color.component_fg, inverted))
+            ButtonType.SECONDARY -> ColorStateList.valueOf(ColorUtil.getInvertibleColor(context, R.color.component_bg, inverted))
+            ButtonType.TERTIARY -> ContextCompat.getColorStateList(context, R.color.tertiary_btn_text)!!
         }
 
     private val rippleColor: Int
@@ -123,46 +127,66 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
             IconLocation.RIGHT -> findViewById(R.id.btn_icon_right)
         }
 
+        textView.transitionName = "$transitionName:textView"
+        imageView.transitionName = "$transitionName:imageView"
+
         icon = typedArr.getDrawable(R.styleable.FitButton_icon)
         typedArr.recycle()
 
-
-        if (text.isEmpty() && icon == null) {
-            throw RuntimeException("Button must have text or icon")
-        }
-
         initImageView()
         initTextView()
-        setPadding()
 
         initForeground()
         initBackground()
     }
 
-    private fun setPadding() {
-        val imageVertical = resources.getDimensionPixelOffset(R.dimen.LU_3)
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        // if only icon, it must be square bounds
         if (icon != null && text.isEmpty()) { // icon only
-            val padding = context.resources.getDimensionPixelOffset(R.dimen.LU_1)
-            imageView.setPadding(padding, padding, padding, padding)
+            val min = measuredWidth.coerceAtMost(measuredHeight)
+            val params = layoutParams
+            params.width = min
+            params.height = min
+            layoutParams = params
+        }
+
+        setPadding()
+
+        if (text.isEmpty() && icon == null) {
+            throw RuntimeException("Button must have text or icon")
+        }
+    }
+
+    private fun setPadding() {
+        if (icon != null && text.isEmpty()) { // icon only
+            val margin = context.resources.getDimensionPixelOffset(R.dimen.LU_1)
+            val params = imageView.layoutParams as LinearLayout.LayoutParams
+            params.leftMargin = margin
+            params.topMargin = margin
+            params.rightMargin = margin
+            params.bottomMargin = margin
+            imageView.layoutParams = params
         }
         else if (icon == null && text.isNotEmpty()) { // text only
             val padding = context.resources.getDimensionPixelOffset(R.dimen.LU_3)
             textView.setPadding(padding, 0, padding, 0)
         }
         else { // image and text
-            val innerPadding = context.resources.getDimensionPixelOffset(R.dimen.LU_2)
+            val innerPadding = context.resources.getDimensionPixelOffset(R.dimen.LU_1)
             val outerPadding = if (buttonType != ButtonType.TERTIARY) {
                 context.resources.getDimensionPixelOffset(R.dimen.LU_3)
             } else {
-                context.resources.getDimensionPixelOffset(R.dimen.LU_1_5)
+                context.resources.getDimensionPixelOffset(R.dimen.LU_1)
             }
 
             if (iconLocation == IconLocation.LEFT) {
-                imageView.setPadding(outerPadding, imageVertical, 0, imageVertical)
-                textView.setPadding(innerPadding, 0, outerPadding, 0)
+                imageView.setPadding(outerPadding, 0, 0, 0)
+                textView.setPadding(innerPadding, 0, imageView.measuredWidth + innerPadding, 0)
             } else {
-                imageView.setPadding(0, imageVertical, outerPadding, imageVertical)
-                textView.setPadding(outerPadding, 0, innerPadding, 0)
+                imageView.setPadding(0, 0, outerPadding, 0)
+                textView.setPadding(imageView.measuredWidth + innerPadding, 0, innerPadding, 0)
             }
         }
     }
@@ -170,11 +194,13 @@ class FitButton(context: Context, attrs: AttributeSet?, defStyle: Int) : FrameLa
     private fun initImageView() {
         icon?.let {
             if (isTintEnabled) {
-                it.setTint(btnForegroundColor)
+                it.setTintList(btnForegroundColor)
             }
             imageView.setImageDrawable(it)
             imageView.visibility = View.VISIBLE
         }
+
+        imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
     }
 
     private fun initTextView() {

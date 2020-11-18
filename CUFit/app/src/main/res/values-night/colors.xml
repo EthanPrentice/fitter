@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">#262626</color>
+    <color name="background_translucent">#D9363636</color>
+    <color name="nav_background">#202020</color>
 
     <color name="icon_primary">#FFFFFF</color>
     <color name="icon_secondary">#CCFFFFFF</color>
 
     <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#66FFFFFF</color>
+    <color name="text_secondary">#CCFFFFFF</color>
 
     <color name="component_bg">#FFFFFF</color>
+    <color name="component_bg_secondary">#CCFFFFFF</color>
+    <color name="component_bg_tertiary">#33FFFFFF</color>
     <color name="component_fg">#000000</color>
     <color name="component_fg_secondary">#66000000</color>
 
@@ -16,6 +20,15 @@
     <color name="component_fg_inverse">#FFFFFF</color>
     <color name="component_fg_secondary_inverse">#CCFFFFFF</color>
 
+    <color name="card_background">#3C3C3C</color>
+
     <color name="overlay_dark">#AAFFFFFF</color>
     <color name="overlay_light">#66000000</color>
+    <color name="divider">#33FFFFFF</color>
+
+    <color name="chart_primary">#FF66DD</color>
+    <color name="chart_secondary">#3FFF66DD</color>
+
+    <color name="status_green">#00E332</color>
+    <color name="status_red">#FF0000</color>
 </resources>
