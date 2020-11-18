@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.google.firebase.firestore.Blob
 import com.portalpirates.cufit.datamodel.FitException
-import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
 import com.portalpirates.cufit.datamodel.data.measure.Height
 import com.portalpirates.cufit.datamodel.data.measure.Weight
 import java.io.ByteArrayOutputStream
@@ -102,18 +101,18 @@ class FitUserBuilder {
         }
 
         val hashMap = hashMapOf<String, Any?>(
-            UserCloudInterface.BIRTH_DATE to birthDate,
-            UserCloudInterface.FIRST_NAME to firstName,
-            UserCloudInterface.LAST_NAME to lastName,
-            UserCloudInterface.SEX to sex!!.char.toString(),
-            UserCloudInterface.IMAGE_BMP to imageBlob
+            UserField.BIRTH_DATE.toString() to birthDate,
+            UserField.FIRST_NAME.toString() to firstName,
+            UserField.LAST_NAME.toString() to lastName,
+            UserField.SEX.toString() to sex!!.char.toString(),
+            UserField.IMAGE_BMP.toString() to imageBlob
             // TODO: previous weights
             // TODO: previous heights
         )
 
-        currentWeight?.addFieldsToHashMap(hashMap, UserCloudInterface.CURRENT_WEIGHT)
-        currentHeight?.addFieldsToHashMap(hashMap, UserCloudInterface.CURRENT_HEIGHT)
-        weightGoal?.addFieldsToHashMap(hashMap, UserCloudInterface.WEIGHT_GOAL)
+        currentWeight?.addFieldsToHashMap(hashMap, UserField.CURRENT_WEIGHT.toString())
+        currentHeight?.addFieldsToHashMap(hashMap,  UserField.CURRENT_HEIGHT.toString())
+        weightGoal?.addFieldsToHashMap(hashMap,  UserField.WEIGHT_GOAL.toString())
 
         return hashMap
     }

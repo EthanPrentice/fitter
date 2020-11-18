@@ -10,11 +10,9 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.cloud.TaskListener
+import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
-import com.portalpirates.cufit.datamodel.manager.UserManager
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.animation.ResizeAnimation
 import com.portalpirates.cufit.ui.view.FitButton
@@ -128,7 +126,8 @@ class LoginFragment : AuthFragment() {
 
         val userManager = FitApplication.instance.userManager
 
-        val listener = object : TaskListener<AuthenticatedUser?> {
+        val listener = object :
+            TaskListener<AuthenticatedUser?> {
             override fun onSuccess(value: AuthenticatedUser?) {
                 hideMessage()
                 if (value == null) {
@@ -148,7 +147,8 @@ class LoginFragment : AuthFragment() {
             }
         }
 
-        userManager.receiver.authenticateUser(email, password, object : TaskListener<Unit?> {
+        userManager.authReceiver.authenticateUser(email, password, object :
+            TaskListener<Unit?> {
             override fun onSuccess(value: Unit?) {
                 userManager.provider.getAuthenticatedUser(listener)
             }
