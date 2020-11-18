@@ -1,9 +1,9 @@
-package com.portalpirates.cufit.datamodel.cloud
+package com.portalpirates.cufit.datamodel.adt
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.portalpirates.cufit.datamodel.manager.Manager
+import com.portalpirates.cufit.datamodel.adt.Manager
 
 internal abstract class CloudInterface(protected val manager: Manager) {
 

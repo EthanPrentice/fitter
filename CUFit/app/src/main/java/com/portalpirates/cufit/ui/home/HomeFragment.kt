@@ -8,10 +8,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.cloud.TaskListener
+import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
 import com.portalpirates.cufit.ui.FitApplication
@@ -97,7 +96,8 @@ class HomeFragment : FitFragment() {
             setFakeLabels(listOf("Legs", "Shoulders"))
         }
 
-        FitApplication.instance.userManager.provider.getAuthenticatedUser(object : TaskListener<AuthenticatedUser?> {
+        FitApplication.instance.userManager.provider.getAuthenticatedUser(object :
+            TaskListener<AuthenticatedUser?> {
             override fun onSuccess(value: AuthenticatedUser?) {
                 workout1.setFakeOwnerBmp(value?.imageBmp)
                 workout3.setFakeOwnerBmp(value?.imageBmp)

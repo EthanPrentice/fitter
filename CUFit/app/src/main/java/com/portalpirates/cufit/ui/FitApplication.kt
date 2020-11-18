@@ -4,8 +4,8 @@ import android.app.Application
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
-import com.portalpirates.cufit.datamodel.manager.UserManager
-import com.portalpirates.cufit.datamodel.manager.WorkoutManager
+import com.portalpirates.cufit.datamodel.user.UserManager
+import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 
 class FitApplication : Application() {
 
@@ -16,7 +16,8 @@ class FitApplication : Application() {
         super.onCreate()
         instance = this
         userManager = UserManager()
-        workoutManager = WorkoutManager()
+        workoutManager =
+            WorkoutManager()
 
         val settings = firestoreSettings {
             isPersistenceEnabled = true

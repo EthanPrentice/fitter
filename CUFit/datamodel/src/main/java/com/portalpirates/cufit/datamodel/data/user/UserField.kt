@@ -1,18 +1,17 @@
 package com.portalpirates.cufit.datamodel.data.user
 
-import com.portalpirates.cufit.datamodel.cloud.CloudInterface
-import com.portalpirates.cufit.datamodel.cloud.UserCloudInterface
-
 enum class UserField(val fieldName: String) {
-    UID(CloudInterface.UID),
-    BIRTH_DATE(UserCloudInterface.BIRTH_DATE),
-    FIRST_NAME(UserCloudInterface.FIRST_NAME),
-    LAST_NAME(UserCloudInterface.LAST_NAME),
-    CURRENT_WEIGHT(UserCloudInterface.CURRENT_WEIGHT),
-    WEIGHT_GOAL(UserCloudInterface.WEIGHT_GOAL);
+    UID("uid"),
+    IMAGE_BMP("avatar_blob"),
+    BIRTH_DATE("birth_date"),
+    FIRST_NAME("name.first"),
+    LAST_NAME("name.last"),
+    CURRENT_WEIGHT("current_weight"),
+    CURRENT_HEIGHT("current_height"),
+    WEIGHT_GOAL("weight_goal"),
+    SEX("gender");
 
     override fun toString(): String {
         return fieldName
     }
-
 }

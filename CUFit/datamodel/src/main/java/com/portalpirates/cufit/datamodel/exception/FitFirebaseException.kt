@@ -1,4 +1,4 @@
-package com.portalpirates.cufit.datamodel.cloud.exception
+package com.portalpirates.cufit.datamodel.exception
 
 import com.google.firebase.FirebaseException
 

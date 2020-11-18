@@ -10,19 +10,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.cloud.TaskListener
+import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
-import com.portalpirates.cufit.datamodel.util.chart.LineDataUtil
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
 import com.portalpirates.cufit.ui.user.profile.view.RecentWorkoutsCardView
 import com.portalpirates.cufit.ui.view.chart.LineChartCardView
-import com.portalpirates.cufit.ui.view.swimlane.SwimlaneAdapter
 import kotlin.math.abs
 
 class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
@@ -36,7 +33,8 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        FitApplication.instance.userManager.provider.getAuthenticatedUser(object : TaskListener<AuthenticatedUser?> {
+        FitApplication.instance.userManager.provider.getAuthenticatedUser(object :
+            TaskListener<AuthenticatedUser?> {
             override fun onSuccess(value: AuthenticatedUser?) {
                 user = value
                 if (value != null) {

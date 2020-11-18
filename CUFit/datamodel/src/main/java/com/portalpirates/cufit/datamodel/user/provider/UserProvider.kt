@@ -1,28 +1,34 @@
-package com.portalpirates.cufit.datamodel.provider
+package com.portalpirates.cufit.datamodel.user.provider
 
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.auth.FirebaseUser
-import com.portalpirates.cufit.datamodel.cloud.TaskListener
+import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.workout.Workout
-import com.portalpirates.cufit.datamodel.manager.Manager
-import com.portalpirates.cufit.datamodel.processing.UserDataProcessor
+import com.portalpirates.cufit.datamodel.adt.Manager
+import com.portalpirates.cufit.datamodel.adt.Provider
+import com.portalpirates.cufit.datamodel.user.UserManager
+import com.portalpirates.cufit.datamodel.user.processing.UserQueryDataProcessor
 import com.portalpirates.cufit.datamodel.util.chart.LineDataUtil
 import java.util.*
 
 class UserProvider(manager: Manager) : Provider(manager) {
 
-    private val userDataProcessor: UserDataProcessor
-        get() = manager.dataProcessor as UserDataProcessor
+    private val userManager: UserManager
+        get() = manager as UserManager
+
+    override val dataProcessor: UserQueryDataProcessor
+        get() = userManager.queryDataProcessor
 
     private var cachedAuthenticatedUser: AuthenticatedUser? = null
+
 
     /**
      * Runs [callback] with the [FitUser]? provided by [UserDataProcessor]
      */
     fun getUserByUid(uid: String, listener: TaskListener<FitUser?>) {
-        userDataProcessor.getUserByUid(uid, listener)
+        dataProcessor.getUserByUid(uid, listener)
     }
 
     fun getAuthenticatedUser(listener: TaskListener<AuthenticatedUser?>, allowCached: Boolean = true) {
@@ -31,7 +37,8 @@ class UserProvider(manager: Manager) : Provider(manager) {
             return
         }
 
-        userDataProcessor.getAuthenticatedUser(object : TaskListener<AuthenticatedUser?> {
+        dataProcessor.getAuthenticatedUser(object :
+            TaskListener<AuthenticatedUser?> {
             override fun onSuccess(value: AuthenticatedUser?) {
                 cachedAuthenticatedUser = value
                 listener.onSuccess(value)
@@ -44,7 +51,7 @@ class UserProvider(manager: Manager) : Provider(manager) {
     }
 
     fun getFirebaseUser(): FirebaseUser? {
-        return userDataProcessor.getFirebaseUser()
+        return dataProcessor.getFirebaseUser()
     }
 
     fun getRecentWorkouts(): List<Workout> {
