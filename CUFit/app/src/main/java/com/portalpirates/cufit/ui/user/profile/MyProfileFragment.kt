@@ -113,6 +113,8 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
             }
 
             card.setSwimlaneItems(swimlaneItems)
+            card.setTitle("Workouts")
+            card.setStatusText("2 week streak")
         }
 
 //        val recentWorkouts = FitApplication.instance.userManager.provider.getRecentWorkouts()
