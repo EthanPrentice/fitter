@@ -15,7 +15,7 @@ class FitApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        userManager = UserManager()
+        userManager = UserManager.INSTANCE
         workoutManager =
             WorkoutManager()
 

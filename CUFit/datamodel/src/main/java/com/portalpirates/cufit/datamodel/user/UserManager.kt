@@ -11,7 +11,7 @@ import com.portalpirates.cufit.datamodel.user.provider.UserProvider
 import com.portalpirates.cufit.datamodel.user.receiver.UserAuthReceiver
 import com.portalpirates.cufit.datamodel.user.receiver.UserManagementReceiver
 
-class UserManager : Manager() {
+class UserManager private constructor() : Manager() {
 
     init {
         cloudInterfaces[QUERY] = UserQueryCloudInterface(this)
@@ -48,5 +48,15 @@ class UserManager : Manager() {
         private const val QUERY = 0
         private const val MANAGEMENT = 1
         private const val AUTH = 2
+
+        private var actualInstance: UserManager? = null
+
+        val INSTANCE: UserManager
+            get() {
+                if (actualInstance == null) {
+                    actualInstance = UserManager()
+                }
+                return actualInstance!!
+            }
     }
 }
