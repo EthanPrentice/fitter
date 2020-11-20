@@ -1,0 +1,6 @@
+Tasks:
+  Met with team Nov 13 to discuss current status of project
+
+  Implemented Workout, Exercise and related classes
+
+Project time allocation: 4hrs

@@ -1,0 +1,6 @@
+Tasks:
+  Met with team Nov 6 to discuss current status of project
+
+  Didn't implement anything.
+
+Project time allocation: 1.5hrs

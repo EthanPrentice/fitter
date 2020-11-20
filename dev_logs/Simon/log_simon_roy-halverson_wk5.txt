@@ -1,0 +1,7 @@
+Tasks:
+  Met with team Oct 16 to discuss current status of project
+
+  Attempted to implement the Navbar
+  Implemented SwimLaneItemView
+
+Project time allocation: 4.5hrs
