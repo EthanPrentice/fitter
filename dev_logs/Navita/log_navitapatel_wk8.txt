@@ -1,0 +1,2 @@
+- Started looking into work required for CUF-69. Converting workoutbuilder into hashmap, adding any additional functions
+- Writing draft for app architecture & design for Deliverable3
