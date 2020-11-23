@@ -1,0 +1,1 @@
+- Finished work on CUF-66. Added LineDataConfig class
