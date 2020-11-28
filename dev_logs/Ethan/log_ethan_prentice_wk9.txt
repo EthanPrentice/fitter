@@ -1,0 +1,6 @@
+For the week of Nov 16th, 2020
+
+Worked on technical debt
+Wrote up all diagrams (1 component + 2 design) for D3 along with heavy proofreading for the write up
+
+Total time spent on project: 10hrs
