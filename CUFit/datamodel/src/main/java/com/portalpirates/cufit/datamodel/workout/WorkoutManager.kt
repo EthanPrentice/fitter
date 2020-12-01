@@ -4,6 +4,7 @@ import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutManagementCloudInterface
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
 import com.portalpirates.cufit.datamodel.workout.processing.WorkoutManagementDataProcessor
+import com.portalpirates.cufit.datamodel.workout.processing.WorkoutQueryDataProcessor
 import com.portalpirates.cufit.datamodel.workout.provider.WorkoutProvider
 import com.portalpirates.cufit.datamodel.workout.receiver.WorkoutReceiver
 

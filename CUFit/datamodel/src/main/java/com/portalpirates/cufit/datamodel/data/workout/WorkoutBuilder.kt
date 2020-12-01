@@ -101,7 +101,7 @@ class WorkoutBuilder {
                 WorkoutField.OWNER.toString() to owner,
                 WorkoutField.PUBLIC.toString() to public,
                 WorkoutField.IMAGE_BMP.toString() to imageBlob,
-                // NOT SURE IF THIS IS CORRECT!?!
+                // TODO NOT SURE IF THIS IS CORRECT!?!
                 WorkoutField.DESCRIPTION.toString() to description,
                 WorkoutField.SUBSCRIBERS.toString() to subscribers,
                 WorkoutField.EXERCISES.toString() to exercises,
