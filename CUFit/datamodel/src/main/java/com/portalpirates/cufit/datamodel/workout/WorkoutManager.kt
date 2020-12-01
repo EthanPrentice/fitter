@@ -13,7 +13,7 @@ class WorkoutManager : Manager() {
         dataProcessors[QUERY] = WorkoutQueryDataProcessor(this)
         providers[QUERY] = WorkoutProvider(this)
 
-        cloudInterfaces[MANAGEMENT] = WorkoutManagmentCloudInterface(this)
+        cloudInterfaces[MANAGEMENT] = WorkoutManagementCloudInterface(this)
         dataProcessors[MANAGEMENT] = WorkoutManagementDataProcessor(this)
         receivers[MANAGEMENT] = WorkoutReceiver(this)
     }
