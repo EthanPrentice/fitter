@@ -1,12 +1,34 @@
 package com.portalpirates.cufit.datamodel.data.workout
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
 
-class Workout : SwimlaneItem {
+open class Workout(
+        var name: String,
+        var description: String? = null,
+        var owner: FitUser,
+        var public: Boolean,
+        var subscribers: List<FitUser>? = null,
+        var exercises: List<Exercise>? = null,
+        var targetMuscleGroups: List<MuscleGroup>? = null,
+        var imageBmp: Bitmap? = null
+) : SwimlaneItem {
+    // copy constructor
+    constructor(workout: Workout) : this(
+            workout.name,
+            workout.description,
+            workout.owner,
+            workout.public,
+            workout.subscribers,
+            workout.exercises,
+            workout.targetMuscleGroups,
+            workout.imageBmp
+    )
 
     override fun getTitle(): String {
-        return "Workout"
+        return name
     }
 
     override fun getDrawable(): Drawable? {
