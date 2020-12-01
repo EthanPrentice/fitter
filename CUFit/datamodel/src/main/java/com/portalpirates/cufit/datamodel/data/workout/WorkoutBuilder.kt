@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import com.google.firebase.firestore.Blob
 import com.portalpirates.cufit.datamodel.FitException
 import com.portalpirates.cufit.datamodel.data.user.FitUser
-import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutCloudInterface
 import java.io.ByteArrayOutputStream
 
 class WorkoutBuilder {
@@ -98,15 +97,15 @@ class WorkoutBuilder {
         }
 
         val hashMap = hashMapOf<String, Any?>(
-                WorkoutCloudInterface.NAME to name,
-                WorkoutCloudInterface.OWNER to owner,
-                WorkoutCloudInterface.PUBLIC to public,
-                WorkoutCloudInterface.IMAGE_BMP to imageBlob,
+                WorkoutField.NAME.toString() to name,
+                WorkoutField.OWNER.toString() to owner,
+                WorkoutField.PUBLIC.toString() to public,
+                WorkoutField.IMAGE_BMP.toString() to imageBlob,
                 // NOT SURE IF THIS IS CORRECT!?!
-                WorkoutCloudInterface.DESCRIPTION to description,
-                WorkoutCloudInterface.SUBSCRIBERS to subscribers,
-                WorkoutCloudInterface.EXERCISES to exercises,
-                WorkoutCloudInterface.TARGET_MUSCLE_GROUPS to targetMuscleGroups
+                WorkoutField.DESCRIPTION.toString() to description,
+                WorkoutField.SUBSCRIBERS.toString() to subscribers,
+                WorkoutField.EXERCISES.toString() to exercises,
+                WorkoutField.TARGET_MUSCLE_GROUPS.toString() to targetMuscleGroups
         )
 
         return hashMap
