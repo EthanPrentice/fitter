@@ -13,7 +13,7 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
         get() = manager as WorkoutManager
 
     fun createWorkout(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
-        workoutManager.queryCloudInterface.getWorkoutByUid("TEST", object :
+        workoutManager.queryCloudInterface.getWorkoutByUid("TEST", object : // TODO get actual UID
             TaskListener<DocumentSnapshot> {
             override fun onSuccess(value: DocumentSnapshot) {
                 value.reference.update(fields)
@@ -34,7 +34,7 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
     }
 
     fun updateWorkout(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
-        workoutManager.queryCloudInterface.getWorkoutByUid("TEST", object :
+        workoutManager.queryCloudInterface.getWorkoutByUid("TEST", object : // TODO get actual UID
             TaskListener<DocumentSnapshot> {
             override fun onSuccess(value: DocumentSnapshot) {
                 value.reference.update(fields)
