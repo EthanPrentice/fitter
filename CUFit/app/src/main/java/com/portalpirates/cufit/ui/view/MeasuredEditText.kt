@@ -56,7 +56,7 @@ class MeasuredEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : 
     var measureUnit: MeasureUnit? = null
         set(value) {
             suffixText = if (value != null) {
-                getUnitText(value)
+                " " + getUnitText(value)
             } else {
                 ""
             }

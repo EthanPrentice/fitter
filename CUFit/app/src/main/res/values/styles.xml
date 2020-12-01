@@ -7,6 +7,8 @@
 
         <item name="actionBarSize">80dp</item>
 
+        <item name="editTextStyle">@style/FitEditTextStyle</item>
+
         <item name="android:windowActivityTransitions">true</item>
 
         <item name="chipStyle">@style/FitChipStyle</item>
@@ -126,6 +128,10 @@
         <item name="chipStrokeWidth">@dimen/LU_0_25</item>
         <item name="chipBackgroundColor">@android:color/transparent</item>
         <item name="chipSurfaceColor">@android:color/transparent</item>
+    </style>
+
+    <style name="FitEditTextStyle" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:background">@null</item>
     </style>
 
 </resources>

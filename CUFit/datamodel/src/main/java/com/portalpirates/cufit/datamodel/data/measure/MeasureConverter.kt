@@ -64,7 +64,7 @@ object MeasureConverter {
 
         // MeasureUnit's equals method doesn't check real equivalence
         if (measure.unit == newUnit) {
-            return if (decimals == 0) {
+            return if (decimals == -1) {
                  measure
             } else {
                 val rounded = getRounded(measure.number, decimals)
@@ -82,8 +82,12 @@ object MeasureConverter {
     }
 
     private fun getRounded(value: Number, decimals: Int): Double {
-        if (decimals == 0) {
+        if (decimals == -1) {
             return value.toDouble()
+        }
+
+        if (decimals == 0) {
+            return value.toInt().toDouble()
         }
 
         val roundFactor = 10f.pow(decimals).toInt()
