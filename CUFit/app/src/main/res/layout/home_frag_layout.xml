@@ -38,33 +38,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/swimlane"/>
 
-    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
-        android:id="@+id/fake_workout_view1"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recent_workouts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/LU_2"
         android:layout_marginHorizontal="@dimen/LU_3"
         app:layout_constraintTop_toBottomOf="@id/recent_title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
-        android:id="@+id/fake_workout_view2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/LU_3"
-        android:layout_marginHorizontal="@dimen/LU_3"
-        app:layout_constraintTop_toBottomOf="@id/fake_workout_view1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
-        android:id="@+id/fake_workout_view3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/LU_3"
-        android:layout_marginHorizontal="@dimen/LU_3"
-        app:layout_constraintTop_toBottomOf="@id/fake_workout_view2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 

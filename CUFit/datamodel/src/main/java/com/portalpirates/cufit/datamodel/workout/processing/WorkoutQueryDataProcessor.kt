@@ -6,6 +6,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.portalpirates.cufit.datamodel.adt.DataProcessor
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.workout.MuscleGroup
 import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
@@ -64,6 +65,8 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
     @Throws(IllegalArgumentException::class)
     private fun createWorkoutFromDocument(doc: DocumentSnapshot) : Workout? {
         return try {
+            val muscleGroups = doc.data?.get(WorkoutField.TARGET_MUSCLE_GROUPS.toString()) as? List<String>
+
             WorkoutBuilder()
                 .setUid(doc.id)
                 .setName(doc.getString(WorkoutField.NAME.toString())!!)
@@ -72,7 +75,7 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
                 .setDescription(doc.getString(WorkoutField.DESCRIPTION.toString()))
                 // TODO set subscribers
                 // TODO set exercises
-                // TODO set targetmusclegroups
+                .setTargetMuscleGroups(muscleGroups?.map { it -> MuscleGroup(it) })
                 .setImageBlob(doc.getBlob(WorkoutField.IMAGE_BMP.toString())?.toBytes())
                 .build()
 

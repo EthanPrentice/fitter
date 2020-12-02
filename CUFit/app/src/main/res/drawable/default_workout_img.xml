@@ -4,7 +4,7 @@
         android:width="@dimen/LU_6"
         android:height="@dimen/LU_6">
         <shape android:shape="oval">
-            <solid android:color="#CCCCCC"/>
+            <solid android:color="@color/icon_background"/>
         </shape>
     </item>
 

@@ -41,7 +41,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
     private var expanded = false
 
     private var workoutTitleView: TextView
-    private var workoutOwnerImageView: ImageView
+    private var workoutImageView: ImageView
     private var chevron: ImageView
 
 
@@ -70,12 +70,14 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
             expand()
         }
 
-        workoutOwnerImageView = content.findViewById(R.id.workout_owner_img)
+        workoutImageView = content.findViewById(R.id.workout_img)
         chipGroup = content.findViewById(R.id.chip_group)
 
         exercisesView = content.findViewById<RecyclerView>(R.id.exercise_list).apply {
             adapter = exerciseAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = object : LinearLayoutManager(context) {
+                override fun canScrollVertically() = false
+            }
 
             val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             addItemDecoration(dividerItemDecoration)
@@ -86,8 +88,6 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         exercises.add(Exercise("Tricep Extensions", Weight(55, MeasureUnit.POUND, Date()), 5, 6))
         exercises.add(Exercise("Pec Flies", Weight(180, MeasureUnit.POUND, Date()), 3, 8))
         exercises.add(Exercise("Squeeze Press", Weight(55, MeasureUnit.POUND, Date()), 4, 8))
-
-
 
         logWorkoutBtn = content.findViewById(R.id.log_workout_btn)
         addWorkoutBtn = content.findViewById(R.id.add_workout_btn)
@@ -130,7 +130,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         addWorkoutBtn.visibility = View.VISIBLE
     }
 
-    private fun setDescription(desc: String) {
+    private fun setDescription(desc: String?) {
         workoutDescriptionView.text = desc
     }
 
@@ -152,19 +152,35 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
 
     fun setWorkout(workout: Workout) {
         this.workout = workout
+
+        setTitle(workout.name)
+        setDescription(workout.description)
+        updateWorkoutImage(workout.imageBmp)
+        updateLabels(workout.targetMuscleGroups?.map { it.name })
     }
 
-    private fun updateOwnerImage(drawable: Drawable?) {
+    private fun updateWorkoutImage(drawable: Drawable?) {
         if (drawable == null) {
-            workoutOwnerImageView.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.default_avatar, null))
+            workoutImageView.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.default_workout_img, null))
         } else {
-            workoutOwnerImageView.setImageDrawable(drawable)
+            workoutImageView.setImageDrawable(drawable)
         }
     }
 
-    private fun updateLabels(labels: List<String>) {
+    private fun updateWorkoutImage(bmp: Bitmap?) {
+        if (bmp == null) {
+            workoutImageView.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.default_workout_img, null))
+        } else {
+            workoutImageView.setImageDrawable(BitmapDrawable(resources, bmp))
+        }
+    }
+
+    private fun updateLabels(labels: List<String>?) {
         chipGroup.removeAllViews()
         val layoutInflater = LayoutInflater.from(context)
+
+        labels ?: return
+
         lateinit var chip: Chip
         for (label in labels) {
             chip = layoutInflater.inflate(R.layout.single_chip_layout, chipGroup, false) as Chip
@@ -176,23 +192,4 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
             chipGroup.addView(chip)
         }
     }
-
-
-    // TODO: DELETE ME
-    fun setFakeOwnerBmp(ownerBmp: Bitmap?) {
-        if (ownerBmp == null) {
-            updateOwnerImage(null)
-        } else {
-            updateOwnerImage(BitmapDrawable(resources, ownerBmp))
-        }
-    }
-
-    fun setFakeLabels(labels: List<String>) = updateLabels(labels)
-
-    fun setFakeDescription(str: String) = setDescription(str)
-
-    fun setFakeExercises(exercises: List<Exercise>) {
-
-    }
-
 }
