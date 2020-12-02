@@ -12,6 +12,7 @@ import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
 import java.lang.Exception
 import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 
 internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manager) {
 
@@ -21,12 +22,17 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
     override val cloudInterface: WorkoutQueryCloudInterface
         get() = workoutManager.queryCloudInterface
 
-    fun getWorkoutByUid(uid: String, listener: TaskListener<Workout?>) {
-        cloudInterface.getWorkoutByUid(uid, object :
-            TaskListener<DocumentSnapshot> {
+    fun getWorkoutByUid(uid: String, listener: TaskListener<Workout>) {
+        cloudInterface.getWorkoutByUid(uid, object : TaskListener<DocumentSnapshot> {
             // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
             override fun onSuccess(value: DocumentSnapshot) {
                 val workout = createWorkoutFromDocument(value)
+
+                if (workout == null) {
+                    listener.onFailure(IllegalStateException("Could not create workout from document!!"))
+                    return
+                }
+
                 listener.onSuccess(workout)
             }
             // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
@@ -38,15 +44,16 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
     private fun createWorkoutFromDocument(doc: DocumentSnapshot) : Workout? {
         return try {
             WorkoutBuilder()
-                    .setName(doc.getString(WorkoutField.NAME.toString())!!)
-                    .setDescription(doc.getString(WorkoutField.DESCRIPTION.toString())!!)
-                    // TODO set owner
-                    .setPublic(doc.getBoolean(WorkoutField.PUBLIC.toString())!!)
-                    // TODO set subscribers
-                    // TODO set exercises
-                    // TODO set targetmusclegroups
-                    .setImageBlob(doc.getBlob(WorkoutField.IMAGE_BMP.toString())?.toBytes())
-                    .build()
+                .setUid(doc.id)
+                .setName(doc.getString(WorkoutField.NAME.toString())!!)
+                .setPublic(doc.getBoolean(WorkoutField.PUBLIC.toString())!!)
+                .setOwnerUid(doc.getString(WorkoutField.OWNER.toString()))
+                .setDescription(doc.getString(WorkoutField.DESCRIPTION.toString()))
+                // TODO set subscribers
+                // TODO set exercises
+                // TODO set targetmusclegroups
+                .setImageBlob(doc.getBlob(WorkoutField.IMAGE_BMP.toString())?.toBytes())
+                .build()
 
         } catch (e: Exception) {
             Log.e(TAG, "Could not create a workout from document")

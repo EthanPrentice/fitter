@@ -11,8 +11,16 @@ class WorkoutBuilder {
 
     // required
     var name: String? = null
+
     var owner: FitUser? = null
+        set(value) {
+            field = value
+            ownerUid = value?.uid
+        }
+    var ownerUid: String? = null
+
     var public: Boolean? = null
+
 
     // optional
     var description: String? = null
@@ -21,13 +29,22 @@ class WorkoutBuilder {
     var targetMuscleGroups: List<MuscleGroup>? = null
     var imageBmp: Bitmap? = null
 
+    // should only ever be null for workouts not yet committed to the cloud!!
+    var uid: String? = null
+
+
     @Throws(WorkoutBuildException::class)
     fun build(): Workout {
         if (hasRequiredInputs()) {
-            return Workout(name!!, description, owner!!, public!!, subscribers, exercises, targetMuscleGroups, imageBmp)
+            return Workout(name!!, description, ownerUid!!, owner, public!!, subscribers, exercises, targetMuscleGroups, imageBmp)
         } else {
             throw WorkoutBuildException("All required fields have not been provided for workout! Cannot build!")
         }
+    }
+
+    fun setUid(uid: String?): WorkoutBuilder {
+        this.uid = uid
+        return this
     }
 
     fun setName(name: String): WorkoutBuilder {
@@ -37,6 +54,11 @@ class WorkoutBuilder {
 
     fun setOwner(owner: FitUser): WorkoutBuilder {
         this.owner = owner
+        return this
+    }
+
+    fun setOwnerUid(uid: String?): WorkoutBuilder {
+        this.ownerUid = uid
         return this
     }
 
@@ -85,7 +107,7 @@ class WorkoutBuilder {
 
     fun hasRequiredInputs(): Boolean {
         return name != null &&
-                owner != null &&
+                ownerUid != null &&
                 public != null
     }
 
@@ -96,19 +118,16 @@ class WorkoutBuilder {
             Blob.fromBytes(bos.toByteArray())
         }
 
-        val hashMap = hashMapOf<String, Any?>(
+        return hashMapOf<String, Any?>(
                 WorkoutField.NAME.toString() to name,
-                WorkoutField.OWNER.toString() to owner,
+                WorkoutField.OWNER.toString() to ownerUid,
                 WorkoutField.PUBLIC.toString() to public,
                 WorkoutField.IMAGE_BMP.toString() to imageBlob,
-                // TODO NOT SURE IF THIS IS CORRECT!?!
                 WorkoutField.DESCRIPTION.toString() to description,
                 WorkoutField.SUBSCRIBERS.toString() to subscribers,
                 WorkoutField.EXERCISES.toString() to exercises,
                 WorkoutField.TARGET_MUSCLE_GROUPS.toString() to targetMuscleGroups
         )
-
-        return hashMap
     }
 
     class WorkoutBuildException(s: String, cause: Throwable?) : FitException(s, cause) {

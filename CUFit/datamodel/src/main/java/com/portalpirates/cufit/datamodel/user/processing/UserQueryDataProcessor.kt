@@ -82,6 +82,7 @@ internal class UserQueryDataProcessor(manager: Manager) : DataProcessor(manager)
             )
 
             FitUserBuilder()
+                .setUid(doc.getString(UserField.UID.toString()))
                 .setFirstName(doc.getString(UserField.FIRST_NAME.toString())!!)
                 .setLastName(doc.getString(UserField.LAST_NAME.toString())!!)
                 .setSex(UserSex.getFromString(doc.getString(UserField.SEX.toString()))!!)

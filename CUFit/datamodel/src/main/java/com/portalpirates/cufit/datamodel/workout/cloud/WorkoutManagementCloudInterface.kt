@@ -5,36 +5,38 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.portalpirates.cufit.datamodel.adt.CloudInterface
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
+import java.lang.IllegalArgumentException
 
 internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterface(manager) {
 
     private val workoutManager: WorkoutManager
         get() = manager as WorkoutManager
 
-    fun createWorkout(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
-        workoutManager.queryCloudInterface.getWorkoutByUid("TEST", object : // TODO get actual UID
-            TaskListener<DocumentSnapshot> {
-            override fun onSuccess(value: DocumentSnapshot) {
-                value.reference.update(fields)
-                    .addOnSuccessListener {
-                        Log.d(TAG, "Workout successfully created.")
-                        listener.onSuccess(null)
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Error creating Workout", e)
-                        listener.onFailure(e)
-                    }
-            }
+    fun createWorkout(fields: HashMap<String, Any?>, listener: TaskListener<String>) {
+        db.collection(COLLECTION).add(fields).addOnSuccessListener { ref ->
+            fields[WorkoutField.UID.toString()] = ref.id
+            updateWorkout(fields, object : TaskListener<Unit?> {
+                override fun onSuccess(value: Unit?) = listener.onSuccess(ref.id)
+                override fun onFailure(e: Exception?) = listener.onFailure(e)
+            })
 
-            override fun onFailure(e: Exception?) {
-                listener.onFailure(e)
-            }
-        })
+        }.addOnFailureListener { e ->
+            Log.w(TAG, "Could not create the workout!")
+            listener.onFailure(e)
+        }
     }
 
     fun updateWorkout(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
-        workoutManager.queryCloudInterface.getWorkoutByUid("TEST", object : // TODO get actual UID
+        val uid = fields[WorkoutField.UID.toString()] as String?
+
+        if (uid == null) {
+            listener.onFailure(IllegalArgumentException("Cannot update a workout with no UID!"))
+            return
+        }
+
+        workoutManager.queryCloudInterface.getWorkoutByUid(uid, object :
             TaskListener<DocumentSnapshot> {
             override fun onSuccess(value: DocumentSnapshot) {
                 value.reference.update(fields)
@@ -56,5 +58,7 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
 
     companion object {
         private const val TAG = "WorkoutManagementCloudInterface"
+
+        private const val COLLECTION = "workouts"
     }
 }

@@ -17,7 +17,7 @@ internal class WorkoutManagementDataProcessor(manager: Manager) : DataProcessor(
     override val cloudInterface: WorkoutManagementCloudInterface
         get() = workoutManager.managementCloudInterface
 
-    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<Unit?>) {
+    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<String>) {
         if (builder.hasRequiredInputs()) {
             cloudInterface.createWorkout(builder.convertFieldsToHashMap(), listener)
         } else {

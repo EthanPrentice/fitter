@@ -13,7 +13,10 @@ class WorkoutReceiver(manager: Manager) : Receiver(manager) {
     override val dataProcessor: WorkoutManagementDataProcessor
         get() = (manager as WorkoutManager).managementDataProcessor
 
-    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<Unit?>) {
+    /**
+     * The task listener callback will be the UID of the newly created workout
+     */
+    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<String>) {
         dataProcessor.createWorkout(builder, listener)
     }
 

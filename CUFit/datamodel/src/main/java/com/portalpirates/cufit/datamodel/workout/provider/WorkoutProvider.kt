@@ -17,16 +17,14 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
     override val dataProcessor: WorkoutQueryDataProcessor
         get() = workoutManager.queryDataProcessor
 
-    fun getWorkoutByUid(uid: String, listener: TaskListener<Workout?>) {
+    fun getWorkoutByUid(uid: String, listener: TaskListener<Workout>) {
         dataProcessor.getWorkoutByUid(uid, listener)
     }
 
     fun getExploreWorkouts(): List<Workout> {
         return List(5) {
             // TODO FIX Return actual workouts!
-            Workout("Test", "Test", FitUser(
-                    Date(), "Test", "Test", null, null, null, null
-            ), true, null, null, null, null)
+            Workout("Name", "Desc", "Owner UID", null, true, null, null, null, null)
         }
     }
 

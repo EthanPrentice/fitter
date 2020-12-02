@@ -19,6 +19,7 @@ class FitUserBuilder {
     var sex: UserSex? = null
 
     // optional
+    var uid: String? = null
     var imageBmp: Bitmap? = null
     var currentWeight: Weight? = null
     var currentHeight: Height? = null
@@ -31,6 +32,11 @@ class FitUserBuilder {
         } else {
             throw UserBuildException("All required fields have not been provided for user! Cannot build!")
         }
+    }
+
+    fun setUid(uid: String?): FitUserBuilder {
+        this.uid = uid
+        return this
     }
 
     fun setCurrentWeight(weight: Weight?) : FitUserBuilder {
