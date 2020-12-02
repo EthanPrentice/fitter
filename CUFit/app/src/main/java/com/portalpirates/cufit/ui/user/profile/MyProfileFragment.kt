@@ -1,14 +1,11 @@
 package com.portalpirates.cufit.ui.user.profile
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -16,13 +13,14 @@ import com.google.android.material.appbar.AppBarLayout
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
-import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
+import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
 import com.portalpirates.cufit.ui.home.HomeViewModel
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
 import com.portalpirates.cufit.ui.view.chart.LineChartCardView
 import com.portalpirates.cufit.ui.view.swimlane.SwimlaneCardView
+import com.portalpirates.cufit.ui.workout.view.WorkoutCardView
 import kotlin.math.abs
 
 class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
@@ -33,6 +31,7 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
 
     var myProfileCard: MyProfileCardView? = null
     var myWorkoutsCard: SwimlaneCardView? = null
+    var currWorkoutCard: WorkoutCardView? = null
     var progressCard: LineChartCardView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +83,13 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
             myWorkoutsCard?.adapter?.notifyDataSetChanged()
         })
 
+        // Override the chevron collapsing to close the card and when shown always be expanded
+        currWorkoutCard = view.findViewById<WorkoutCardView>(R.id.curr_workout_card).apply {
+            expand()
+            findViewById<ImageView>(R.id.workout_chevron)?.setOnClickListener {
+                visibility = View.GONE
+            }
+        }
     }
 
     private fun initProgressCard() {
@@ -107,7 +113,9 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         }
 
         myWorkoutsCard?.setOnItemClickListener { v, item ->
-            Toast.makeText(context, "${item.getTitle()} was pressed", Toast.LENGTH_SHORT).show()
+            currWorkoutCard?.setWorkout(item as Workout)
+            currWorkoutCard?.visibility = View.VISIBLE
+            null
         }
     }
 

@@ -21,6 +21,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/LU_3" />
 
+    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
+        android:id="@+id/curr_workout_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3"
+        android:visibility="gone"/>
+
     <com.portalpirates.cufit.ui.view.chart.LineChartCardView
         android:id="@+id/progress_chart_test"
         android:layout_width="match_parent"
