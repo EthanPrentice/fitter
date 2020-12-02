@@ -6,6 +6,7 @@
 
     <color name="icon_primary">#FFFFFF</color>
     <color name="icon_secondary">#CCFFFFFF</color>
+    <color name="icon_background">#20FFFFFF</color>
 
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#CCFFFFFF</color>

@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.adt.TaskListener
@@ -17,17 +19,20 @@ import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
+import com.portalpirates.cufit.ui.home.HomeViewModel
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
-import com.portalpirates.cufit.ui.user.profile.view.RecentWorkoutsCardView
 import com.portalpirates.cufit.ui.view.chart.LineChartCardView
+import com.portalpirates.cufit.ui.view.swimlane.SwimlaneCardView
 import kotlin.math.abs
 
 class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
 
+    private val model: HomeViewModel by activityViewModels()
+
     var user: AuthenticatedUser? = null
 
     var myProfileCard: MyProfileCardView? = null
-    var recentWorkoutsCard: RecentWorkoutsCardView? = null
+    var myWorkoutsCard: SwimlaneCardView? = null
     var progressCard: LineChartCardView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,11 +74,15 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
             myProfileCard?.setUser(it)
         }
 
-        recentWorkoutsCard = view.findViewById(R.id.recent_workouts_card)
-        initRecentWorkoutsCard()
+        myWorkoutsCard = view.findViewById(R.id.my_workouts_card)
+        initMyWorkoutsCard()
 
         progressCard = view.findViewById(R.id.progress_chart_test)
         initProgressCard()
+
+        model.ownedWorkouts.observe(requireActivity(), Observer {
+            myWorkoutsCard?.adapter?.notifyDataSetChanged()
+        })
 
     }
 
@@ -86,40 +95,18 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         }
     }
 
-    private fun initRecentWorkoutsCard() {
-
-        class FakeWorkout(private val title: String, private val bmp: Bitmap?) : SwimlaneItem {
-            override fun getTitle(): String = title
-            override fun getDrawable(): Drawable? {
-                return if (bmp == null) {
-                    null
-                } else {
-                    BitmapDrawable(resources, bmp)
-                }
-            }
-        }
-
-        recentWorkoutsCard?.let { card ->
-            val titles = listOf("Friday", "Wednesday", "Monday", "Oct 30")
-            val bitmapResIds = listOf(R.raw.bench_lady, R.raw.jogging, R.raw.back, R.raw.jogging)
-
-            val swimlaneItems = List<SwimlaneItem>(titles.size) { i ->
-                val bmp = if (bitmapResIds[i] == 0) {
-                    null
-                } else {
-                    BitmapFactory.decodeResource(resources, bitmapResIds[i])
-                }
-                FakeWorkout(titles[i], bmp)
-            }
-
-            card.setSwimlaneItems(swimlaneItems)
-            card.setTitle("Workouts")
+    private fun initMyWorkoutsCard() {
+        myWorkoutsCard?.let { card ->
+            card.setSwimlaneItems(model.ownedWorkouts.value!!)
+            card.setTitle("My Workouts")
             card.setStatusText("2 week streak")
         }
 
-//        val recentWorkouts = FitApplication.instance.userManager.provider.getRecentWorkouts()
-//        recentWorkoutsCard?.setSwimlaneItems(recentWorkouts)
-        recentWorkoutsCard?.setOnItemClickListener { v, item ->
+        myWorkoutsCard?.adapter?.enableAddSwimlaneItem {
+            Toast.makeText(context, "Add clicked", Toast.LENGTH_SHORT).show()
+        }
+
+        myWorkoutsCard?.setOnItemClickListener { v, item ->
             Toast.makeText(context, "${item.getTitle()} was pressed", Toast.LENGTH_SHORT).show()
         }
     }

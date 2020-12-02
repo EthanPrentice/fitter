@@ -6,6 +6,7 @@
 
     <color name="icon_primary">#000000</color>
     <color name="icon_secondary">#CC000000</color>
+    <color name="icon_background">#0D000000</color>
 
     <color name="text_primary">#000000</color>
     <color name="text_secondary">#CC000000</color>
