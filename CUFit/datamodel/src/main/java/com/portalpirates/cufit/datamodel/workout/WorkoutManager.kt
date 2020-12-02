@@ -1,31 +1,37 @@
 package com.portalpirates.cufit.datamodel.workout
 
 import com.portalpirates.cufit.datamodel.adt.Manager
-import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutCloudInterface
-import com.portalpirates.cufit.datamodel.workout.processing.WorkoutDataProcessor
+import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutManagementCloudInterface
+import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
+import com.portalpirates.cufit.datamodel.workout.processing.WorkoutManagementDataProcessor
+import com.portalpirates.cufit.datamodel.workout.processing.WorkoutQueryDataProcessor
 import com.portalpirates.cufit.datamodel.workout.provider.WorkoutProvider
 import com.portalpirates.cufit.datamodel.workout.receiver.WorkoutReceiver
 
 class WorkoutManager : Manager() {
 
     init {
-        cloudInterfaces[GENERAL] =
-            WorkoutCloudInterface(
-                this
-            )
-        dataProcessors[GENERAL] = WorkoutDataProcessor(this)
-        receivers[GENERAL] = WorkoutReceiver(this)
-        providers[GENERAL] = WorkoutProvider(this)
+        cloudInterfaces[QUERY] = WorkoutQueryCloudInterface(this)
+        dataProcessors[QUERY] = WorkoutQueryDataProcessor(this)
+        providers[QUERY] = WorkoutProvider(this)
+
+        cloudInterfaces[MANAGEMENT] = WorkoutManagementCloudInterface(this)
+        dataProcessors[MANAGEMENT] = WorkoutManagementDataProcessor(this)
+        receivers[MANAGEMENT] = WorkoutReceiver(this)
     }
 
-    internal fun getCloudInterface() = cloudInterfaces[GENERAL] as WorkoutCloudInterface
-    internal fun getDataProcessor() = dataProcessors[GENERAL] as WorkoutDataProcessor
-    internal fun getReceiver() = receivers[GENERAL] as WorkoutReceiver
-    internal fun getProvider() = providers[GENERAL] as WorkoutProvider
+    /* WORKOUT QUERYING */
+    internal val queryCloudInterface get() = cloudInterfaces[QUERY] as WorkoutQueryCloudInterface
+    internal val queryDataProcessor  get() = dataProcessors[QUERY]  as WorkoutQueryDataProcessor
+    val provider                     get() = providers[QUERY]       as WorkoutProvider
 
+    /* WORKOUT MANAGEMENT */
+    internal val managementCloudInterface get() = cloudInterfaces[MANAGEMENT] as WorkoutManagementCloudInterface
+    internal val managementDataProcessor  get() = dataProcessors[MANAGEMENT]  as WorkoutManagementDataProcessor
+    val receiver                          get() = receivers[MANAGEMENT]       as WorkoutReceiver
 
     companion object {
-        private const val GENERAL = 0 // change later to not be general when workouts are more in-depth
+        private const val QUERY = 0
+        private const val MANAGEMENT = 1
     }
-
 }

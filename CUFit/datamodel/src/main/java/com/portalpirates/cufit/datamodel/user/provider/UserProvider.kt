@@ -57,7 +57,8 @@ class UserProvider(manager: Manager) : Provider(manager) {
     fun getRecentWorkouts(): List<Workout> {
         // TODO: un-hardcode this after the demo
         return List(5) {
-            Workout()
+            // TODO FIX Return actual workouts!
+            Workout("Name", "Desc", "Owner UID", null, true, null, null, null, null)
         }
     }
 

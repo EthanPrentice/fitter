@@ -17,6 +17,10 @@ open class FitUser(
     var weightGoal: Weight? = null,
     var imageBmp: Bitmap? = null
 ) : SwimlaneItem {
+
+    var uid: String? = null
+        private set
+
     // copy constructor
     constructor(fitUser: FitUser) : this(
         fitUser.birthDate,
@@ -26,7 +30,9 @@ open class FitUser(
         fitUser.currentHeight,
         fitUser.weightGoal,
         fitUser.imageBmp
-    )
+    ) {
+        uid = fitUser.uid
+    }
 
     var previousWeights: MutableList<Weight> = mutableListOf()
     var previousHeights: MutableList<Height> = mutableListOf()
