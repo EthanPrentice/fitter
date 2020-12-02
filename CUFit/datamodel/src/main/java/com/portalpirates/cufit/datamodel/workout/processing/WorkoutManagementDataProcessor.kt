@@ -4,6 +4,7 @@ import android.util.Log
 import com.portalpirates.cufit.datamodel.adt.DataProcessor
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutManagementCloudInterface
@@ -17,9 +18,18 @@ internal class WorkoutManagementDataProcessor(manager: Manager) : DataProcessor(
     override val cloudInterface: WorkoutManagementCloudInterface
         get() = workoutManager.managementCloudInterface
 
-    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<String>) {
+    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<Workout>) {
         if (builder.hasRequiredInputs()) {
-            cloudInterface.createWorkout(builder.convertFieldsToHashMap(), listener)
+            cloudInterface.createWorkout(builder.convertFieldsToHashMap(), object : TaskListener<String> {
+                override fun onSuccess(value: String) {
+                    builder.setOwnerUid(value)
+                    listener.onSuccess(builder.build())
+                }
+
+                override fun onFailure(e: Exception?) {
+                    listener.onFailure(e)
+                }
+            })
         } else {
             Log.w(TAG, "WorkoutBuilder got to WorkoutManagementDataProcessor without proper inputs!")
             listener.onFailure(null)

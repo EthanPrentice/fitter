@@ -84,11 +84,6 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         }
         touchHelper.attachToRecyclerView(exercisesView)
 
-        exercises.add(Exercise("Bench Press", Weight(225, MeasureUnit.POUND, Date()), 5, 5))
-        exercises.add(Exercise("Tricep Extensions", Weight(55, MeasureUnit.POUND, Date()), 5, 6))
-        exercises.add(Exercise("Pec Flies", Weight(180, MeasureUnit.POUND, Date()), 3, 8))
-        exercises.add(Exercise("Squeeze Press", Weight(55, MeasureUnit.POUND, Date()), 4, 8))
-
         logWorkoutBtn = content.findViewById(R.id.log_workout_btn)
         addWorkoutBtn = content.findViewById(R.id.add_workout_btn)
         // override text style
@@ -157,6 +152,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         setDescription(workout.description)
         updateWorkoutImage(workout.imageBmp)
         updateLabels(workout.targetMuscleGroups?.map { it.name })
+        updateExercises(workout.exercises)
     }
 
     private fun updateWorkoutImage(drawable: Drawable?) {
@@ -191,5 +187,11 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
             }
             chipGroup.addView(chip)
         }
+    }
+
+    private fun updateExercises(exercises: List<Exercise>?) {
+        this.exercises.clear()
+        this.exercises.addAll(exercises ?: return)
+        exerciseAdapter.notifyDataSetChanged()
     }
 }

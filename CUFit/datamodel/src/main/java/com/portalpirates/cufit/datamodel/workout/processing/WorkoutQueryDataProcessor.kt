@@ -6,10 +6,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.portalpirates.cufit.datamodel.adt.DataProcessor
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
-import com.portalpirates.cufit.datamodel.data.workout.MuscleGroup
-import com.portalpirates.cufit.datamodel.data.workout.Workout
-import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
-import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
+import com.portalpirates.cufit.datamodel.data.workout.*
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
 import java.lang.Exception
@@ -66,6 +63,7 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
     private fun createWorkoutFromDocument(doc: DocumentSnapshot) : Workout? {
         return try {
             val muscleGroups = doc.data?.get(WorkoutField.TARGET_MUSCLE_GROUPS.toString()) as? List<String>
+            val exercises = doc.data?.get(WorkoutField.EXERCISES.toString()) as? List<HashMap<String, Any?>>
 
             WorkoutBuilder()
                 .setUid(doc.id)
@@ -74,13 +72,14 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
                 .setOwnerUid(doc.getString(WorkoutField.OWNER.toString()))
                 .setDescription(doc.getString(WorkoutField.DESCRIPTION.toString()))
                 // TODO set subscribers
-                // TODO set exercises
-                .setTargetMuscleGroups(muscleGroups?.map { it -> MuscleGroup(it) })
+                .setExercises(exercises?.map { Exercise(it) })
+                .setTargetMuscleGroups(muscleGroups?.map { MuscleGroup(it) })
                 .setImageBlob(doc.getBlob(WorkoutField.IMAGE_BMP.toString())?.toBytes())
                 .build()
 
         } catch (e: Exception) {
             Log.e(TAG, "Could not create a workout from document")
+            Log.e(TAG, e.message.toString())
             null
         }
     }

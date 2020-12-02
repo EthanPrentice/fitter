@@ -55,7 +55,6 @@ class NavActivity : FitActivity() {
         // we could just not clear & re-query them on recreate, but in case of updates elsewhere we will.
         model.clearWorkouts()
         runWorkoutQueries()
-
     }
 
     /**
