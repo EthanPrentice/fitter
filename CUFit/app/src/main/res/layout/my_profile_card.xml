@@ -75,7 +75,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:title="@string/current_weight" />
+            app:title="@string/current" />
 
         <com.portalpirates.cufit.ui.user.profile.view.subview.StatBarItem
             android:id="@+id/goal_weight_stat"
