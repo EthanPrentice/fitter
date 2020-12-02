@@ -1,9 +1,11 @@
 package com.portalpirates.cufit.datamodel.workout.cloud
 
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.portalpirates.cufit.datamodel.adt.CloudInterface
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
 import com.portalpirates.cufit.datamodel.exception.FitFirebaseException
 
 internal class WorkoutQueryCloudInterface(manager: Manager) : CloudInterface(manager) {
@@ -18,6 +20,17 @@ internal class WorkoutQueryCloudInterface(manager: Manager) : CloudInterface(man
                         )
                     )
                 }
+                listener.onSuccess(result)
+            }
+            .addOnFailureListener { e ->
+                listener.onFailure(e)
+            }
+    }
+
+
+    fun getWorkoutsByOwner(ownerUid: String, listener: TaskListener<QuerySnapshot>) {
+        db.collection(COLLECTION).whereEqualTo(WorkoutField.OWNER.toString(), ownerUid).get()
+            .addOnSuccessListener { result ->
                 listener.onSuccess(result)
             }
             .addOnFailureListener { e ->

@@ -2,6 +2,7 @@ package com.portalpirates.cufit.datamodel.workout.processing
 
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.portalpirates.cufit.datamodel.adt.DataProcessor
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
@@ -39,6 +40,26 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
             override fun onFailure(e: Exception?) = listener.onFailure(e)
         })
     }
+
+    fun getWorkoutsByOwner(ownerUid: String, listener: TaskListener<List<Workout>>) {
+        cloudInterface.getWorkoutsByOwner(ownerUid, object : TaskListener<QuerySnapshot> {
+            // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
+            override fun onSuccess(value: QuerySnapshot) {
+                val workouts = value.mapNotNull { doc -> createWorkoutFromDocument(doc) }
+
+                if (workouts.isEmpty() && value.size() != 0) {
+                    listener.onFailure(IllegalStateException("Could not create any workouts from document!!"))
+                    return
+                }
+
+                listener.onSuccess(workouts)
+            }
+            // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
+            override fun onFailure(e: Exception?) = listener.onFailure(e)
+        })
+    }
+
+
 
     @Throws(IllegalArgumentException::class)
     private fun createWorkoutFromDocument(doc: DocumentSnapshot) : Workout? {
