@@ -3,6 +3,7 @@ package com.portalpirates.cufit.datamodel.workout.receiver
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.Receiver
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
@@ -16,7 +17,7 @@ class WorkoutReceiver(manager: Manager) : Receiver(manager) {
     /**
      * The task listener callback will be the UID of the newly created workout
      */
-    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<String>) {
+    fun createWorkout(builder: WorkoutBuilder, listener: TaskListener<Workout>) {
         dataProcessor.createWorkout(builder, listener)
     }
 

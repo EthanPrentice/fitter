@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/LU_4"
-    android:paddingRight="@dimen/LU_4"
+    android:paddingHorizontal="@dimen/LU_3_5"
     android:paddingBottom="@dimen/LU_4"
     android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -20,6 +19,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/LU_3" />
+
+    <com.portalpirates.cufit.ui.workout.view.WorkoutCardView
+        android:id="@+id/curr_workout_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3"
+        android:visibility="gone"/>
 
     <com.portalpirates.cufit.ui.view.chart.LineChartCardView
         android:id="@+id/progress_chart_test"

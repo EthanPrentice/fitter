@@ -125,7 +125,7 @@ class WorkoutBuilder {
                 WorkoutField.IMAGE_BMP.toString() to imageBlob,
                 WorkoutField.DESCRIPTION.toString() to description,
                 WorkoutField.SUBSCRIBERS.toString() to subscribers,
-                WorkoutField.EXERCISES.toString() to exercises,
+                WorkoutField.EXERCISES.toString() to exercises?.map { it.convertFieldsToHashMap() },
                 WorkoutField.TARGET_MUSCLE_GROUPS.toString() to targetMuscleGroups?.map { it.toString() }
         )
     }
