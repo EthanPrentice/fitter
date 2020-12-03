@@ -61,6 +61,21 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         }
     }
 
+    fun getPreviousWorkouts() : List<Workout> {
+        //get user by id
+        // get owned_workouts from that user
+        //create mock array to test pulling from until Eric is done,
+        var workoutList = List(10) {
+                    Workout("wkout1", "Strength", "abc", null, false, null, null, null, null)
+                }
+        //get prev workouts from user (limit to 10)
+        //sort workputs by name
+        return workoutList.sortedBy{ it.name.first }
+
+    }
+
+
+
     companion object {
         private const val TAG = "WorkoutQueryDataProcessor"
     }
