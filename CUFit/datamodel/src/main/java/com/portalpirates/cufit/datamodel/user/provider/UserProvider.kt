@@ -58,7 +58,7 @@ class UserProvider(manager: Manager) : Provider(manager) {
         // TODO: un-hardcode this after the demo
         return List(5) {
             // TODO FIX Return actual workouts!
-            Workout("Name", "Desc", "Owner UID", null, true, null, null, null, null)
+            Workout("Name", "Desc", "Owner UID", null, true, null, ArrayList(), null, null)
         }
     }
 
