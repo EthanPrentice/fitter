@@ -1,0 +1,15 @@
+Tasks:
+  Met with team Dec 2 to discuss current status of project
+
+  Implemented the Workout Data Model, including:
+    - WorkoutBuilder
+    - Workout
+    - Exercise
+    - MuscleGroup
+    - CloudInterfaces
+    - DataProcessors
+    - Provider
+    - Receiver
+    - Manager
+
+Project time allocation: 6hrs
