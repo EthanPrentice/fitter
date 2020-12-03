@@ -50,7 +50,9 @@ class HomeFragment : FitFragment() {
             adapter = recentWorkoutsAdapter
             layoutManager = object : LinearLayoutManager(requireContext()) {
                 override fun canScrollVertically() = false
+                override fun isAutoMeasureEnabled() = true
             }
+            setHasFixedSize(false)
             isNestedScrollingEnabled = false
 
             val dividerItemDecoration = VerticalSpaceItemDecoration(context.resources.getDimensionPixelOffset(R.dimen.LU_3), endingSpace=true)
@@ -67,6 +69,7 @@ class HomeFragment : FitFragment() {
     override fun onResume() {
         super.onResume()
         fitActivity?.setToolbarTitle(R.string.my_home)
+        recentWorkoutsAdapter?.notifyDataSetChanged()
     }
 
     private fun initExploreWorkouts() {
