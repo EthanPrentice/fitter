@@ -12,7 +12,7 @@ open class Workout(
         var owner: FitUser?,
         var public: Boolean,
         var subscribers: List<FitUser>? = null,
-        var exercises: List<Exercise>? = null,
+        var exercises: MutableList<Exercise>,
         var targetMuscleGroups: List<MuscleGroup>? = null,
         var imageBmp: Bitmap? = null
 ) : SwimlaneItem {

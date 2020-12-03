@@ -10,7 +10,7 @@ import com.portalpirates.cufit.ui.util.DragEventListener
 import com.portalpirates.cufit.ui.util.item_touch.ItemTouchHelperAdapter
 import com.portalpirates.cufit.ui.workout.view.ExerciseView
 
-class ExerciseAdapter(private val exercises: MutableList<Exercise>, private val dragEventListener: DragEventListener) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(), ItemTouchHelperAdapter {
+class ExerciseAdapter(private var exercises: MutableList<Exercise>, private val dragEventListener: DragEventListener) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(), ItemTouchHelperAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val view = ExerciseView(parent.context)
@@ -44,8 +44,13 @@ class ExerciseAdapter(private val exercises: MutableList<Exercise>, private val 
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         val prev: Exercise = exercises.removeAt(fromPosition)
-        exercises.add(if (toPosition > fromPosition) toPosition - 1 else toPosition, prev)
+        exercises.add(toPosition, prev)
         notifyItemMoved(fromPosition, toPosition)
+    }
+
+    fun setExercises(exercises: MutableList<Exercise>) {
+        this.exercises = exercises
+        notifyDataSetChanged()
     }
 
     class ExerciseViewHolder(itemView: ExerciseView) : RecyclerView.ViewHolder(itemView) {

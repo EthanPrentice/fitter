@@ -54,9 +54,17 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
     private var logWorkoutBtn: FitButton
     private var addWorkoutBtn: FitButton
 
-    private val exercises = ArrayList<Exercise>()
-    private val exerciseAdapter = ExerciseAdapter(exercises, this)
-    private val touchHelper = ItemTouchHelper(SimpleItemTouchHelperCallback(exerciseAdapter))
+    // Adapter stuff
+    private var exerciseAdapter: ExerciseAdapter? = null
+        set(value) {
+            field = value
+            exercisesView.adapter = value
+            val callback = SimpleItemTouchHelperCallback(value!!)
+            touchHelper = ItemTouchHelper(callback).apply {
+                attachToRecyclerView(exercisesView)
+            }
+        }
+    private var touchHelper: ItemTouchHelper? = null
 
 
     init {
@@ -74,7 +82,6 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         chipGroup = content.findViewById(R.id.chip_group)
 
         exercisesView = content.findViewById<RecyclerView>(R.id.exercise_list).apply {
-            adapter = exerciseAdapter
             layoutManager = object : LinearLayoutManager(context) {
                 override fun canScrollVertically() = false
                 override fun isAutoMeasureEnabled() = true
@@ -85,7 +92,6 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
             val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             addItemDecoration(dividerItemDecoration)
         }
-        touchHelper.attachToRecyclerView(exercisesView)
 
         logWorkoutBtn = content.findViewById(R.id.log_workout_btn)
         addWorkoutBtn = content.findViewById(R.id.add_workout_btn)
@@ -139,7 +145,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
         if (viewHolder != null) {
-            touchHelper.startDrag(viewHolder)
+            touchHelper?.startDrag(viewHolder)
         }
     }
 
@@ -192,9 +198,11 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         }
     }
 
-    private fun updateExercises(exercises: List<Exercise>?) {
-        this.exercises.clear()
-        this.exercises.addAll(exercises ?: return)
-        exerciseAdapter.notifyDataSetChanged()
+    private fun updateExercises(exercises: MutableList<Exercise>) {
+        if (exerciseAdapter == null) {
+            exerciseAdapter = ExerciseAdapter(exercises, this)
+        } else {
+            exerciseAdapter!!.setExercises(exercises)
+        }
     }
 }
