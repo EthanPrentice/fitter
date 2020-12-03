@@ -6,6 +6,9 @@ import com.portalpirates.cufit.datamodel.adt.Provider
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
+//import com.github.mikephil.charting.data.LineData
+import com.portalpirates.cufit.datamodel.util.chart.LineDataUtil
+import com.portalpirates.cufit.datamodel.data.graph.LineDataConfig
 import com.portalpirates.cufit.datamodel.workout.processing.WorkoutQueryDataProcessor
 import java.util.*
 
@@ -31,5 +34,30 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
             Workout("Name", "Desc", "Owner UID", null, true, null, null, null, null)
         }
     }
+
+
+
+   fun graphPreviousWorkouts(lineDataCfg : LineDataConfig) : LineData {
+
+      // query weights from workout.exercise
+       val workoutData = dataProcessor.getPreviousWorkouts()
+       val graphData : MutableMap<String, Weight> = mutableMapOf()
+       var weightsUsed : List
+       workoutData.forEach { w ->
+          w.exercise.forEach { e ->
+            weightsUsed.add(e.weight)
+          }
+           graphData.put(w.name, weightsUsed.average())
+       }
+       // return lineData object
+      return LineDataUtil.toLineData(graphData, "Workout Weights")
+   }
+
+
+
+
+
+
+    // workout dataprocessor , workout cloud interface
 
 }
