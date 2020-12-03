@@ -44,7 +44,7 @@ class ExerciseAdapter(private val exercises: MutableList<Exercise>, private val 
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         val prev: Exercise = exercises.removeAt(fromPosition)
-        exercises.add(toPosition, prev)
+        exercises.add(if (toPosition > fromPosition) toPosition - 1 else toPosition, prev)
         notifyItemMoved(fromPosition, toPosition)
     }
 

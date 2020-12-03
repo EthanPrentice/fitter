@@ -12,7 +12,7 @@ open class Workout(
         var owner: FitUser?,
         var public: Boolean,
         var subscribers: List<FitUser>? = null,
-        var exercises: MutableList<Exercise> = ArrayList(),
+        var exercises: List<Exercise>? = null,
         var targetMuscleGroups: List<MuscleGroup>? = null,
         var imageBmp: Bitmap? = null
 ) : SwimlaneItem {
@@ -35,6 +35,7 @@ open class Workout(
     ) {
         uid = workout.uid
     }
+
 
     override fun getTitle(): String {
         return name

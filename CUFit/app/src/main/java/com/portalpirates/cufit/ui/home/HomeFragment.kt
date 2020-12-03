@@ -48,7 +48,6 @@ class HomeFragment : FitFragment() {
         recentWorkoutsView = view.findViewById<RecyclerView>(R.id.recent_workouts).apply {
             recentWorkoutsAdapter = WorkoutCardAdapter(model.recentWorkouts.value!!)
             adapter = recentWorkoutsAdapter
-
             layoutManager = object : LinearLayoutManager(requireContext()) {
                 override fun canScrollVertically() = false
                 override fun isAutoMeasureEnabled() = true
@@ -71,10 +70,6 @@ class HomeFragment : FitFragment() {
         super.onResume()
         fitActivity?.setToolbarTitle(R.string.my_home)
         recentWorkoutsAdapter?.notifyDataSetChanged()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     private fun initExploreWorkouts() {

@@ -36,7 +36,7 @@ class WorkoutBuilder {
     @Throws(WorkoutBuildException::class)
     fun build(): Workout {
         if (hasRequiredInputs()) {
-            return Workout(name!!, description, ownerUid!!, owner, public!!, subscribers, exercises?.toMutableList() ?: ArrayList(), targetMuscleGroups, imageBmp)
+            return Workout(name!!, description, ownerUid!!, owner, public!!, subscribers, exercises, targetMuscleGroups, imageBmp)
         } else {
             throw WorkoutBuildException("All required fields have not been provided for workout! Cannot build!")
         }

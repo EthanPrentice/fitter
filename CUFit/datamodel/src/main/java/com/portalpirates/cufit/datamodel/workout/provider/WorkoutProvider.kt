@@ -28,7 +28,7 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
     fun getExploreWorkouts(): List<Workout> {
         return List(5) {
             // TODO FIX Return actual workouts!
-            Workout("Name", "Desc", "Owner UID", null, true, null, ArrayList(), null, null)
+            Workout("Name", "Desc", "Owner UID", null, true, null, null, null, null)
         }
     }
 

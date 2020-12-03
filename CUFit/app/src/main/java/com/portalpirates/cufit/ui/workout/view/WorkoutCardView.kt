@@ -54,37 +54,9 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
     private var logWorkoutBtn: FitButton
     private var addWorkoutBtn: FitButton
 
-    // Listeners
-    private var onExercisesChangedListener: OnExercisesChangedListener? = null
-    private var onLogClickedListener: OnClickListener? = null
-    private var onAddExerciseClickedListener: OnClickListener? = null
-
-    // Adapter stuff
-    private var exerciseAdapter: ExerciseAdapter? = null
-        set(value) {
-            field = value
-            exercisesView.adapter = value
-            if (value != null) {
-
-                val callback = object : SimpleItemTouchHelperCallback(value) {
-                    override fun onMove(recyclerView: RecyclerView, source: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                        val ret = super.onMove(recyclerView, source, target)
-                        onExercisesChangedListener?.onExerciseChanged()
-                        return ret
-                    }
-
-                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
-                        super.onSwiped(viewHolder, i)
-                        onExercisesChangedListener?.onExerciseChanged()
-                    }
-                }
-
-                touchHelper = ItemTouchHelper(callback).apply {
-                    attachToRecyclerView(exercisesView)
-                }
-            }
-        }
-    private var touchHelper: ItemTouchHelper? = null
+    private val exercises = ArrayList<Exercise>()
+    private val exerciseAdapter = ExerciseAdapter(exercises, this)
+    private val touchHelper = ItemTouchHelper(SimpleItemTouchHelperCallback(exerciseAdapter))
 
 
     init {
@@ -102,6 +74,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         chipGroup = content.findViewById(R.id.chip_group)
 
         exercisesView = content.findViewById<RecyclerView>(R.id.exercise_list).apply {
+            adapter = exerciseAdapter
             layoutManager = object : LinearLayoutManager(context) {
                 override fun canScrollVertically() = false
                 override fun isAutoMeasureEnabled() = true
@@ -112,7 +85,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
             val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             addItemDecoration(dividerItemDecoration)
         }
-        touchHelper?.attachToRecyclerView(exercisesView)
+        touchHelper.attachToRecyclerView(exercisesView)
 
         logWorkoutBtn = content.findViewById(R.id.log_workout_btn)
         addWorkoutBtn = content.findViewById(R.id.add_workout_btn)
@@ -165,8 +138,8 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
 
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
-        viewHolder?.let {
-            touchHelper?.startDrag(it)
+        if (viewHolder != null) {
+            touchHelper.startDrag(viewHolder)
         }
     }
 
@@ -219,24 +192,9 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         }
     }
 
-    private fun updateExercises(exercises: MutableList<Exercise>) {
-        exerciseAdapter = ExerciseAdapter(exercises, this)
-    }
-
-    fun setOnExercisesChangedListener(listener: OnExercisesChangedListener?) {
-        onExercisesChangedListener = listener
-    }
-
-    fun setOnLogClickedListener(listener: OnClickListener) {
-        onLogClickedListener = listener
-    }
-
-    fun setOnAddExerciseClickedListener(listener: OnClickListener) {
-        onAddExerciseClickedListener = listener
-    }
-
-
-    interface OnExercisesChangedListener {
-        fun onExerciseChanged()
+    private fun updateExercises(exercises: List<Exercise>?) {
+        this.exercises.clear()
+        this.exercises.addAll(exercises ?: return)
+        exerciseAdapter.notifyDataSetChanged()
     }
 }
