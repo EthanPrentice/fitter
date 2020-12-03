@@ -78,6 +78,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
             layoutManager = object : LinearLayoutManager(context) {
                 override fun canScrollVertically() = false
             }
+            isNestedScrollingEnabled = false
 
             val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             addItemDecoration(dividerItemDecoration)

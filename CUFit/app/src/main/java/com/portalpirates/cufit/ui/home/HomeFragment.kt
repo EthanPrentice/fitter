@@ -51,6 +51,7 @@ class HomeFragment : FitFragment() {
             layoutManager = object : LinearLayoutManager(requireContext()) {
                 override fun canScrollVertically() = false
             }
+            isNestedScrollingEnabled = false
 
             val dividerItemDecoration = VerticalSpaceItemDecoration(context.resources.getDimensionPixelOffset(R.dimen.LU_3), endingSpace=true)
             addItemDecoration(dividerItemDecoration)

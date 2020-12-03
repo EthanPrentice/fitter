@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/LU_2"
         android:layout_marginHorizontal="@dimen/LU_3"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintTop_toBottomOf="@id/recent_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

@@ -20,8 +20,10 @@ class SwimlaneView(context: Context, attrs: AttributeSet?, defStyle: Int) : Recy
                 lp?.width = (width / visibleItems).toInt()
                 return true
             }
-
+            override fun canScrollVertically() = false
         }
+
+        isNestedScrollingEnabled = false
     }
 
     fun setTextAppearance(resId: Int) {
