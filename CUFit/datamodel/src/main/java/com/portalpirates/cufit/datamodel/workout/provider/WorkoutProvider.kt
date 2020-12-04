@@ -1,6 +1,8 @@
 package com.portalpirates.cufit.datamodel.workout.provider
 
 import android.icu.util.MeasureUnit
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.Provider
@@ -79,20 +81,13 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
         )
     }
 
-   fun graphPreviousWorkouts(lineDataCfg : LineDataConfig) : LineData {
+   fun getExerciseDataSet(exerciseName: String, config: LineDataConfig): LineDataSet {
+       val exerciseWeights = dataProcessor.getLoggedExerciseWeights(exerciseName)
+       val graphData: Map<Int, Float> = exerciseWeights.mapIndexed { i, weight ->
+           i to (weight.number as Float)
+       }.toMap()
 
-      // query weights from workout.exercise
-       val workoutData = dataProcessor.getPreviousWorkouts()
-       val graphData : MutableMap<String, Weight> = mutableMapOf()
-       var weightsUsed : List
-       workoutData.forEach { w ->
-          w.exercise.forEach { e ->
-            weightsUsed.add(e.weight)
-          }
-           graphData.put(w.name, weightsUsed.average())
-       }
-       // return lineData object
-      return LineDataUtil.toLineData(graphData, "Workout Weights")
+      return LineDataUtil.toLineDataSet(graphData, exerciseName)
    }
 
 }
