@@ -34,6 +34,14 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
         dataProcessor.getWorkoutsByOwner(ownerUid, listener)
     }
 
+    fun getWorkoutLogByUid( ownerUid: String, workoutLogUid: String, listener: TaskListener<Workout>) {
+        dataProcessor.getWorkoutLogByUid(ownerUid, workoutLogUid, listener)
+    }
+
+    fun getWorkoutLogsByOwnerId( ownerUid: String, listener: TaskListener<List<Workout>>) {
+        dataProcessor.getWorkoutLogsByOwnerId(ownerUid, listener)
+    }
+
     fun getExploreWorkouts(): List<Workout> {
         return List(5) {
             // TODO FIX Return actual workouts!

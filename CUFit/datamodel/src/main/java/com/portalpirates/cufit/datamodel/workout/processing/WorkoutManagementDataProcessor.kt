@@ -55,6 +55,23 @@ internal class WorkoutManagementDataProcessor(manager: Manager) : DataProcessor(
         cloudInterface.updateWorkout(uid, strMap, listener)
     }
 
+    fun createWorkoutLog(builder: WorkoutBuilder, listener: TaskListener<String>) {
+        if ( builder.hasRequiredInputs() ) {
+            cloudInterface.createWorkoutLog(builder.convertFieldsToHashMap(), listener)
+        } else {
+            Log.w(TAG, "WorkoutLogBuilder got to WorkoutManagementDataProcessor without proper inputs!")
+            listener.onFailure(null)
+        }
+    }
+
+    fun updateWorkoutLog(fields: HashMap<WorkoutField, Any?>, listener: TaskListener<Unit?>) {
+        val strMap = HashMap<String, Any?>()
+        for (key in fields.keys) {
+            strMap[key.fieldName] = fields[key]
+        }
+        cloudInterface.updateWorkoutLog(strMap, listener)
+    }
+
     companion object {
         private const val TAG = "WorkoutManagementDataProcessor"
     }

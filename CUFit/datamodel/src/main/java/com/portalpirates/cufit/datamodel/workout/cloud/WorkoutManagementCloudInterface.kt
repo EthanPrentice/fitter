@@ -48,9 +48,68 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
         })
     }
 
+    fun createWorkoutLog( fields: HashMap<String, Any?>, listener: TaskListener<String>) {
+        val owner_id = fields[WorkoutField.OWNER.toString()] as String?
+        Log.e(TAG, fields.toString())
+        if (owner_id == null) {
+            listener.onFailure(IllegalArgumentException("Cannot update a workout with no Owner UID!"))
+            return
+        }
+
+        db.collection(USER_COLLECTION).document(owner_id)
+                .collection(WORKOUT_LOGS).add(fields)
+                .addOnSuccessListener { ref ->
+                    fields[WorkoutField.UID.toString()] = ref.id
+                    updateWorkoutLog(fields, object : TaskListener<Unit?> {
+                        override fun onSuccess(value: Unit?) = listener.onSuccess(ref.id)
+                        override fun onFailure(e: Exception?) = listener.onFailure(e)
+                    })
+
+                }.addOnFailureListener { e ->
+                    Log.w(TAG, "Could not create the workout!")
+                    listener.onFailure(e)
+                }
+    }
+
+    fun updateWorkoutLog(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
+        val uid = fields[WorkoutField.UID.toString()] as String?
+        val owner = fields[WorkoutField.OWNER.toString()] as String?
+
+        if (uid == null) {
+            listener.onFailure(IllegalArgumentException("Cannot update a workout log with no UID!"))
+            return
+        }
+
+        if (owner == null ) {
+            listener.onFailure(IllegalArgumentException("Cannot update a workout log with no owner id!"))
+            return
+        }
+
+        workoutManager.queryCloudInterface.getWorkoutLogByOwnerIdAndUid(owner, uid, object :
+                TaskListener<DocumentSnapshot> {
+            override fun onSuccess(value: DocumentSnapshot) {
+                value.reference.update(fields)
+                        .addOnSuccessListener {
+                            Log.d(TAG, "Workout log successfully updated.")
+                            listener.onSuccess(null)
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w(TAG, "Error updating Workout log", e)
+                            listener.onFailure(e)
+                        }
+            }
+
+            override fun onFailure(e: Exception?) {
+                listener.onFailure(e)
+            }
+        })
+    }
+
     companion object {
         private const val TAG = "WorkoutManagementCloudInterface"
 
         private const val COLLECTION = "workouts"
+        private const val USER_COLLECTION = "users"
+        private const val WORKOUT_LOGS = "workout_logs"
     }
 }
