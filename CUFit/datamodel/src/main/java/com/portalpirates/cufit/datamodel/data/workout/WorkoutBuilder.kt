@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import com.google.firebase.firestore.Blob
 import com.portalpirates.cufit.datamodel.FitException
 import com.portalpirates.cufit.datamodel.data.user.FitUser
+import com.portalpirates.cufit.datamodel.util.ImageUtil
 import java.io.ByteArrayOutputStream
 
 class WorkoutBuilder {
@@ -36,7 +37,7 @@ class WorkoutBuilder {
     @Throws(WorkoutBuildException::class)
     fun build(): Workout {
         if (hasRequiredInputs()) {
-            return Workout(name!!, description, ownerUid!!, owner, public!!, subscribers, exercises, targetMuscleGroups, imageBmp)
+            return Workout(name!!, description, ownerUid!!, owner, public!!, subscribers, exercises?.toMutableList() ?: ArrayList(), targetMuscleGroups, imageBmp)
         } else {
             throw WorkoutBuildException("All required fields have not been provided for workout! Cannot build!")
         }
@@ -106,15 +107,15 @@ class WorkoutBuilder {
     }
 
     fun hasRequiredInputs(): Boolean {
-        return name != null &&
-                ownerUid != null &&
+        return !name.isNullOrBlank() &&
+                !ownerUid.isNullOrBlank() &&
                 public != null
     }
 
     fun convertFieldsToHashMap(): HashMap<String, Any?> {
         val imageBlob = imageBmp?.let { bmp ->
             val bos = ByteArrayOutputStream()
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos)
+            ImageUtil.getResizedBitmap(bmp, ImageUtil.MAX_BMP_SIZE).compress(Bitmap.CompressFormat.PNG, 100, bos)
             Blob.fromBytes(bos.toByteArray())
         }
 

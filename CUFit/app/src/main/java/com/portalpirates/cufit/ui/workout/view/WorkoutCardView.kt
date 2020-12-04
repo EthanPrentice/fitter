@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.icu.util.MeasureUnit
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.data.measure.Weight
 import com.portalpirates.cufit.datamodel.data.workout.Exercise
 import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.ui.util.DragEventListener
@@ -27,8 +25,6 @@ import com.portalpirates.cufit.ui.view.FitButton
 import com.portalpirates.cufit.ui.view.FitCardView
 import com.portalpirates.cufit.ui.workout.ExerciseAdapter
 import kotlinx.android.synthetic.main.button_layout.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : FitCardView(context, attrs, defStyle), DragEventListener {
@@ -54,9 +50,17 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
     private var logWorkoutBtn: FitButton
     private var addWorkoutBtn: FitButton
 
-    private val exercises = ArrayList<Exercise>()
-    private val exerciseAdapter = ExerciseAdapter(exercises, this)
-    private val touchHelper = ItemTouchHelper(SimpleItemTouchHelperCallback(exerciseAdapter))
+    // Adapter stuff
+    private var exerciseAdapter: ExerciseAdapter? = null
+        set(value) {
+            field = value
+            exercisesView.adapter = value
+            val callback = SimpleItemTouchHelperCallback(value!!)
+            touchHelper = ItemTouchHelper(callback).apply {
+                attachToRecyclerView(exercisesView)
+            }
+        }
+    private var touchHelper: ItemTouchHelper? = null
 
 
     init {
@@ -74,15 +78,16 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         chipGroup = content.findViewById(R.id.chip_group)
 
         exercisesView = content.findViewById<RecyclerView>(R.id.exercise_list).apply {
-            adapter = exerciseAdapter
             layoutManager = object : LinearLayoutManager(context) {
                 override fun canScrollVertically() = false
+                override fun isAutoMeasureEnabled() = true
             }
+            setHasFixedSize(false)
+            isNestedScrollingEnabled = false
 
             val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             addItemDecoration(dividerItemDecoration)
         }
-        touchHelper.attachToRecyclerView(exercisesView)
 
         logWorkoutBtn = content.findViewById(R.id.log_workout_btn)
         addWorkoutBtn = content.findViewById(R.id.add_workout_btn)
@@ -126,7 +131,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
     }
 
     private fun setDescription(desc: String?) {
-        workoutDescriptionView.text = desc
+        workoutDescriptionView.text = if (desc.isNullOrBlank()) "No description" else desc
     }
 
     override fun setTitle(title: String) {
@@ -136,7 +141,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
         if (viewHolder != null) {
-            touchHelper.startDrag(viewHolder)
+            touchHelper?.startDrag(viewHolder)
         }
     }
 
@@ -179,7 +184,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
 
         lateinit var chip: Chip
         for (label in labels) {
-            chip = layoutInflater.inflate(R.layout.single_chip_layout, chipGroup, false) as Chip
+            chip = layoutInflater.inflate(R.layout.action_chip_layout, chipGroup, false) as Chip
             chip.apply {
                 text = label
                 isClickable = false
@@ -189,9 +194,11 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         }
     }
 
-    private fun updateExercises(exercises: List<Exercise>?) {
-        this.exercises.clear()
-        this.exercises.addAll(exercises ?: return)
-        exerciseAdapter.notifyDataSetChanged()
+    private fun updateExercises(exercises: MutableList<Exercise>) {
+        if (exerciseAdapter == null) {
+            exerciseAdapter = ExerciseAdapter(exercises, this)
+        } else {
+            exerciseAdapter!!.setExercises(exercises)
+        }
     }
 }

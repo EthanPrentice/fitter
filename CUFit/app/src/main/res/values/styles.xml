@@ -5,13 +5,13 @@
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
 
-        <item name="actionBarSize">80dp</item>
+        <item name="actionBarSize">55dp</item>
 
         <item name="editTextStyle">@style/FitEditTextStyle</item>
 
         <item name="android:windowActivityTransitions">true</item>
 
-        <item name="chipStyle">@style/FitChipStyle</item>
+        <item name="chipStyle">@style/FitChipStyleAction</item>
     </style>
 
     <style name="FitTheme.Login">
@@ -122,12 +122,23 @@
         <item name="android:focusableInTouchMode">true</item>
     </style>
 
-    <style name="FitChipStyle" parent="Widget.MaterialComponents.Chip.Action">
+    <style name="FitChipStyleAction" parent="Widget.MaterialComponents.Chip.Action">
         <item name="android:textColor">@color/text_secondary</item>
         <item name="chipStrokeColor">@color/text_secondary</item>
         <item name="chipStrokeWidth">@dimen/LU_0_25</item>
         <item name="chipBackgroundColor">@android:color/transparent</item>
         <item name="chipSurfaceColor">@android:color/transparent</item>
+    </style>
+
+    <style name="FitChipStyleFilter" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="android:textColor">@color/chip_foreground</item>
+        <item name="chipStrokeColor">@color/chip_foreground</item>
+        <item name="chipStrokeWidth">@dimen/LU_0_25</item>
+        <item name="chipBackgroundColor">@color/chip_background</item>
+        <item name="chipSurfaceColor">@android:color/transparent</item>
+        <item name="checkedIcon">@null</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="ensureMinTouchTargetSize">false</item>
     </style>
 
     <style name="FitEditTextStyle" parent="@style/Widget.AppCompat.EditText">

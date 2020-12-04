@@ -5,6 +5,8 @@ import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.Provider
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.FitUser
+import com.portalpirates.cufit.datamodel.data.workout.Exercise
+import com.portalpirates.cufit.datamodel.data.workout.MuscleGroup
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 //import com.github.mikephil.charting.data.LineData
 import com.portalpirates.cufit.datamodel.util.chart.LineDataUtil
@@ -31,11 +33,14 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
     fun getExploreWorkouts(): List<Workout> {
         return List(5) {
             // TODO FIX Return actual workouts!
-            Workout("Name", "Desc", "Owner UID", null, true, null, null, null, null)
+            Workout("Name", "Desc", "Owner UID", null, true, null, ArrayList(), null, null)
         }
     }
 
 
+    fun getMuscleGroups(): List<MuscleGroup> {
+        return listOf("Chest", "Back", "Legs", "Shoulders", "Triceps", "Biceps", "Abs").map { MuscleGroup(it) }
+    }
 
    fun graphPreviousWorkouts(lineDataCfg : LineDataConfig) : LineData {
 
@@ -52,12 +57,5 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
        // return lineData object
       return LineDataUtil.toLineData(graphData, "Workout Weights")
    }
-
-
-
-
-
-
-    // workout dataprocessor , workout cloud interface
 
 }

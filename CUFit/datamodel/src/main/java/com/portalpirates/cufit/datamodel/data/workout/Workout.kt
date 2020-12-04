@@ -1,6 +1,7 @@
 package com.portalpirates.cufit.datamodel.data.workout
 
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
@@ -12,7 +13,7 @@ open class Workout(
         var owner: FitUser?,
         var public: Boolean,
         var subscribers: List<FitUser>? = null,
-        var exercises: List<Exercise>? = null,
+        var exercises: MutableList<Exercise>,
         var targetMuscleGroups: List<MuscleGroup>? = null,
         var imageBmp: Bitmap? = null
 ) : SwimlaneItem {
@@ -42,6 +43,10 @@ open class Workout(
     }
 
     override fun getDrawable(): Drawable? {
-        return null
+        return if (imageBmp == null) {
+            null
+        } else {
+            BitmapDrawable(imageBmp)
+        }
     }
 }

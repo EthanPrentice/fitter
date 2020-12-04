@@ -34,7 +34,7 @@ class SwimlaneAdapter(private val context: Context, private val items: List<Swim
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwimlaneViewHolder {
         val view = SwimlaneItemView(context)
-        view.layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT).apply {
+        view.layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT).apply {
             bottomMargin = context.resources.getDimensionPixelOffset(R.dimen.LU_2)
         }
         return SwimlaneViewHolder(view)
@@ -48,9 +48,8 @@ class SwimlaneAdapter(private val context: Context, private val items: List<Swim
 
         if (includeAddItem && position == 0) { // Is add item
             holder.swimlaneItemView.text = "Add"
-
-            val drawable = ContextCompat.getDrawable(context, R.drawable.add_circle)
-            holder.swimlaneItemView.setImageDrawable(drawable)
+            
+            holder.swimlaneItemView.setImageResource(R.drawable.add_circle)
             holder.swimlaneItemView.setOnClickListener {
                 addItemOnClickListener?.invoke()
             }

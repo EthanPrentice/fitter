@@ -38,9 +38,6 @@ abstract class WelcomeFragment : FitFragment() {
         }
 
         chooseImageButton = view.findViewById(R.id.choose_photo_btn)
-        chooseImageButton?.setOnClickListener {
-            chooseImageButton?.selectPhotoFromGallery(requireActivity())
-        }
         chooseImageButton?.setOnClearListener { _ ->
             model.setUserImage(null)
         }

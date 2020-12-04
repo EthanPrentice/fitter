@@ -50,7 +50,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/background_translucent"
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_marginLeft="@dimen/LU_1"
         android:layout_marginTop="@dimen/LU_1_5"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -1,5 +1,10 @@
 package com.portalpirates.cufit.ui.nav
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -14,6 +19,7 @@ import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.home.HomeFragment
 import com.portalpirates.cufit.ui.home.HomeViewModel
 import com.portalpirates.cufit.ui.view.LockableNestedScrollView
+import java.io.IOException
 
 
 class NavActivity : FitActivity() {
@@ -55,6 +61,25 @@ class NavActivity : FitActivity() {
         // we could just not clear & re-query them on recreate, but in case of updates elsewhere we will.
         model.clearWorkouts()
         runWorkoutQueries()
+        model.muscleGroups = FitApplication.instance.workoutManager.provider.getMuscleGroups()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            val imageSelectorOwner = model.imageSelectorLock.owner
+            model.imageSelectorLock.unlock()
+
+            val selectedImage: Uri = data.data ?: return
+            try {
+                getBitmapFromUri(selectedImage)?.let { bmp ->
+                    imageSelectorOwner?.onSelected(bmp)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     /**
@@ -125,4 +150,13 @@ class NavActivity : FitActivity() {
     }
 
 
+    @Throws(IOException::class)
+    private fun getBitmapFromUri(uri: Uri): Bitmap? {
+        val parcelFileDescriptor = contentResolver.openFileDescriptor(uri, "r")
+        val fileDescriptor = parcelFileDescriptor!!.fileDescriptor
+        val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+        parcelFileDescriptor.close()
+
+        return image
+    }
 }
