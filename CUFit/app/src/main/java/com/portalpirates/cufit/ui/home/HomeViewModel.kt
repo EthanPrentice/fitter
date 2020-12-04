@@ -3,15 +3,23 @@ package com.portalpirates.cufit.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.portalpirates.cufit.datamodel.data.workout.MuscleGroup
 import com.portalpirates.cufit.datamodel.data.workout.Workout
+import com.portalpirates.cufit.ui.util.ImageSelectorLock
 
 class HomeViewModel : ViewModel() {
+
+    /* OTHER */
+    val imageSelectorLock = ImageSelectorLock()
+    /* END OF OTHER */
 
     /* GENERAL WORKOUTS */
     fun clearWorkouts() {
         clearRecentWorkouts()
         clearOwnedWorkouts()
     }
+
+    var muscleGroups: List<MuscleGroup> = ArrayList()
     /* END OF GENERAL WORKOUTS */
 
 
@@ -49,6 +57,11 @@ class HomeViewModel : ViewModel() {
 
     fun addOwnedWorkouts(vararg w: Workout) {
         ownedWorkoutsList.addAll(w)
+        _ownedWorkouts.postValue(_ownedWorkouts.value)
+    }
+
+    fun insertOwnedWorkout(pos: Int, w: Workout) {
+        ownedWorkoutsList.add(pos, w)
         _ownedWorkouts.postValue(_ownedWorkouts.value)
     }
 

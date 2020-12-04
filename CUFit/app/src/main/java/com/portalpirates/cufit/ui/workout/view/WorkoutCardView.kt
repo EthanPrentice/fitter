@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.icu.util.MeasureUnit
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.data.measure.Weight
 import com.portalpirates.cufit.datamodel.data.workout.Exercise
 import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.ui.util.DragEventListener
@@ -27,8 +25,6 @@ import com.portalpirates.cufit.ui.view.FitButton
 import com.portalpirates.cufit.ui.view.FitCardView
 import com.portalpirates.cufit.ui.workout.ExerciseAdapter
 import kotlinx.android.synthetic.main.button_layout.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : FitCardView(context, attrs, defStyle), DragEventListener {
@@ -135,7 +131,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
     }
 
     private fun setDescription(desc: String?) {
-        workoutDescriptionView.text = desc
+        workoutDescriptionView.text = if (desc.isNullOrBlank()) "No description" else desc
     }
 
     override fun setTitle(title: String) {
@@ -188,7 +184,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
 
         lateinit var chip: Chip
         for (label in labels) {
-            chip = layoutInflater.inflate(R.layout.single_chip_layout, chipGroup, false) as Chip
+            chip = layoutInflater.inflate(R.layout.action_chip_layout, chipGroup, false) as Chip
             chip.apply {
                 text = label
                 isClickable = false

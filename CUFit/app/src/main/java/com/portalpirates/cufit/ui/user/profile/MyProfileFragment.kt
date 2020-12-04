@@ -20,6 +20,7 @@ import com.portalpirates.cufit.ui.home.HomeViewModel
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
 import com.portalpirates.cufit.ui.view.chart.LineChartCardView
 import com.portalpirates.cufit.ui.view.swimlane.SwimlaneCardView
+import com.portalpirates.cufit.ui.workout.view.CreateWorkoutCardView
 import com.portalpirates.cufit.ui.workout.view.WorkoutCardView
 import kotlin.math.abs
 
@@ -31,7 +32,10 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
 
     var myProfileCard: MyProfileCardView? = null
     var myWorkoutsCard: SwimlaneCardView? = null
+
+    var createWorkoutCard: CreateWorkoutCardView? = null
     var currWorkoutCard: WorkoutCardView? = null
+
     var progressCard: LineChartCardView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +80,9 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         myWorkoutsCard = view.findViewById(R.id.my_workouts_card)
         initMyWorkoutsCard()
 
+        createWorkoutCard = view.findViewById(R.id.create_workout_card)
+        initCreateWorkoutCard()
+
         progressCard = view.findViewById(R.id.progress_chart_test)
         initProgressCard()
 
@@ -109,13 +116,44 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         }
 
         myWorkoutsCard?.adapter?.enableAddSwimlaneItem {
-            Toast.makeText(context, "Add clicked", Toast.LENGTH_SHORT).show()
+            currWorkoutCard?.visibility = View.GONE
+            createWorkoutCard?.visibility = View.VISIBLE
+            null
         }
 
         myWorkoutsCard?.setOnItemClickListener { v, item ->
             currWorkoutCard?.setWorkout(item as Workout)
             currWorkoutCard?.visibility = View.VISIBLE
+            createWorkoutCard?.visibility = View.GONE
             null
+        }
+    }
+
+    private fun initCreateWorkoutCard() {
+        createWorkoutCard?.apply {
+            assignLock(model.imageSelectorLock)
+            populateMuscleGroups(model.muscleGroups)
+            setOnCreateTaskListener(object : TaskListener<Workout> {
+                override fun onSuccess(value: Workout) {
+                    Toast.makeText(context, "Workout created!", Toast.LENGTH_LONG).show()
+                    model.insertOwnedWorkout(0, value)
+
+                    createWorkoutCard?.apply {
+                        visibility = View.GONE
+                        clearData()
+                    }
+                }
+
+                override fun onFailure(e: Exception?) {
+                    Log.w("Create Workout", "There was an error creating the workout!")
+                    Toast.makeText(context, "There was an error creating the workout!", Toast.LENGTH_LONG).show()
+                }
+            })
+
+            setOnCancelListener {
+                visibility = View.GONE
+                clearData()
+            }
         }
     }
 
