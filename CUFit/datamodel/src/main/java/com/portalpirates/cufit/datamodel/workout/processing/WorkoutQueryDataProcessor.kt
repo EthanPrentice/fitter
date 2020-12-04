@@ -1,14 +1,13 @@
 package com.portalpirates.cufit.datamodel.workout.processing
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.portalpirates.cufit.datamodel.adt.DataProcessor
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
-import com.portalpirates.cufit.datamodel.data.workout.Workout
-import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
-import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
+import com.portalpirates.cufit.datamodel.data.workout.*
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
 import java.lang.Exception
@@ -59,6 +58,42 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         })
     }
 
+    fun getWorkoutLogByUid(ownerUid: String, workoutLogUid: String, listener: TaskListener<WorkoutLog>) {
+        cloudInterface.getWorkoutLogByOwnerIdAndUid(ownerUid, workoutLogUid, object : TaskListener<DocumentSnapshot> {
+            // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
+            override fun onSuccess(value: DocumentSnapshot) {
+                val workoutLog = createWorkoutLogFromDocument(value)
+
+                if (workoutLog == null) {
+                    listener.onFailure(IllegalStateException("Could not create workout from document!!"))
+                    return
+                }
+
+                listener.onSuccess(workoutLog)
+            }
+            // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
+            override fun onFailure(e: Exception?) = listener.onFailure(e)
+        })
+    }
+
+    fun getWorkoutLogsByOwnerAndWorkoutUid( ownerUid: String, workoutUid: String, listener: TaskListener<List<WorkoutLog>> ) {
+        cloudInterface.getAllWorkoutLogsByOwnerIdAndWorkoutId(ownerUid, workoutUid, object : TaskListener<QuerySnapshot> {
+            // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
+            override fun onSuccess(value: QuerySnapshot) {
+                val workoutLogs = value.mapNotNull { doc -> createWorkoutLogFromDocument(doc) }
+
+                if (workoutLogs.isEmpty() && value.size() != 0) {
+                    listener.onFailure(IllegalStateException("Could not create any workout logs from document!!"))
+                    return
+                }
+
+                listener.onSuccess(workoutLogs)
+            }
+            // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
+            override fun onFailure(e: Exception?) = listener.onFailure(e)
+        })
+    }
+
 
 
     @Throws(IllegalArgumentException::class)
@@ -75,6 +110,20 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
                 // TODO set targetmusclegroups
                 .setImageBlob(doc.getBlob(WorkoutField.IMAGE_BMP.toString())?.toBytes())
                 .build()
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Could not create a workout from document")
+            null
+        }
+    }
+
+    @Throws(IllegalArgumentException::class)
+    private fun createWorkoutLogFromDocument(doc: DocumentSnapshot) : WorkoutLog? {
+        return try {
+            WorkoutLogBuilder()
+                    .setUid(doc.id)
+                    .setOwnerUid(doc.getString(WorkoutField.OWNER.toString()))
+                    .build()
 
         } catch (e: Exception) {
             Log.e(TAG, "Could not create a workout from document")

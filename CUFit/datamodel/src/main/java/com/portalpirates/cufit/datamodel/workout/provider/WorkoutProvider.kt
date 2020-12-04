@@ -5,6 +5,7 @@ import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.Provider
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.FitUser
+import com.portalpirates.cufit.datamodel.data.workout.WorkoutLog
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.processing.WorkoutQueryDataProcessor
 import java.util.*
@@ -30,6 +31,14 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
             // TODO FIX Return actual workouts!
             Workout("Name", "Desc", "Owner UID", null, true, null, null, null, null)
         }
+    }
+
+    fun getWorkoutLogByUid( ownerUid: String, workoutLogUid: String, listener: TaskListener<WorkoutLog>) {
+        dataProcessor.getWorkoutLogByUid(ownerUid, workoutLogUid, listener)
+    }
+
+    fun gerWorkoutLogsByOwnerAndWorkoutUid( ownerUid: String, workoutUid: String, listener: TaskListener<List<WorkoutLog>>) {
+        dataProcessor.getWorkoutLogsByOwnerAndWorkoutUid(ownerUid, workoutUid, listener)
     }
 
 }

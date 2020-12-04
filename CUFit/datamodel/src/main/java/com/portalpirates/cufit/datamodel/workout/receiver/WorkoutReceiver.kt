@@ -5,6 +5,8 @@ import com.portalpirates.cufit.datamodel.adt.Receiver
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
+import com.portalpirates.cufit.datamodel.data.workout.WorkoutLogBuilder
+import com.portalpirates.cufit.datamodel.data.workout.WorkoutLogField
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.processing.WorkoutManagementDataProcessor
 
@@ -22,5 +24,13 @@ class WorkoutReceiver(manager: Manager) : Receiver(manager) {
 
     fun updateWorkout(fields: HashMap<WorkoutField, Any?>, listener: TaskListener<Unit?>) {
         dataProcessor.updateWorkout(fields, listener)
+    }
+
+    fun createWorkoutLog(builder: WorkoutLogBuilder, listener: TaskListener<String>) {
+        dataProcessor.createWorkoutLog(builder, listener)
+    }
+
+    fun updateWorkoutLog(fields: HashMap<WorkoutLogField, Any?>, listener: TaskListener<Unit?>) {
+        dataProcessor.updateWorkoutLog(fields, listener)
     }
 }

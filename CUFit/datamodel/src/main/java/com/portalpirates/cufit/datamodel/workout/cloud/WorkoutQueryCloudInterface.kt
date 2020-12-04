@@ -7,6 +7,8 @@ import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
 import com.portalpirates.cufit.datamodel.exception.FitFirebaseException
+import com.portalpirates.cufit.datamodel.data.user.UserField
+import com.portalpirates.cufit.datamodel.data.workout.WorkoutLogField
 
 internal class WorkoutQueryCloudInterface(manager: Manager) : CloudInterface(manager) {
 
@@ -38,7 +40,44 @@ internal class WorkoutQueryCloudInterface(manager: Manager) : CloudInterface(man
             }
     }
 
+    fun getWorkoutLogByOwnerIdAndUid( ownerUid: String, workoutLogId: String, listener: TaskListener<DocumentSnapshot>) {
+        db.collection(USER_COLLECTION).document(ownerUid).collection(WORKOUT_LOGS).document(workoutLogId).get()
+                .addOnSuccessListener { result ->
+                    if (result == null) {
+                        listener.onFailure(
+                                FitFirebaseException(
+                                        "Could not find a Workout Log with workoutUid=$workoutLogId and owneUidr=$ownerUid"
+                                )
+                        )
+                    }
+                    listener.onSuccess(result)
+                }
+                .addOnFailureListener { e ->
+                    listener.onFailure(e)
+                }
+    }
+
+    fun getAllWorkoutLogsByOwnerIdAndWorkoutId( ownerUid: String, workoutUid: String, listener: TaskListener<QuerySnapshot>) {
+        db.collection(USER_COLLECTION).document(ownerUid).collection(WORKOUT_LOGS)
+                .whereEqualTo(WorkoutLogField.WORKOUT_ID.toString(), workoutUid).get()
+                .addOnSuccessListener { result ->
+                    if (result == null) {
+                        listener.onFailure(
+                                FitFirebaseException(
+                                        "Could not find a user's Workout Logs with WorkoutUid=$workoutUid and ownerUid=$ownerUid"
+                                )
+                        )
+                    }
+                    listener.onSuccess(result)
+                }
+                .addOnFailureListener { e ->
+                    listener.onFailure(e)
+                }
+    }
+
     companion object {
         private const val COLLECTION = "workouts"
+        private const val USER_COLLECTION = "users"
+        private const val WORKOUT_LOGS = "workout_logs"
     }
 }
