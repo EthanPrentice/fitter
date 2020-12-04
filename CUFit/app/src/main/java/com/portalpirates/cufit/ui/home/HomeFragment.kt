@@ -5,23 +5,37 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
+import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
+import com.portalpirates.cufit.ui.view.misc.VerticalSpaceItemDecoration
 import com.portalpirates.cufit.ui.view.swimlane.SwimlaneAdapter
 import com.portalpirates.cufit.ui.view.swimlane.SwimlaneView
+import com.portalpirates.cufit.ui.workout.WorkoutCardAdapter
 import com.portalpirates.cufit.ui.workout.view.WorkoutCardView
 
 class HomeFragment : FitFragment() {
 
+    private val model: HomeViewModel by activityViewModels()
+
     private var exploreSwimlane: SwimlaneView? = null
+
+    private var recentWorkoutsView: RecyclerView? = null
+    private var recentWorkoutsAdapter: WorkoutCardAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_frag_layout, container, false)
@@ -31,14 +45,31 @@ class HomeFragment : FitFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         exploreSwimlane = view.findViewById(R.id.swimlane)
-        initExploreWorkouts()
+        recentWorkoutsView = view.findViewById<RecyclerView>(R.id.recent_workouts).apply {
+            recentWorkoutsAdapter = WorkoutCardAdapter(model.recentWorkouts.value!!)
+            adapter = recentWorkoutsAdapter
+            layoutManager = object : LinearLayoutManager(requireContext()) {
+                override fun canScrollVertically() = false
+                override fun isAutoMeasureEnabled() = true
+            }
+            setHasFixedSize(false)
+            isNestedScrollingEnabled = false
 
-        doFakeDataStuff(view)
+            val dividerItemDecoration = VerticalSpaceItemDecoration(context.resources.getDimensionPixelOffset(R.dimen.LU_3), endingSpace=true)
+            addItemDecoration(dividerItemDecoration)
+        }
+
+        model.recentWorkouts.observe(requireActivity(), Observer { workouts ->
+            recentWorkoutsAdapter?.notifyDataSetChanged()
+        })
+
+        initExploreWorkouts()
     }
 
     override fun onResume() {
         super.onResume()
         fitActivity?.setToolbarTitle(R.string.my_home)
+        recentWorkoutsAdapter?.notifyDataSetChanged()
     }
 
     private fun initExploreWorkouts() {
@@ -75,36 +106,6 @@ class HomeFragment : FitFragment() {
             val swimlaneAdapter = SwimlaneAdapter(requireContext(), swimlaneItems, ContextCompat.getDrawable(requireContext(), R.drawable.default_workout_img)!!, ::onExploreItemClick)
             swimlane.adapter = swimlaneAdapter
         }
-    }
-
-    private fun doFakeDataStuff(view: View) {
-        val workout1 = view.findViewById<WorkoutCardView>(R.id.fake_workout_view1).apply {
-            setTitle("Chest & Tris")
-            setFakeDescription("Bench press, pec flies, squeeze press, tricep extensions, skullcrushers")
-            setFakeLabels(listOf("Chest", "Triceps", "Shoulders"))
-        }
-
-        view.findViewById<WorkoutCardView>(R.id.fake_workout_view2).apply {
-            setTitle("Back & Biceps")
-            setFakeDescription("Lat pulldowns, seated row, straight arm pulldowns, incline curls, hammer curls")
-            setFakeLabels(listOf("Back", "Biceps", "Shoulders"))
-        }
-
-        val workout3 = view.findViewById<WorkoutCardView>(R.id.fake_workout_view3).apply {
-            setTitle("Legs & Shoulders")
-            setFakeDescription("Squats, calf raises, hamstring curls, leg extensions, overhead press, delt flies, front raises, side raises")
-            setFakeLabels(listOf("Legs", "Shoulders"))
-        }
-
-        FitApplication.instance.userManager.provider.getAuthenticatedUser(object :
-            TaskListener<AuthenticatedUser?> {
-            override fun onSuccess(value: AuthenticatedUser?) {
-                workout1.setFakeOwnerBmp(value?.imageBmp)
-                workout3.setFakeOwnerBmp(value?.imageBmp)
-            }
-
-            override fun onFailure(e: Exception?) { }
-        })
     }
 
     companion object {

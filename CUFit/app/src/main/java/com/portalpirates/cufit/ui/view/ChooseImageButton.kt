@@ -2,6 +2,7 @@ package com.portalpirates.cufit.ui.view
 
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Rect
@@ -13,19 +14,26 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import com.portalpirates.cufit.ui.FitActivity.Companion.RESULT_LOAD_IMAGE
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.ui.util.ImageSelector
+import com.portalpirates.cufit.ui.util.ImageSelectorLock
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class ChooseImageButton(context: Context, attrs: AttributeSet?, defStyle: Int) : RelativeLayout(context, attrs, defStyle) {
+class ChooseImageButton(context: Context, attrs: AttributeSet?, defStyle: Int) : RelativeLayout(context, attrs, defStyle), ImageSelector {
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    private var lock: ImageSelectorLock? = null
 
     val imageView = CircleImageView(context)
     private val rippleView = View(context)
     val editBtn = FitButton(context)
+
+    private var onImageSelectedListener: ((mp: Bitmap?) -> Unit?)? = null
+
 
     init {
         makeClickable()
@@ -44,6 +52,12 @@ class ChooseImageButton(context: Context, attrs: AttributeSet?, defStyle: Int) :
             setImageBitmap(null)
         }
 
+        setOnClickListener {
+            getActivity(context)?.let {
+                selectPhotoFromGallery(it)
+            }
+        }
+
         val photoParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         val editBtnParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
 
@@ -52,10 +66,21 @@ class ChooseImageButton(context: Context, attrs: AttributeSet?, defStyle: Int) :
         addView(editBtn, editBtnParams)
     }
 
+    override fun onSelected(bmp: Bitmap?) {
+        setImageBitmap(bmp)
+        onImageSelectedListener?.invoke(bmp)
+    }
+
+    fun setOnImageSelectedListener(listener: ((bmp: Bitmap?) -> Unit?)?) {
+        onImageSelectedListener = listener
+    }
+
+
     fun selectPhotoFromGallery(activity: Activity) {
         val gallery = Intent(Intent.ACTION_GET_CONTENT)
         gallery.type = "image/*"
 
+        lock?.lock(this)
         startActivityForResult(activity, gallery, RESULT_LOAD_IMAGE, null)
     }
 
@@ -149,5 +174,24 @@ class ChooseImageButton(context: Context, attrs: AttributeSet?, defStyle: Int) :
         editBtn.isDuplicateParentStateEnabled = true
         rippleView.isDuplicateParentStateEnabled = true
         editBtn.isClickable = false
+    }
+
+    fun assignLock(lock: ImageSelectorLock) {
+        if (!lock.isLocked()) {
+            this.lock = lock
+        }
+    }
+
+    private fun getActivity(context: Context?): Activity? {
+        if (context == null) {
+            return null
+        } else if (context is ContextWrapper) {
+            return if (context is Activity) {
+                context
+            } else {
+                getActivity(context.baseContext)
+            }
+        }
+        return null
     }
 }

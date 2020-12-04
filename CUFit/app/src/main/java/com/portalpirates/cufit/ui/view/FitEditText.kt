@@ -1,15 +1,10 @@
 package com.portalpirates.cufit.ui.view
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.Gravity
-import android.widget.EditText
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.portalpirates.cufit.R
@@ -72,7 +67,9 @@ open class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : 
 
         gravity = Gravity.CENTER_VERTICAL
 
-        editText.setTextAppearance(R.style.edittext_text)
+        if (editTextType == EditTextType.PRIMARY) {
+            editText.setTextAppearance(R.style.edittext_text)
+        }
 
         setEndIconTintList(ContextCompat.getColorStateList(context, R.color.password_hint_tint))
 
@@ -83,9 +80,11 @@ open class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : 
 
 
     private fun initBackground() {
-        val backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.rounded_component_background) as GradientDrawable
-        backgroundDrawable.color = ColorUtil.getSingleColorStateList(backgroundTint)
-        background = backgroundDrawable
+        if (editTextType == EditTextType.PRIMARY) {
+            val backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.rounded_component_background) as GradientDrawable
+            backgroundDrawable.color = ColorUtil.getSingleColorStateList(backgroundTint)
+            background = backgroundDrawable
+        }
     }
 
     private fun initEditText() {
@@ -95,8 +94,10 @@ open class FitEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : 
     }
 
     private fun setPadding() {
-        val horizontal = resources.getDimensionPixelOffset(R.dimen.LU_3_5)
-        setPadding(horizontal, 0, horizontal, 0)
+        if (editTextType == EditTextType.PRIMARY) {
+            val horizontal = resources.getDimensionPixelOffset(R.dimen.LU_3_5)
+            setPadding(horizontal, 0, horizontal, 0)
+        }
     }
 
 }

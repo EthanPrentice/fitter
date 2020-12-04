@@ -13,32 +13,24 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/header3_bold"
         android:textColor="@color/text_primary"
+        android:layout_marginLeft="@dimen/LU_1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/workout_owner_img"
-        app:layout_constraintBottom_toBottomOf="@id/workout_owner_img"
+        app:layout_constraintRight_toLeftOf="@id/workout_img"
+        app:layout_constraintBottom_toBottomOf="@id/workout_img"
         app:layout_constraintVertical_bias="0"/>
-
-    <com.portalpirates.cufit.ui.view.FitCircleImageView
-        android:id="@+id/workout_owner_img"
-        android:layout_width="@dimen/LU_4"
-        android:layout_height="@dimen/LU_4"
-        android:src="@drawable/default_avatar"
-        app:layout_constraintLeft_toRightOf="@id/workout_title"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
 
     <TextView
         android:id="@+id/workout_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/LU_1"
+        android:layout_marginLeft="@dimen/LU_1_5"
         android:textAppearance="@style/subtitle"
         android:textColor="@color/text_secondary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/workout_title"
-        app:layout_constraintRight_toLeftOf="@+id/workout_owner_img" />
+        app:layout_constraintRight_toLeftOf="@+id/workout_img" />
 
 
     <com.google.android.material.chip.ChipGroup
@@ -53,18 +45,70 @@
         app:layout_constraintRight_toLeftOf="@id/workout_chevron"
         app:layout_constraintVertical_bias="1"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/exercise_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/background_translucent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginLeft="@dimen/LU_1"
+        android:layout_marginTop="@dimen/LU_1_5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/workout_title"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:visibility="gone" />
+
+    <com.portalpirates.cufit.ui.view.FitButton
+        android:id="@+id/log_workout_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/LU_4"
+        android:layout_marginVertical="@dimen/LU_2"
+        android:layout_marginHorizontal="@dimen/LU_1"
+        app:buttonType="primary"
+        app:text="Log Workout"
+        app:layout_constraintTop_toBottomOf="@id/exercise_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/add_exercise_btn"
+
+        android:visibility="gone"/>
+
+    <com.portalpirates.cufit.ui.view.FitButton
+        android:id="@+id/add_exercise_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/LU_4"
+        android:layout_marginVertical="@dimen/LU_2"
+        android:layout_marginHorizontal="@dimen/LU_1"
+        app:buttonType="secondary"
+        app:text="Add Exercise"
+        app:layout_constraintTop_toBottomOf="@id/exercise_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/log_workout_btn"
+        app:layout_constraintRight_toLeftOf="@id/workout_chevron"
+
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/workout_chevron"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/LU_4"
         android:layout_height="@dimen/LU_4"
         android:src="@drawable/ic_chevron_down"
         app:tint="@color/icon_primary"
-        app:layout_constraintLeft_toLeftOf="@id/chip_group"
-        app:layout_constraintTop_toBottomOf="@id/workout_desc"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/log_workout_btn"
+        app:layout_constraintLeft_toLeftOf="@id/log_workout_btn"
+        app:layout_constraintBottom_toBottomOf="@id/log_workout_btn"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintVertical_bias="1"/>
+        app:layout_constraintVertical_bias="0"/>
+
+    <com.portalpirates.cufit.ui.view.FitCircleImageView
+        android:id="@+id/workout_img"
+        android:layout_width="@dimen/LU_4"
+        android:layout_height="@dimen/LU_4"
+        android:src="@drawable/default_workout_img"
+        app:layout_constraintLeft_toRightOf="@id/workout_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

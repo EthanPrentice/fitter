@@ -6,6 +6,7 @@ import com.google.firebase.firestore.Blob
 import com.portalpirates.cufit.datamodel.FitException
 import com.portalpirates.cufit.datamodel.data.measure.Height
 import com.portalpirates.cufit.datamodel.data.measure.Weight
+import com.portalpirates.cufit.datamodel.util.ImageUtil
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -19,6 +20,7 @@ class FitUserBuilder {
     var sex: UserSex? = null
 
     // optional
+    var uid: String? = null
     var imageBmp: Bitmap? = null
     var currentWeight: Weight? = null
     var currentHeight: Height? = null
@@ -31,6 +33,11 @@ class FitUserBuilder {
         } else {
             throw UserBuildException("All required fields have not been provided for user! Cannot build!")
         }
+    }
+
+    fun setUid(uid: String?): FitUserBuilder {
+        this.uid = uid
+        return this
     }
 
     fun setCurrentWeight(weight: Weight?) : FitUserBuilder {
@@ -96,7 +103,7 @@ class FitUserBuilder {
     fun convertFieldsToHashMap(): HashMap<String, Any?> {
         val imageBlob = imageBmp?.let { bmp ->
             val bos = ByteArrayOutputStream()
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos)
+            ImageUtil.getResizedBitmap(bmp, ImageUtil.MAX_BMP_SIZE).compress(Bitmap.CompressFormat.PNG, 100, bos)
             Blob.fromBytes(bos.toByteArray())
         }
 

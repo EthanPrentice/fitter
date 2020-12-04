@@ -1,15 +1,30 @@
 package com.portalpirates.cufit.ui.nav
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import androidx.activity.viewModels
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.ui.FitActivity
+import com.portalpirates.cufit.ui.FitApplication
+import com.portalpirates.cufit.ui.home.HomeFragment
+import com.portalpirates.cufit.ui.home.HomeViewModel
 import com.portalpirates.cufit.ui.view.LockableNestedScrollView
+import java.io.IOException
 
 
 class NavActivity : FitActivity() {
+
+    private val model: HomeViewModel by viewModels()
 
     private var bottomNavigationView: BottomNavigationView? = null
     private var viewPager: FitViewPager? = null
@@ -40,6 +55,31 @@ class NavActivity : FitActivity() {
                     viewPager?.minimumHeight = fragScrollView?.measuredHeight ?: 0
                 }
             })
+
+
+        // clear in-case of recreate
+        // we could just not clear & re-query them on recreate, but in case of updates elsewhere we will.
+        model.clearWorkouts()
+        runWorkoutQueries()
+        model.muscleGroups = FitApplication.instance.workoutManager.provider.getMuscleGroups()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            val imageSelectorOwner = model.imageSelectorLock.owner
+            model.imageSelectorLock.unlock()
+
+            val selectedImage: Uri = data.data ?: return
+            try {
+                getBitmapFromUri(selectedImage)?.let { bmp ->
+                    imageSelectorOwner?.onSelected(bmp)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     /**
@@ -73,5 +113,50 @@ class NavActivity : FitActivity() {
 
     override fun hasNavBar(): Boolean {
         return true
+    }
+
+
+    private fun runWorkoutQueries() {
+        queryMyWorkouts()
+        queryRecentWorkouts()
+    }
+
+    /* View model methods */
+    private fun queryMyWorkouts() {
+        val userUid = FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid
+        FitApplication.instance.workoutManager.provider.getWorkoutsByOwner(userUid, object :
+            TaskListener<List<Workout>> {
+            override fun onSuccess(value: List<Workout>) {
+                model.addOwnedWorkouts(*(value.toTypedArray()))
+            }
+
+            override fun onFailure(e: Exception?) {
+                Log.e(HomeFragment.TAG, e?.message.toString())
+            }
+        })
+    }
+
+    private fun queryRecentWorkouts() {
+        val userUid = FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid
+        FitApplication.instance.workoutManager.provider.getWorkoutsByOwner(userUid, object : TaskListener<List<Workout>> {
+            override fun onSuccess(value: List<Workout>) {
+                model.addRecentWorkouts(*(value.toTypedArray()))
+            }
+
+            override fun onFailure(e: Exception?) {
+                Log.e(HomeFragment.TAG, e?.message.toString())
+            }
+        })
+    }
+
+
+    @Throws(IOException::class)
+    private fun getBitmapFromUri(uri: Uri): Bitmap? {
+        val parcelFileDescriptor = contentResolver.openFileDescriptor(uri, "r")
+        val fileDescriptor = parcelFileDescriptor!!.fileDescriptor
+        val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+        parcelFileDescriptor.close()
+
+        return image
     }
 }

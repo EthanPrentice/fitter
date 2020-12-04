@@ -33,7 +33,7 @@ internal class UserManagementCloudInterface(manager: Manager) : CloudInterface(m
                         }
                         .addOnFailureListener { e ->
                             Log.w(TAG, "Error creating FireStoreUser", e)
-                            listener.onSuccess(null)
+                            listener.onFailure(e)
                         }
                 }
 

@@ -1,33 +1,41 @@
 package com.portalpirates.cufit.ui.user.profile
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
-import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
+import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
+import com.portalpirates.cufit.ui.home.HomeViewModel
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
-import com.portalpirates.cufit.ui.user.profile.view.RecentWorkoutsCardView
 import com.portalpirates.cufit.ui.view.chart.LineChartCardView
+import com.portalpirates.cufit.ui.view.swimlane.SwimlaneCardView
+import com.portalpirates.cufit.ui.workout.view.CreateWorkoutCardView
+import com.portalpirates.cufit.ui.workout.view.WorkoutCardView
 import kotlin.math.abs
 
 class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
 
+    private val model: HomeViewModel by activityViewModels()
+
     var user: AuthenticatedUser? = null
 
     var myProfileCard: MyProfileCardView? = null
-    var recentWorkoutsCard: RecentWorkoutsCardView? = null
+    var myWorkoutsCard: SwimlaneCardView? = null
+
+    var createWorkoutCard: CreateWorkoutCardView? = null
+    var currWorkoutCard: WorkoutCardView? = null
+
     var progressCard: LineChartCardView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,12 +77,26 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
             myProfileCard?.setUser(it)
         }
 
-        recentWorkoutsCard = view.findViewById(R.id.recent_workouts_card)
-        initRecentWorkoutsCard()
+        myWorkoutsCard = view.findViewById(R.id.my_workouts_card)
+        initMyWorkoutsCard()
+
+        createWorkoutCard = view.findViewById(R.id.create_workout_card)
+        initCreateWorkoutCard()
 
         progressCard = view.findViewById(R.id.progress_chart_test)
         initProgressCard()
 
+        model.ownedWorkouts.observe(requireActivity(), Observer {
+            myWorkoutsCard?.adapter?.notifyDataSetChanged()
+        })
+
+        // Override the chevron collapsing to close the card and when shown always be expanded
+        currWorkoutCard = view.findViewById<WorkoutCardView>(R.id.curr_workout_card).apply {
+            expand()
+            findViewById<ImageView>(R.id.workout_chevron)?.setOnClickListener {
+                visibility = View.GONE
+            }
+        }
     }
 
     private fun initProgressCard() {
@@ -86,41 +108,52 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         }
     }
 
-    private fun initRecentWorkoutsCard() {
-
-        class FakeWorkout(private val title: String, private val bmp: Bitmap?) : SwimlaneItem {
-            override fun getTitle(): String = title
-            override fun getDrawable(): Drawable? {
-                return if (bmp == null) {
-                    null
-                } else {
-                    BitmapDrawable(resources, bmp)
-                }
-            }
-        }
-
-        recentWorkoutsCard?.let { card ->
-            val titles = listOf("Friday", "Wednesday", "Monday", "Oct 30")
-            val bitmapResIds = listOf(R.raw.bench_lady, R.raw.jogging, R.raw.back, R.raw.jogging)
-
-            val swimlaneItems = List<SwimlaneItem>(titles.size) { i ->
-                val bmp = if (bitmapResIds[i] == 0) {
-                    null
-                } else {
-                    BitmapFactory.decodeResource(resources, bitmapResIds[i])
-                }
-                FakeWorkout(titles[i], bmp)
-            }
-
-            card.setSwimlaneItems(swimlaneItems)
-            card.setTitle("Workouts")
+    private fun initMyWorkoutsCard() {
+        myWorkoutsCard?.let { card ->
+            card.setSwimlaneItems(model.ownedWorkouts.value!!)
+            card.setTitle("My Workouts")
             card.setStatusText("2 week streak")
         }
 
-//        val recentWorkouts = FitApplication.instance.userManager.provider.getRecentWorkouts()
-//        recentWorkoutsCard?.setSwimlaneItems(recentWorkouts)
-        recentWorkoutsCard?.setOnItemClickListener { v, item ->
-            Toast.makeText(context, "${item.getTitle()} was pressed", Toast.LENGTH_SHORT).show()
+        myWorkoutsCard?.adapter?.enableAddSwimlaneItem {
+            currWorkoutCard?.visibility = View.GONE
+            createWorkoutCard?.visibility = View.VISIBLE
+            null
+        }
+
+        myWorkoutsCard?.setOnItemClickListener { v, item ->
+            currWorkoutCard?.setWorkout(item as Workout)
+            currWorkoutCard?.visibility = View.VISIBLE
+            createWorkoutCard?.visibility = View.GONE
+            null
+        }
+    }
+
+    private fun initCreateWorkoutCard() {
+        createWorkoutCard?.apply {
+            assignLock(model.imageSelectorLock)
+            populateMuscleGroups(model.muscleGroups)
+            setOnCreateTaskListener(object : TaskListener<Workout> {
+                override fun onSuccess(value: Workout) {
+                    Toast.makeText(context, "Workout created!", Toast.LENGTH_LONG).show()
+                    model.insertOwnedWorkout(0, value)
+
+                    createWorkoutCard?.apply {
+                        visibility = View.GONE
+                        clearData()
+                    }
+                }
+
+                override fun onFailure(e: Exception?) {
+                    Log.w("Create Workout", "There was an error creating the workout!")
+                    Toast.makeText(context, "There was an error creating the workout!", Toast.LENGTH_LONG).show()
+                }
+            })
+
+            setOnCancelListener {
+                visibility = View.GONE
+                clearData()
+            }
         }
     }
 

@@ -6,6 +6,7 @@
 
     <color name="icon_primary">#000000</color>
     <color name="icon_secondary">#CC000000</color>
+    <color name="icon_background">#0D000000</color>
 
     <color name="text_primary">#000000</color>
     <color name="text_secondary">#CC000000</color>
@@ -21,6 +22,7 @@
     <color name="component_fg_secondary_inverse">#CC000000</color>
 
     <color name="card_background">#FFFFFF</color>
+    <color name="exercise_background">#F2F2F2</color>
 
     <color name="overlay_dark">#66000000</color>
     <color name="overlay_light">#AAFFFFFF</color>
