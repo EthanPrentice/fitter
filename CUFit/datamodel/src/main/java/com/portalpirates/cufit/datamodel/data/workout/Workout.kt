@@ -37,6 +37,30 @@ open class Workout(
         uid = workout.uid
     }
 
+    constructor(
+        uid: String?,
+        name: String,
+        description: String? = null,
+        ownerUid: String,
+        owner: FitUser?,
+        public: Boolean,
+        subscribers: List<FitUser>? = null,
+        exercises: MutableList<Exercise>,
+        targetMuscleGroups: List<MuscleGroup>? = null,
+        imageBmp: Bitmap? = null
+    ) : this(
+        name,
+        description,
+        ownerUid,
+        owner,
+        public,
+        subscribers,
+        exercises,
+        targetMuscleGroups,
+        imageBmp
+    ) {
+        this.uid = uid
+    }
 
     override fun getTitle(): String {
         return name

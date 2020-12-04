@@ -21,7 +21,7 @@ class WorkoutReceiver(manager: Manager) : Receiver(manager) {
         dataProcessor.createWorkout(builder, listener)
     }
 
-    fun updateWorkout(fields: HashMap<WorkoutField, Any?>, listener: TaskListener<Unit?>) {
-        dataProcessor.updateWorkout(fields, listener)
+    fun updateWorkout(uid: String, fields: HashMap<WorkoutField, Any?>, listener: TaskListener<Unit?>) {
+        dataProcessor.updateWorkout(uid, fields, listener)
     }
 }

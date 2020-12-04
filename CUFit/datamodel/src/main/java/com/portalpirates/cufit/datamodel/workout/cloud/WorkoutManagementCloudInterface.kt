@@ -16,8 +16,7 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
 
     fun createWorkout(fields: HashMap<String, Any?>, listener: TaskListener<String>) {
         db.collection(COLLECTION).add(fields).addOnSuccessListener { ref ->
-            fields[WorkoutField.UID.toString()] = ref.id
-            updateWorkout(fields, object : TaskListener<Unit?> {
+            updateWorkout(ref.id, fields, object : TaskListener<Unit?> {
                 override fun onSuccess(value: Unit?) = listener.onSuccess(ref.id)
                 override fun onFailure(e: Exception?) = listener.onFailure(e)
             })
@@ -28,14 +27,7 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
         }
     }
 
-    fun updateWorkout(fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
-        val uid = fields[WorkoutField.UID.toString()] as String?
-
-        if (uid == null) {
-            listener.onFailure(IllegalArgumentException("Cannot update a workout with no UID!"))
-            return
-        }
-
+    fun updateWorkout(uid: String, fields: HashMap<String, Any?>, listener: TaskListener<Unit?>) {
         workoutManager.queryCloudInterface.getWorkoutByUid(uid, object :
             TaskListener<DocumentSnapshot> {
             override fun onSuccess(value: DocumentSnapshot) {

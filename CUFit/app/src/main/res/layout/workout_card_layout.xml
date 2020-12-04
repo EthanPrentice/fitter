@@ -70,12 +70,12 @@
         app:layout_constraintTop_toBottomOf="@id/exercise_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/add_workout_btn"
+        app:layout_constraintRight_toLeftOf="@id/add_exercise_btn"
 
         android:visibility="gone"/>
 
     <com.portalpirates.cufit.ui.view.FitButton
-        android:id="@+id/add_workout_btn"
+        android:id="@+id/add_exercise_btn"
         android:layout_width="0dp"
         android:layout_height="@dimen/LU_4"
         android:layout_marginVertical="@dimen/LU_2"

@@ -36,12 +36,14 @@ internal class WorkoutManagementDataProcessor(manager: Manager) : DataProcessor(
         }
     }
 
-    fun updateWorkout(fields: HashMap<WorkoutField, Any?>, listener: TaskListener<Unit?>) {
+    fun updateWorkout(uid: String, fields: HashMap<WorkoutField, Any?>, listener: TaskListener<Unit?>) {
         val strMap = HashMap<String, Any?>()
         for (key in fields.keys) {
-            strMap[key.fieldName] = fields[key]
+            if (key != WorkoutField.UID) { // UID cannot be updated.
+                strMap[key.fieldName] = fields[key]
+            }
         }
-        cloudInterface.updateWorkout(strMap, listener)
+        cloudInterface.updateWorkout(uid, strMap, listener)
     }
 
     companion object {
