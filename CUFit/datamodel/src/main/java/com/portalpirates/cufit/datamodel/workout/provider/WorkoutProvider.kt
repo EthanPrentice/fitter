@@ -1,9 +1,11 @@
 package com.portalpirates.cufit.datamodel.workout.provider
 
+import android.icu.util.MeasureUnit
 import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.Provider
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.measure.Weight
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.workout.Exercise
 import com.portalpirates.cufit.datamodel.data.workout.MuscleGroup
@@ -35,7 +37,42 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
     }
 
     fun getMuscleGroups(): List<MuscleGroup> {
-        return listOf("Chest", "Back", "Legs", "Shoulders", "Triceps", "Biceps", "Abs").map { MuscleGroup(it) }
+        return listOf("Chest", "Back", "Legs", "Shoulders", "Triceps", "Biceps", "Forearms", "Abs").map { MuscleGroup(it) }
+    }
+
+    fun getExercises(): List<Exercise> {
+
+        fun toMGs(vararg list: String) = list.map { MuscleGroup(it) }
+
+        return listOf(
+            // CHEST
+            Exercise("Bench Press", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Chest", "Triceps")),
+            Exercise("Pec Flys", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Chest")),
+            Exercise("Squeeze Press", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Chest", "Triceps")),
+
+            // TRICEPS
+            Exercise("Tricep Extensions", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Triceps")),
+
+            // BACK
+            Exercise("Lat Pulldown", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Biceps", "Shoulders")),
+            Exercise("Seated Row",   Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Biceps")),
+            Exercise("Straight-arm Pulldown", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back")),
+
+            // BICEPS
+            Exercise("Incline DB Curls", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Biceps")),
+            Exercise("Hammer Curls", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Biceps")),
+            Exercise("Reverse BB Curls", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Forearms")),
+
+            // LEGS
+            Exercise("Squats",       Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Legs", "Abs")),
+            Exercise("Calf Raises",  Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Legs")),
+            Exercise("Hamstring Curls", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Legs")),
+
+            // SHOULDERS
+            Exercise("OHP",          Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Shoulders")),
+            Exercise("Delt Flys",   Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Shoulders")),
+            Exercise("Side Raises",  Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Shoulders", "Forearms"))
+        )
     }
 
 }

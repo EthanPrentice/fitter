@@ -135,7 +135,7 @@ class CreateWorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: In
         chipGroup.checkedChipIds.forEach { viewId ->
             chipGroup.findViewById<Chip>(viewId).apply {
                 isSelected = false
-                isCheckable = false
+                isChecked = false
             }
         }
     }
