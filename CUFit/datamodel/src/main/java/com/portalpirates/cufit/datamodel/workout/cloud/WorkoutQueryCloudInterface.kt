@@ -59,15 +59,8 @@ internal class WorkoutQueryCloudInterface(manager: Manager) : CloudInterface(man
 
     fun getAllWorkoutLogsByOwnerIdAndWorkoutId( ownerUid: String, workoutUid: String, listener: TaskListener<QuerySnapshot>) {
         db.collection(USER_COLLECTION).document(ownerUid).collection(WORKOUT_LOGS)
-                .whereEqualTo(WorkoutLogField.WORKOUT_ID.toString(), workoutUid).get()
+                .whereEqualTo(WorkoutLogField.WORKOUT_UID.toString(), workoutUid).get()
                 .addOnSuccessListener { result ->
-                    if (result == null) {
-                        listener.onFailure(
-                                FitFirebaseException(
-                                        "Could not find a user's Workout Logs with WorkoutUid=$workoutUid and ownerUid=$ownerUid"
-                                )
-                        )
-                    }
                     listener.onSuccess(result)
                 }
                 .addOnFailureListener { e ->

@@ -8,6 +8,7 @@ import java.util.*
 
 open class WorkoutLog(
         var owner: String? = null,
+        var workout_id: String? = null,
         var exercises: List<Exercise>? = null,
         var date: Date? = null
 ) : SwimlaneItem {
@@ -17,12 +18,13 @@ open class WorkoutLog(
         private set
 
     // copy constructor
-    constructor(workout: WorkoutLog) : this(
-            workout.owner,
-            workout.exercises,
-            workout.date
+    constructor(workoutLog: WorkoutLog) : this(
+            workoutLog.owner,
+            workoutLog.workout_id,
+            workoutLog.exercises,
+            workoutLog.date
     ) {
-        uid = workout.uid
+        uid = workoutLog.uid
     }
 
 

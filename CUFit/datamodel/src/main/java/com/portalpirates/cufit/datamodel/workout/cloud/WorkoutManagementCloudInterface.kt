@@ -60,7 +60,7 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
 
     fun createWorkoutLog( fields: HashMap<String, Any?>, listener: TaskListener<String>) {
         val owner_id = fields[WorkoutLogField.OWNER_UID.toString()] as String?
-
+        Log.e(TAG, fields.toString())
         if (owner_id == null) {
             listener.onFailure(IllegalArgumentException("Cannot update a workout with no Owner UID!"))
             return

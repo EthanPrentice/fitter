@@ -2,7 +2,7 @@ package com.portalpirates.cufit.datamodel.data.workout
 
 enum class WorkoutLogField(val fieldName: String) {
     UID("uid"),
-    WORKOUT_ID("workout_id"),
+    WORKOUT_UID("workout_uid"),
     DATE("date"),
     OWNER_UID("owner_uid"),
     EXERCISES("exercises");

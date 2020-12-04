@@ -13,7 +13,7 @@ import kotlin.collections.HashMap
 class WorkoutLogBuilder {
 
     // required
-    var workout_id: String? = null
+    var workoutUid: String? = null
     var ownerUid: String? = null
 
     // optional
@@ -28,7 +28,7 @@ class WorkoutLogBuilder {
     fun build(): WorkoutLog {
         if (hasRequiredInputs()) {
             date = Date()
-            return WorkoutLog(ownerUid, exercises, date)
+            return WorkoutLog(ownerUid, workoutUid, exercises, date)
         } else {
             throw WorkoutBuildException("All required fields have not been provided for workout! Cannot build!")
         }
@@ -44,7 +44,12 @@ class WorkoutLogBuilder {
         return this
     }
 
-    fun setOwnerUid(ownerUid: String?): WorkoutLogBuilder {
+    fun setWorkoutUid( workoutUid: String ): WorkoutLogBuilder {
+        this.workoutUid = workoutUid
+        return this
+    }
+
+    fun setOwnerUid( ownerUid: String ) : WorkoutLogBuilder {
         this.ownerUid = ownerUid
         return this
     }
@@ -56,6 +61,7 @@ class WorkoutLogBuilder {
     fun convertFieldsToHashMap(): HashMap<String, Any?> {
 
         return hashMapOf<String, Any?>(
+                WorkoutLogField.OWNER_UID.toString() to ownerUid,
                 WorkoutLogField.EXERCISES.toString() to exercises,
                 WorkoutLogField.DATE.toString() to date
         )

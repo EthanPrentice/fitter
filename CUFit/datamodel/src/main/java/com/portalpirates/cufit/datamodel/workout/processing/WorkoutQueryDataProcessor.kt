@@ -65,7 +65,7 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
                 val workoutLog = createWorkoutLogFromDocument(value)
 
                 if (workoutLog == null) {
-                    listener.onFailure(IllegalStateException("Could not create workout from document!!"))
+                    listener.onFailure(IllegalStateException("Could not create workout log from document!!"))
                     return
                 }
 
@@ -120,9 +120,13 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
     @Throws(IllegalArgumentException::class)
     private fun createWorkoutLogFromDocument(doc: DocumentSnapshot) : WorkoutLog? {
         return try {
+//            val exercises = doc.data?.get(WorkoutLogField.EXERCISES.toString()) as? List<HashMap<String, Any?>>
+
             WorkoutLogBuilder()
                     .setUid(doc.id)
-                    .setOwnerUid(doc.getString(WorkoutField.OWNER.toString()))
+                    .setWorkoutUid(doc.getString(WorkoutLogField.WORKOUT_UID.toString())!!)
+                    .setOwnerUid(doc.getString(WorkoutLogField.OWNER_UID.toString())!!)
+//                    .setExercises()
                     .build()
 
         } catch (e: Exception) {
