@@ -1,17 +1,22 @@
 package com.portalpirates.cufit.datamodel.workout.processing
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.portalpirates.cufit.datamodel.adt.DataProcessor
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.measure.Weight
+import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.workout.*
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
+import java.util.*
+import kotlin.collections.HashMap
 
 internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manager) {
 
@@ -84,17 +89,15 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         }
     }
 
-    fun getPreviousWorkouts() : List<Workout> {
-        //get user by id
-        // get owned_workouts from that user
-        //create mock array to test pulling from until Eric is done,
-        var workoutList = List(10) {
-                    Workout("wkout1", "Strength", "abc", null, false, null, null, null, null)
-                }
-        //get prev workouts from user (limit to 10)
-        //sort workputs by name
-        return workoutList.sortedBy{ it.name.first }
-
+    /**
+     * @return weights for logged instances of the exercise with [exerciseName] sorted descending by date logged
+     */
+    fun getLoggedExerciseWeights(exerciseName: String) : List<Weight> {
+        // TODO: Get this from the cloud instead of mocking
+        val mockWeights = List(10) {
+            Weight(1, Date())
+        }
+        return mockWeights.sortedByDescending{ it.dateLogged }
     }
 
 

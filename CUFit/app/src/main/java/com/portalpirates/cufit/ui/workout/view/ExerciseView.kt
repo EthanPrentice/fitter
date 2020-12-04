@@ -13,6 +13,7 @@ import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.data.measure.Weight
 import com.portalpirates.cufit.datamodel.data.workout.Exercise
 import com.portalpirates.cufit.ui.view.MeasuredEditText
+import java.util.*
 
 class ExerciseView(context: Context, attrs: AttributeSet?, defStyle: Int) : LinearLayout(context, attrs, defStyle) {
     constructor(context: Context) : this(context, null, 0)
