@@ -4,6 +4,7 @@ import android.util.Log
 import com.portalpirates.cufit.datamodel.adt.DataProcessor
 import com.portalpirates.cufit.datamodel.adt.Manager
 import com.portalpirates.cufit.datamodel.adt.TaskListener
+import com.portalpirates.cufit.datamodel.data.workout.Exercise
 import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
@@ -40,6 +41,14 @@ internal class WorkoutManagementDataProcessor(manager: Manager) : DataProcessor(
         val strMap = HashMap<String, Any?>()
         for (key in fields.keys) {
             if (key != WorkoutField.UID) { // UID cannot be updated.
+
+                // Format exercises
+                if (key == WorkoutField.EXERCISES && (fields[WorkoutField.EXERCISES] is List<*>)) {
+                    fields[WorkoutField.EXERCISES] = (fields[WorkoutField.EXERCISES] as? List<Exercise>)?.map {
+                        it.convertFieldsToHashMap()
+                    }
+                }
+
                 strMap[key.fieldName] = fields[key]
             }
         }
