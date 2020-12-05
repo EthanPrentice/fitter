@@ -12,10 +12,10 @@ import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.workout.*
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
-import java.lang.Exception
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.util.*
+import kotlin.Exception
 import kotlin.collections.HashMap
 
 internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manager) {
@@ -129,19 +129,26 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
     /**
      * @return weights for logged instances of the exercise with [exerciseName] sorted descending by date logged
      */
-    fun getLoggedExerciseWeights(exerciseName: String, ownerUid: String, listener: TaskListener<List<Workout>>) : List<Weight> {
-        val exerciseWeights: MutableList<Weight>
-        val cloudWorkoutData = getWorkoutLogsByOwnerId(
-                ownerUid,
-                listener
-        )
+    fun getLoggedExerciseWeights(exerciseName: String, ownerUid: String, listener: TaskListener<List<Weight>>) {
 
-        val exercisesOfWorkout = cloudWorkoutData.exercises.filterNotNull()
-        exerercisesOfWorkout.forEach({ e ->
-            if (e.name.equals(exerciseName)) exerciseWeights += e.weight
+        val matchedExerciseWeights: MutableList<Weight> = mutableListOf()
+
+        getWorkoutLogsByOwnerId( ownerUid, object : TaskListener<List<Workout>> {
+            override fun onSuccess(value: List<Workout>) {
+                value.forEach { workout ->
+                    workout.exercises.forEach { exercise ->
+                        if (exercise.name.equals(exerciseName)) matchedExerciseWeights.add(exercise.weight!!)
+                    }
+                }
+                matchedExerciseWeights.sortByDescending { it.dateLogged }
+                listener.onSuccess(matchedExerciseWeights)
+            }
+
+            override fun onFailure(e: Exception?) {
+                listener.onFailure(e)
+            }
         })
 
-        return exerciseWeights.sortedByDescending{ it.dateLogged }
     }
 
 
