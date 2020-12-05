@@ -1,0 +1,2 @@
+Helped implement progress graphing for workouts from logged workout data 
+Helped with D4 demo documentation 
