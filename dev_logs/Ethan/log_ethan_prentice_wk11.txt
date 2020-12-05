@@ -1,0 +1,55 @@
+For the week of Nov 30th, 2020
+
+Features implemented this week:
+  Create workout (Implemented UI + data model + no cloud work required, thanks to nosql)
+    Lots of code required here for UI and data model to get creating and updating workouts done, along with setting up the serializing of all our data into HashMaps, Lists, and primitives to be uploaded to Firestore
+  
+  Data class changes (Implemented some required UI changes + data model)
+    Added UIDs to FitUser and Workout objects for easier editing and access, along w tracking
+    Changed a lot of the Workout class to better represent the features that'd be done by D4, and what would be shown with the UI
+    Changed a lot of the Exercise class to better represent how they should be handled both as standalones and when associated with a Workout
+  
+  Update workout (Implemented UI + data model + no cloud work required, thanks to nosql)
+    Essentially the same as creating a workout, but just updating it with the UID
+    Also includes some more features not shown when initally creating a workout
+    Uses the exercise list mentioned next
+  
+  Showing list of exercises (Implemented UI + mocked data model + no cloud required due to mocking)
+    Involved adding a new adapter as well, along with custom views for exercise entries
+    This ties into the card view to support adding and removing workouts
+    Treated as a dialog fragment so lots of lifecycle stuff here too
+    
+  Improved ChooseImageButton by using locks for activity results (UI only)
+  
+  (UI Only)
+  Improved SwimlaneView and SwimlaneAdapter to better support "Add" functionality (Since the "Add" SwimlaneItem is an optional item and not part of the list passed into the SwimlaneAdapter)
+  This is much cleaner than it was when it was tied to the MyWorkoutCardView which this change allowed me to remove
+  
+  Display workout: (LOTS of UI work + fixes to data model querying + no cloud work required)
+    Workout card displays muscle groups, name, description and image (no longer mocked)
+    Expansion added to the card to show a recyclerview of draggable, swipable, editable exercises
+    Exercises when changed are pushed to view model to later be pushed to cloud (not yet implemented)
+    Log workout supported on UI side, as of writing this Eric should be finishing up completing the data model logic to support this
+    Added muscle groups that aren't hard coded as well
+    
+  List of muscle groups (Mocked by data model)
+  Changed adapters to update live data in the view model (specifically for Exercises in workout cards)
+
+
+General bug fixes:
+  Android has an issue with propagating resource value changes down drawable hierarchies apparently, so I flattened the one that we had as a workaround (just an add icon w a circle)
+  ConstraintLayout has an issue with RecyclerView in ConstraintLayout version 2.0.1.  After trying for hours to find a workaround, I updated to 2.0.4 and it fixed this nested scrolling / child-view height bug.
+
+
+Other stuff done this week:
+  Team members finally started implementing some features so I answered a lot of questions in relation to that since some hadn't yet touched the client-side code
+  Will also probably end up doing the youtube video
+
+
+This week was so busy for me since I was expecting these tasks to be a team effort, and delegated them over the past 4 weeks.  However, there was no work done on them by delegates until the last 2-3 days before D4...
+Unfortunately, with 4 other COMP courses I wasn't able to work this hard the two weeks before this, even though I realized most of the tasks I delegated were never going to be touched.  So this week I had to work around 3-4 days straight to do them, which is why this log is so big.  Otherwise D4 wouldn't have had very much new content vs D3.
+
+
+Note: my GitHub commits now total 17.7k additions and deletions on master.
+
+Total time spent on project this week: somewhere in the range of 30-45 hours
