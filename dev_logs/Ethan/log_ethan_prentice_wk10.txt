@@ -1,0 +1,11 @@
+For the week of Nov 23rd, 2020
+
+Code cleanup
+
+Wrote all the component and design diagrams for D3
+Heavily proofread the D3 document to meet what the spec was asking for.
+I also added detailed information for my thought process for all design decisions, as well as architecture decisions.
+
+Presented D3 to Csaba, essentially re-iterating my raw thought process for all design and architecture decisions.
+
+Total time spent on project: 12hrs
