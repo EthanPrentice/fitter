@@ -62,6 +62,42 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         })
     }
 
+    fun getWorkoutLogByUid(ownerUid: String, workoutLogUid: String, listener: TaskListener<Workout>) {
+        cloudInterface.getWorkoutLogByOwnerIdAndUid(ownerUid, workoutLogUid, object : TaskListener<DocumentSnapshot> {
+            // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
+            override fun onSuccess(value: DocumentSnapshot) {
+                val workoutLog = createWorkoutFromDocument(value)
+
+                if (workoutLog == null) {
+                    listener.onFailure(IllegalStateException("Could not create workout log from document!!"))
+                    return
+                }
+
+                listener.onSuccess(workoutLog)
+            }
+            // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
+            override fun onFailure(e: Exception?) = listener.onFailure(e)
+        })
+    }
+
+    fun getWorkoutLogsByOwnerId( ownerUid: String, listener: TaskListener<List<Workout>> ) {
+        cloudInterface.getAllWorkoutLogsByOwnerId(ownerUid, object : TaskListener<QuerySnapshot> {
+            // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
+            override fun onSuccess(value: QuerySnapshot) {
+                val workoutLogs = value.mapNotNull { doc -> createWorkoutFromDocument(doc) }
+
+                if (workoutLogs.isEmpty() && value.size() != 0) {
+                    listener.onFailure(IllegalStateException("Could not create any workout logs from document!!"))
+                    return
+                }
+
+                listener.onSuccess(workoutLogs)
+            }
+            // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
+            override fun onFailure(e: Exception?) = listener.onFailure(e)
+        })
+    }
+
 
 
     @Throws(IllegalArgumentException::class)
