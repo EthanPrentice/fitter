@@ -56,10 +56,6 @@ class NavActivity : FitActivity() {
                 }
             })
 
-
-        // clear in-case of recreate
-        // we could just not clear & re-query them on recreate, but in case of updates elsewhere we will.
-        model.clearWorkouts()
         runWorkoutQueries()
         model.muscleGroups = FitApplication.instance.workoutManager.provider.getMuscleGroups()
     }
@@ -116,7 +112,7 @@ class NavActivity : FitActivity() {
     }
 
 
-    private fun runWorkoutQueries() {
+    fun runWorkoutQueries() {
         queryMyWorkouts()
         queryRecentWorkouts()
     }
@@ -127,6 +123,7 @@ class NavActivity : FitActivity() {
         FitApplication.instance.workoutManager.provider.getWorkoutsByOwner(userUid, object :
             TaskListener<List<Workout>> {
             override fun onSuccess(value: List<Workout>) {
+                model.clearOwnedWorkouts()
                 model.addOwnedWorkouts(*(value.toTypedArray()))
             }
 
@@ -138,8 +135,9 @@ class NavActivity : FitActivity() {
 
     private fun queryRecentWorkouts() {
         val userUid = FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid
-        FitApplication.instance.workoutManager.provider.getWorkoutsByOwner(userUid, object : TaskListener<List<Workout>> {
+        FitApplication.instance.workoutManager.provider.getRecentWorkouts(userUid, object : TaskListener<List<Workout>> {
             override fun onSuccess(value: List<Workout>) {
+                model.clearRecentWorkouts()
                 model.addRecentWorkouts(*(value.toTypedArray()))
             }
 

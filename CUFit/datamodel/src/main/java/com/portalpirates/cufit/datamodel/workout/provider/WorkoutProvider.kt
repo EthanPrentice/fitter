@@ -34,6 +34,14 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
         dataProcessor.getWorkoutsByOwner(ownerUid, listener)
     }
 
+    fun getWorkoutLogByUid( ownerUid: String, workoutLogUid: String, listener: TaskListener<Workout>) {
+        dataProcessor.getWorkoutLogByUid(ownerUid, workoutLogUid, listener)
+    }
+
+    fun getWorkoutLogsByOwnerId( ownerUid: String, listener: TaskListener<List<Workout>>) {
+        dataProcessor.getWorkoutLogsByOwnerId(ownerUid, listener)
+    }
+
     fun getExploreWorkouts(): List<Workout> {
         return List(5) {
             // TODO FIX Return actual workouts!
@@ -60,6 +68,7 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
             Exercise("Tricep Extensions", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Triceps")),
 
             // BACK
+            Exercise("Deadlift", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Legs")),
             Exercise("Lat Pulldown", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Biceps", "Shoulders")),
             Exercise("Seated Row",   Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Biceps")),
             Exercise("Straight-arm Pulldown", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back")),
@@ -81,13 +90,28 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
         )
     }
 
-   fun getExerciseDataSet(exerciseName: String, config: LineDataConfig): LineDataSet {
-       val exerciseWeights = dataProcessor.getLoggedExerciseWeights(exerciseName)
-       val graphData: Map<Int, Float> = exerciseWeights.mapIndexed { i, weight ->
-           i to (weight.number as Float)
-       }.toMap()
+    fun getRecentWorkouts(uid: String, listener: TaskListener<List<Workout>>) {
+        return dataProcessor.getRecentWorkouts(uid, listener)
+    }
 
-      return LineDataUtil.toLineDataSet(graphData, exerciseName)
+   fun getExerciseDataSet(ownerUid: String, exerciseName: String, config: LineDataConfig?, listener: TaskListener<LineDataSet?>) {
+
+       dataProcessor.getLoggedExerciseWeights(exerciseName, ownerUid, object : TaskListener<List<Weight>> {
+           override fun onSuccess(value: List<Weight>) {
+               val graphData : Map<Int, Float> = value.mapIndexed { i, weight -> i to weight.number as Float }.toMap()
+
+               if (graphData.isNotEmpty()) {
+                   listener.onSuccess(LineDataUtil.toLineDataSet(graphData, exerciseName))
+               } else {
+                   listener.onSuccess(null)
+               }
+           }
+
+           override fun onFailure(e: Exception?) {
+               listener.onFailure(e)
+           }
+       })
+
    }
 
 }

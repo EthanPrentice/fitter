@@ -12,10 +12,10 @@ import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.workout.*
 import com.portalpirates.cufit.datamodel.workout.WorkoutManager
 import com.portalpirates.cufit.datamodel.workout.cloud.WorkoutQueryCloudInterface
-import java.lang.Exception
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.util.*
+import kotlin.Exception
 import kotlin.collections.HashMap
 
 internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manager) {
@@ -62,6 +62,54 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         })
     }
 
+    fun getWorkoutLogByUid(ownerUid: String, workoutLogUid: String, listener: TaskListener<Workout>) {
+        cloudInterface.getWorkoutLogByOwnerIdAndUid(ownerUid, workoutLogUid, object : TaskListener<DocumentSnapshot> {
+            // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
+            override fun onSuccess(value: DocumentSnapshot) {
+                val workoutLog = createWorkoutFromDocument(value)
+
+                if (workoutLog == null) {
+                    listener.onFailure(IllegalStateException("Could not create workout log from document!!"))
+                    return
+                }
+
+                listener.onSuccess(workoutLog)
+            }
+            // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
+            override fun onFailure(e: Exception?) = listener.onFailure(e)
+        })
+    }
+
+    fun getWorkoutLogsByOwnerId( ownerUid: String, listener: TaskListener<List<Workout>> ) {
+        cloudInterface.getAllWorkoutLogsByOwnerId(ownerUid, object : TaskListener<QuerySnapshot> {
+            // If a workout is found by the CloudInterface, create a Workout document and call the onSuccessListener
+            override fun onSuccess(value: QuerySnapshot) {
+                val workoutLogs = value.mapNotNull { doc -> createWorkoutFromDocument(doc) }
+
+                if (workoutLogs.isEmpty() && value.size() != 0) {
+                    listener.onFailure(IllegalStateException("Could not create any workout logs from document!!"))
+                    return
+                }
+
+                listener.onSuccess(workoutLogs)
+            }
+            // If a workout is not found, or one could not be created from the supplied document, run onSuccess with null
+            override fun onFailure(e: Exception?) = listener.onFailure(e)
+        })
+    }
+
+    fun getRecentWorkouts(ownerUid: String, listener: TaskListener<List<Workout>>) {
+        getWorkoutsByOwner(ownerUid, object : TaskListener<List<Workout>> {
+            override fun onSuccess(value: List<Workout>) {
+                listener.onSuccess(value.filter { it.dateLogged != null }.sortedByDescending { it.dateLogged })
+            }
+
+            override fun onFailure(e: Exception?) {
+                listener.onFailure(e)
+            }
+        })
+    }
+
 
 
     @Throws(IllegalArgumentException::class)
@@ -80,6 +128,7 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
                 .setExercises(exercises?.map { Exercise(it) })
                 .setTargetMuscleGroups(muscleGroups?.map { MuscleGroup(it) })
                 .setImageBlob(doc.getBlob(WorkoutField.IMAGE_BMP.toString())?.toBytes())
+                .setDateLogged(doc.getDate(WorkoutField.DATE_LOGGED.toString()))
                 .build()
 
         } catch (e: Exception) {
@@ -89,15 +138,30 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         }
     }
 
+
     /**
      * @return weights for logged instances of the exercise with [exerciseName] sorted descending by date logged
      */
-    fun getLoggedExerciseWeights(exerciseName: String) : List<Weight> {
-        // TODO: Get this from the cloud instead of mocking
-        val mockWeights = List(10) {
-            Weight(1, Date())
-        }
-        return mockWeights.sortedByDescending{ it.dateLogged }
+    fun getLoggedExerciseWeights(exerciseName: String, ownerUid: String, listener: TaskListener<List<Weight>>) {
+
+        val matchedExerciseWeights: MutableList<Weight> = mutableListOf()
+
+        getWorkoutLogsByOwnerId( ownerUid, object : TaskListener<List<Workout>> {
+            override fun onSuccess(value: List<Workout>) {
+                value.forEach { workout ->
+                    workout.exercises.forEach { exercise ->
+                        if (exercise.name.equals(exerciseName)) matchedExerciseWeights.add(exercise.weight!!)
+                    }
+                }
+                matchedExerciseWeights.sortBy { it.dateLogged }
+                listener.onSuccess(matchedExerciseWeights)
+            }
+
+            override fun onFailure(e: Exception?) {
+                listener.onFailure(e)
+            }
+        })
+
     }
 
 

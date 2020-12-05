@@ -3,11 +3,22 @@ package com.portalpirates.cufit.ui.nav
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.viewpager.widget.ViewPager
 import java.lang.Integer.max
 
 class FitViewPager(context: Context, attrs: AttributeSet?) : ViewPager(context, attrs) {
     constructor(context: Context) : this(context, null)
+
+    init {
+        viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                minimumHeight = (parent as ViewGroup).height
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var newHeightSpec = heightMeasureSpec

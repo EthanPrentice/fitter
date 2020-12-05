@@ -9,7 +9,11 @@ import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import com.portalpirates.cufit.R
+import com.portalpirates.cufit.datamodel.data.measure.FitMeasure
+import com.portalpirates.cufit.datamodel.data.measure.Height
 import com.portalpirates.cufit.datamodel.data.measure.MeasureConverter
+import com.portalpirates.cufit.datamodel.data.measure.Weight
+import java.util.*
 
 
 class MeasuredEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : FitEditText(context, attrs, defStyle) {
@@ -21,7 +25,7 @@ class MeasuredEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : 
     /**
      * The backing measure of the EditText, setter handles conversions, locales and the cursor handling that comes with each
      */
-    var measure: Measure? = null
+    var measure: FitMeasure? = null
        set(value) {
            if (value == field) {
                field = value
@@ -77,12 +81,17 @@ class MeasuredEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : 
      * Converts the parameter to [measureUnit] if possible, and handles rounding according to [decimals]
      * @return [otherMeasure] converted to [measureUnit] or null if the conversion was unsuccessful
      */
-    private fun getConvertedMeasure(otherMeasure: Measure): Measure? {
+    private fun getConvertedMeasure(otherMeasure: FitMeasure): FitMeasure? {
         return if (measureUnit == null) {
             null
         } else {
             try {
-                MeasureConverter.convert(otherMeasure, measureUnit!!, decimals)
+                val factory: ((Number, MeasureUnit?, Date) -> FitMeasure) = when (otherMeasure) {
+                    is Weight -> ::Weight
+                    is Height -> ::Height
+                    else -> throw IllegalArgumentException()
+                }
+                MeasureConverter.convert(otherMeasure, measureUnit!!, decimals, factory)
             } catch(e: IllegalArgumentException) {
                 Log.e(MeasureConverter.TAG, e.message.toString())
                 null
@@ -100,6 +109,17 @@ class MeasuredEditText(context: Context, attrs: AttributeSet?, defStyle: Int) : 
             // kind of a hack, but we have no API call for API < 28
             formatter.format(Measure(0, unit)).removePrefix("0").trim()
         }
+    }
+
+    fun <T : FitMeasure> getMeasureFromEditText(factory: (Number, MeasureUnit?, Date) -> T): T {
+        val currTime = Date()
+        editText.text?.let {
+            if (!it.isBlank()) {
+                val number = NumberFormat.getInstance().parse(it.toString())
+                return factory(number, measureUnit, currTime)
+            }
+        }
+        return factory(0, measureUnit, currTime)
     }
 
     companion object {

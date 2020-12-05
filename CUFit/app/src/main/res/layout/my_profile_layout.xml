@@ -34,7 +34,7 @@
         android:layout_marginBottom="@dimen/LU_3"
         android:visibility="gone"/>
 
-    <com.portalpirates.cufit.ui.view.chart.LineChartCardView
+    <com.portalpirates.cufit.ui.progress.view.ProgressCard
         android:id="@+id/progress_chart_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

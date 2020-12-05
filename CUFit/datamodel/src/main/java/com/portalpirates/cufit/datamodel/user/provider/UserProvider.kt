@@ -54,14 +54,6 @@ class UserProvider(manager: Manager) : Provider(manager) {
         return dataProcessor.getFirebaseUser()
     }
 
-    fun getRecentWorkouts(): List<Workout> {
-        // TODO: un-hardcode this after the demo
-        return List(5) {
-            // TODO FIX Return actual workouts!
-            Workout("Name", "Desc", "Owner UID", null, true, null, ArrayList(), null, null)
-        }
-    }
-
     fun getBodyWeightLineDataSet(startDate: Date? = null, endDate: Date? = null) : LineDataSet {
         // TODO: after demo, un-hardcode this
         val data = mapOf(

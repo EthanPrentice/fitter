@@ -7,8 +7,11 @@ import com.portalpirates.cufit.datamodel.FitException
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.util.ImageUtil
 import java.io.ByteArrayOutputStream
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
-class WorkoutBuilder {
+class WorkoutBuilder() {
 
     // required
     var name: String? = null
@@ -29,15 +32,31 @@ class WorkoutBuilder {
     var exercises: List<Exercise>? = null
     var targetMuscleGroups: List<MuscleGroup>? = null
     var imageBmp: Bitmap? = null
+    var dateLogged: Date? = null
 
     // should only ever be null for workouts not yet committed to the cloud!!
     var uid: String? = null
 
 
+    constructor(workout: Workout) : this() {
+        setUid(workout.uid)
+        setName(workout.name)
+        setOwner(workout.owner)
+        setOwnerUid(workout.ownerUid)
+        setPublic(workout.public)
+        setDescription(workout.description)
+        setSubscribers(workout.subscribers)
+        setExercises(workout.exercises)
+        setTargetMuscleGroups(workout.targetMuscleGroups)
+        setImage(workout.imageBmp)
+        setDateLogged(workout.dateLogged)
+    }
+
+
     @Throws(WorkoutBuildException::class)
     fun build(): Workout {
         if (hasRequiredInputs()) {
-            return Workout(uid, name!!, description, ownerUid!!, owner, public!!, subscribers, exercises?.toMutableList() ?: ArrayList(), targetMuscleGroups, imageBmp)
+            return Workout(uid, name!!, description, ownerUid!!, owner, public!!, subscribers, exercises?.toMutableList() ?: ArrayList(), targetMuscleGroups, imageBmp, dateLogged)
         } else {
             throw WorkoutBuildException("All required fields have not been provided for workout! Cannot build!")
         }
@@ -53,7 +72,7 @@ class WorkoutBuilder {
         return this
     }
 
-    fun setOwner(owner: FitUser): WorkoutBuilder {
+    fun setOwner(owner: FitUser?): WorkoutBuilder {
         this.owner = owner
         return this
     }
@@ -106,6 +125,11 @@ class WorkoutBuilder {
         return this
     }
 
+    fun setDateLogged(date: Date?): WorkoutBuilder {
+        dateLogged = date
+        return this
+    }
+
     fun hasRequiredInputs(): Boolean {
         return !name.isNullOrBlank() &&
                 !ownerUid.isNullOrBlank() &&
@@ -120,14 +144,16 @@ class WorkoutBuilder {
         }
 
         return hashMapOf<String, Any?>(
-                WorkoutField.NAME.toString() to name,
-                WorkoutField.OWNER.toString() to ownerUid,
-                WorkoutField.PUBLIC.toString() to public,
-                WorkoutField.IMAGE_BMP.toString() to imageBlob,
-                WorkoutField.DESCRIPTION.toString() to description,
-                WorkoutField.SUBSCRIBERS.toString() to subscribers,
-                WorkoutField.EXERCISES.toString() to exercises?.map { it.convertFieldsToHashMap() },
-                WorkoutField.TARGET_MUSCLE_GROUPS.toString() to targetMuscleGroups?.map { it.toString() }
+            WorkoutField.UID.toString() to uid,
+            WorkoutField.NAME.toString() to name,
+            WorkoutField.OWNER.toString() to ownerUid,
+            WorkoutField.PUBLIC.toString() to public,
+            WorkoutField.IMAGE_BMP.toString() to imageBlob,
+            WorkoutField.DESCRIPTION.toString() to description,
+            WorkoutField.SUBSCRIBERS.toString() to subscribers,
+            WorkoutField.EXERCISES.toString() to exercises?.map { it.convertFieldsToHashMap() },
+            WorkoutField.TARGET_MUSCLE_GROUPS.toString() to targetMuscleGroups?.map { it.toString() },
+            WorkoutField.DATE_LOGGED.toString() to dateLogged
         )
     }
 

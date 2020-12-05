@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.ui.view.FitCardView
 
-class LineChartCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : FitCardView(context, attrs, defStyle) {
+open class LineChartCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : FitCardView(context, attrs, defStyle) {
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
@@ -37,23 +37,35 @@ class LineChartCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
         topBarVisible = true
         setStatusIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up, null))
         statusColor = ContextCompat.getColor(context, R.color.status_green)
+
+        chartView.setNoDataText("No data")
+        chartView.setNoDataTextColor(ContextCompat.getColor(context, R.color.text_secondary))
     }
 
     /**
      * Limits the view to use only one data set
      */
-    fun setData(data: LineDataSet) {
-        chartView.data = LineData(data)
+    fun setData(data: LineDataSet?) {
+        if (data != null) {
+            chartView.data = LineData(data)
+        } else {
+            chartView.clear()
+        }
         if (isStatusEnabled) {
             updateStatus()
         }
     }
 
     fun updateStatus() {
-        val firstVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMin)[0].y
-        val lastVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMax)[0].y
+        val diff: Float = if (chartView.data == null || chartView.data.dataSetCount == 0 || chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMin).isEmpty()) {
+            0f
+        } else {
+            val firstVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMin)[0].y
+            val lastVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMax)[0].y
 
-        val diff = lastVal - firstVal
+            lastVal - firstVal
+        }
+
         setStatusText(diff.toString())
 
         statusColor = if (isIncreaseGood && diff >= 0 || !isIncreaseGood && diff <= 0) {
