@@ -1,18 +1,17 @@
 package com.portalpirates.cufit.ui.workout.view
 
-import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,6 +24,7 @@ import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.workout.Exercise
 import com.portalpirates.cufit.datamodel.data.workout.Workout
+import com.portalpirates.cufit.datamodel.data.workout.WorkoutBuilder
 import com.portalpirates.cufit.datamodel.data.workout.WorkoutField
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.util.DragEventListener
@@ -34,6 +34,9 @@ import com.portalpirates.cufit.ui.view.FitCardView
 import com.portalpirates.cufit.ui.workout.AddExerciseDialogFragment
 import com.portalpirates.cufit.ui.workout.ExerciseAdapter
 import kotlinx.android.synthetic.main.button_layout.view.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : FitCardView(context, attrs, defStyle), DragEventListener {
@@ -71,6 +74,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         }
     private var touchHelper: ItemTouchHelper? = null
 
+    private var onWorkoutLoggedListener: ((Workout) -> Unit?)? = null
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -106,6 +110,22 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         // add listener
         addExerciseBtn.setOnClickListener {
             showAddExercisesDialog()
+        }
+        logWorkoutBtn.setOnClickListener {
+            workout?.let { w ->
+                w.dateLogged = Date()
+                FitApplication.instance.workoutManager.receiver.createWorkoutLog(WorkoutBuilder(w), object : TaskListener<String> {
+                    override fun onSuccess(value: String) {
+                        onWorkoutLoggedListener?.invoke(w)
+                        Toast.makeText(context, "Workout logged", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onFailure(e: Exception?) {
+
+                    }
+                })
+            }
+
         }
 
         setContentView(content)
@@ -261,6 +281,10 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         } else {
             exerciseAdapter!!.setExercises(exercises)
         }
+    }
+
+    fun setOnWorkoutLoggedListener(listener: ((Workout) -> Unit?)?) {
+        onWorkoutLoggedListener = listener
     }
 
     private fun getActivity(context: Context?): AppCompatActivity? {

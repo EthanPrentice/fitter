@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.data.measure.Weight
 import com.portalpirates.cufit.datamodel.data.workout.Exercise
@@ -22,12 +23,13 @@ class ExerciseView(context: Context, attrs: AttributeSet?, defStyle: Int) : Line
 
     var exercise: Exercise
         get() {
-            val sets = setsInput.text.toString().toInt()
-            val reps = repsInput.text.toString().toInt()
+            fun getNum(str: String?): Int = if (str.isNullOrBlank()) 0 else str.toInt()
+            val sets = getNum(setsInput.text.toString())
+            val reps = getNum(repsInput.text.toString())
 
             return Exercise(
                 titleView.text.toString(),
-                repWeightView.measure as Weight,
+                repWeightView.getMeasureFromEditText(::Weight),
                 sets, reps
             )
         }
@@ -43,6 +45,8 @@ class ExerciseView(context: Context, attrs: AttributeSet?, defStyle: Int) : Line
     private val repsInput: EditText
     private val repWeightView: MeasuredEditText
 
+    private var onFieldChangedListener: OnFieldChangedListener? = null
+
     init {
         inflate(context, R.layout.exercise_view, this)
 
@@ -54,18 +58,38 @@ class ExerciseView(context: Context, attrs: AttributeSet?, defStyle: Int) : Line
         repWeightView.measureUnit = MeasureUnit.POUND
         repWeightView.decimals = 0
 
-        formatEditText(setsInput)
-        formatEditText(repsInput)
-        formatEditText(repWeightView.editText)
+        formatEditText(setsInput) {
+            onFieldChangedListener?.onSetsChanged(exercise.sets)
+        }
+        formatEditText(repsInput) {
+            onFieldChangedListener?.onRepsChanged(exercise.reps)
+        }
+        formatEditText(repWeightView.editText!!) {
+            onFieldChangedListener?.onWeightChanged(exercise.weight ?: Weight(0, Date()))
+        }
 
         repWeightView.editText?.filters = arrayOf(InputFilter.LengthFilter(3))
         repWeightView?.textAlignment = View.TEXT_ALIGNMENT_TEXT_END
     }
 
-    private fun formatEditText(editText: EditText?) {
+    private fun formatEditText(editText: EditText?, onTextChanged: (() -> Unit?)?) {
         if (editText == null) return
         editText.setTextAppearance(R.style.subtitle)
         editText.setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
+        editText.doOnTextChanged { _, _, _, _ ->
+            onTextChanged?.invoke()
+        }
+    }
+
+    fun setOnFieldChangeListener(listener: OnFieldChangedListener) {
+        onFieldChangedListener = listener
+    }
+
+
+    interface OnFieldChangedListener {
+        fun onRepsChanged(reps: Int)
+        fun onSetsChanged(sets: Int)
+        fun onWeightChanged(weight: Weight)
     }
 
 }

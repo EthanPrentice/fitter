@@ -7,8 +7,12 @@ import com.portalpirates.cufit.ui.workout.view.WorkoutCardView
 
 class WorkoutCardAdapter(private val workouts: List<Workout>) : RecyclerView.Adapter<WorkoutCardAdapter.WorkoutCardViewHolder>() {
 
+    private var onWorkoutLoggedListener: ((Workout) -> Unit?)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutCardViewHolder {
-        val view = WorkoutCardView(parent.context)
+        val view = WorkoutCardView(parent.context).apply {
+            setOnWorkoutLoggedListener(onWorkoutLoggedListener)
+        }
         val params = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         view.layoutParams = params
         return WorkoutCardViewHolder(view)
@@ -20,6 +24,10 @@ class WorkoutCardAdapter(private val workouts: List<Workout>) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: WorkoutCardViewHolder, position: Int) {
         holder.workoutCardView.setWorkout(workouts[position])
+    }
+
+    fun setOnWorkoutLoggedListener(listener: ((Workout) -> Unit?)?) {
+        onWorkoutLoggedListener = listener
     }
 
     class WorkoutCardViewHolder(itemView: WorkoutCardView) : RecyclerView.ViewHolder(itemView) {

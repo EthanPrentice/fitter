@@ -12,16 +12,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.portalpirates.cufit.R
-import com.portalpirates.cufit.datamodel.adt.TaskListener
-import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
-import com.portalpirates.cufit.datamodel.data.workout.Workout
-import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
+import com.portalpirates.cufit.ui.nav.NavActivity
 import com.portalpirates.cufit.ui.view.misc.VerticalSpaceItemDecoration
 import com.portalpirates.cufit.ui.view.swimlane.SwimlaneAdapter
 import com.portalpirates.cufit.ui.view.swimlane.SwimlaneView
@@ -46,8 +42,14 @@ class HomeFragment : FitFragment() {
 
         exploreSwimlane = view.findViewById(R.id.swimlane)
         recentWorkoutsView = view.findViewById<RecyclerView>(R.id.recent_workouts).apply {
-            recentWorkoutsAdapter = WorkoutCardAdapter(model.recentWorkouts.value!!)
+            recentWorkoutsAdapter = WorkoutCardAdapter(model.recentWorkouts.value!!).apply {
+                setOnWorkoutLoggedListener {
+                    (requireActivity() as NavActivity).runWorkoutQueries()
+                }
+            }
+
             adapter = recentWorkoutsAdapter
+
             layoutManager = object : LinearLayoutManager(requireContext()) {
                 override fun canScrollVertically() = false
                 override fun isAutoMeasureEnabled() = true

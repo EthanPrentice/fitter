@@ -9,14 +9,17 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.appbar.AppBarLayout
 import com.portalpirates.cufit.R
 import com.portalpirates.cufit.datamodel.adt.TaskListener
 import com.portalpirates.cufit.datamodel.data.user.AuthenticatedUser
+import com.portalpirates.cufit.datamodel.data.workout.Exercise
 import com.portalpirates.cufit.datamodel.data.workout.Workout
 import com.portalpirates.cufit.ui.FitApplication
 import com.portalpirates.cufit.ui.FitFragment
 import com.portalpirates.cufit.ui.home.HomeViewModel
+import com.portalpirates.cufit.ui.nav.NavActivity
 import com.portalpirates.cufit.ui.user.profile.view.MyProfileCardView
 import com.portalpirates.cufit.ui.view.chart.LineChartCardView
 import com.portalpirates.cufit.ui.view.swimlane.SwimlaneCardView
@@ -90,22 +93,53 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
             myWorkoutsCard?.adapter?.notifyDataSetChanged()
         })
 
+        model.recentWorkouts.observe(requireActivity(), Observer {
+            initProgressCard()
+        })
+
         // Override the chevron collapsing to close the card and when shown always be expanded
         currWorkoutCard = view.findViewById<WorkoutCardView>(R.id.curr_workout_card).apply {
             expand()
             findViewById<ImageView>(R.id.workout_chevron)?.setOnClickListener {
                 visibility = View.GONE
             }
+            setOnWorkoutLoggedListener {
+                (requireActivity() as NavActivity).runWorkoutQueries()
+            }
         }
     }
 
     private fun initProgressCard() {
-        val lineData = FitApplication.instance.userManager.provider.getBodyWeightLineDataSet()
-        progressCard?.apply {
-            setData(lineData)
-            setTitle("Progress")
-            isIncreaseGood = false // TODO: read this from user preferences when programmed
+//        val lineData = FitApplication.instance.userManager.provider.getBodyWeightLineDataSet()
+        progressCard?.setTitle("Progress")
+
+        var firstExercise: Exercise? = null
+        model.recentWorkouts.value?.forEach { workout ->
+            if (workout.exercises.isNotEmpty()) {
+                firstExercise = workout.exercises[0]
+            }
         }
+
+        firstExercise?.let {
+            FitApplication.instance.workoutManager.provider.getExerciseDataSet(
+                FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid,
+                it.name,
+                null,
+                object : TaskListener<LineDataSet> {
+                    override fun onSuccess(value: LineDataSet) {
+                        progressCard?.apply {
+                            setData(value)
+                            isIncreaseGood = true // TODO: read this from user preferences when programmed
+                        }
+                    }
+
+                    override fun onFailure(e: Exception?) {
+                        Log.w(TAG, "Could not get progress!")
+                    }
+                }
+            )
+        }
+
     }
 
     private fun initMyWorkoutsCard() {

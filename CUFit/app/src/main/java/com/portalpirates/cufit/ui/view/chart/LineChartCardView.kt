@@ -50,10 +50,15 @@ class LineChartCardView(context: Context, attrs: AttributeSet?, defStyle: Int) :
     }
 
     fun updateStatus() {
-        val firstVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMin)[0].y
-        val lastVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMax)[0].y
+        val diff: Float = if (chartView.data.dataSetCount == 0 || chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMin).isEmpty()) {
+            0f
+        } else {
+            val firstVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMin)[0].y
+            val lastVal = chartView.data.dataSets[0].getEntriesForXValue(chartView.data.xMax)[0].y
 
-        val diff = lastVal - firstVal
+            lastVal - firstVal
+        }
+
         setStatusText(diff.toString())
 
         statusColor = if (isIncreaseGood && diff >= 0 || !isIncreaseGood && diff <= 0) {

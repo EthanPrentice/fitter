@@ -1,8 +1,9 @@
 package com.portalpirates.cufit.datamodel.data.measure
 
-import android.icu.util.Measure
 import android.icu.util.MeasureUnit
 import java.lang.IllegalArgumentException
+import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -48,8 +49,8 @@ object MeasureConverter {
      * If the conversion cannot be done, throw an [IllegalArgumentException]
      */
     @Throws(IllegalArgumentException::class)
-    fun convert(measure: Measure, newUnit: MeasureUnit): Measure {
-        return convert(measure, newUnit, 0)
+    fun <T : FitMeasure> convert(measure: T, newUnit: MeasureUnit, factory: (Number, MeasureUnit, Date) -> T): T {
+        return convert(measure, newUnit, 0, factory)
     }
 
     /**
@@ -57,7 +58,7 @@ object MeasureConverter {
      * If the conversion cannot be done, throw an [IllegalArgumentException]
      */
     @Throws(IllegalArgumentException::class)
-    fun convert(measure: Measure, newUnit: MeasureUnit, decimals: Int): Measure {
+    fun <T : FitMeasure> convert(measure: T, newUnit: MeasureUnit, decimals: Int, factory: (Number, MeasureUnit, Date) -> T): T {
         if (measure.unit.type != newUnit.type) {
             throw IllegalArgumentException("Cannot convert units of different types")
         }
@@ -68,14 +69,14 @@ object MeasureConverter {
                  measure
             } else {
                 val rounded = getRounded(measure.number, decimals)
-                return Measure(rounded, measure.unit)
+                return factory.invoke(rounded, measure.unit, measure.dateLogged)
             }
         }
 
         val p = Pair(measure.unit, newUnit)
         if (ratioMap.containsKey(p)) {
             val converted = getRounded(ratioMap[p]!! * measure.number.toFloat(), decimals)
-            return Measure(converted, newUnit)
+            return factory(converted, newUnit, measure.dateLogged)
         } else {
             throw IllegalArgumentException("There was an error converting ${measure.unit} to $newUnit")
         }

@@ -89,12 +89,16 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
         )
     }
 
+    fun getRecentWorkouts(uid: String, listener: TaskListener<List<Workout>>) {
+        return dataProcessor.getRecentWorkouts(uid, listener)
+    }
+
    fun getExerciseDataSet(ownerUid: String, exerciseName: String, config: LineDataConfig?, listener: TaskListener<LineDataSet>) {
 
        dataProcessor.getLoggedExerciseWeights(exerciseName, ownerUid, object : TaskListener<List<Weight>> {
            override fun onSuccess(value: List<Weight>) {
                val graphData : Map<Int, Float> = value.mapIndexed { i, weight -> i to weight.number as Float }.toMap()
-               listener.onSuccess( LineDataUtil.toLineDataSet(graphData, exerciseName) )
+               listener.onSuccess(LineDataUtil.toLineDataSet(graphData, exerciseName) )
            }
 
            override fun onFailure(e: Exception?) {

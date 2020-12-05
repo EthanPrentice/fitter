@@ -50,7 +50,7 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
 
     fun createWorkoutLog( fields: HashMap<String, Any?>, listener: TaskListener<String>) {
         val owner_id = fields[WorkoutField.OWNER.toString()] as String?
-        Log.e(TAG, fields.toString())
+
         if (owner_id == null) {
             listener.onFailure(IllegalArgumentException("Cannot update a workout with no Owner UID!"))
             return
@@ -59,9 +59,16 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
         db.collection(USER_COLLECTION).document(owner_id)
                 .collection(WORKOUT_LOGS).add(fields)
                 .addOnSuccessListener { ref ->
+                    val oldUid = fields[WorkoutField.UID.toString()] as String
                     fields[WorkoutField.UID.toString()] = ref.id
                     updateWorkoutLog(fields, object : TaskListener<Unit?> {
-                        override fun onSuccess(value: Unit?) = listener.onSuccess(ref.id)
+                        override fun onSuccess(value: Unit?) {
+                            updateWorkout(oldUid, fields, object : TaskListener<Unit?> {
+                                override fun onSuccess(value: Unit?) { }
+                                override fun onFailure(e: Exception?) { }
+                            })
+                            listener.onSuccess(ref.id)
+                        }
                         override fun onFailure(e: Exception?) = listener.onFailure(e)
                     })
 

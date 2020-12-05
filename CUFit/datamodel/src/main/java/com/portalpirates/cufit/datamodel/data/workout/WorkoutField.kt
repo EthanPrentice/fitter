@@ -9,7 +9,8 @@ enum class WorkoutField(val fieldName: String) {
     DESCRIPTION("description"),
     SUBSCRIBERS("subscribers"),
     EXERCISES("exercises"),
-    TARGET_MUSCLE_GROUPS("targeted_muscle_groups");
+    TARGET_MUSCLE_GROUPS("targeted_muscle_groups"),
+    DATE_LOGGED("date_logged");
 
     override fun toString(): String {
         return fieldName

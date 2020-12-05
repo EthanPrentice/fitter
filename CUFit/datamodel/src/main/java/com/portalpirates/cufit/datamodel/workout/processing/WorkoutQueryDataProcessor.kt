@@ -98,6 +98,18 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         })
     }
 
+    fun getRecentWorkouts(ownerUid: String, listener: TaskListener<List<Workout>>) {
+        getWorkoutsByOwner(ownerUid, object : TaskListener<List<Workout>> {
+            override fun onSuccess(value: List<Workout>) {
+                listener.onSuccess(value.filter { it.dateLogged != null }.sortedByDescending { it.dateLogged })
+            }
+
+            override fun onFailure(e: Exception?) {
+                listener.onFailure(e)
+            }
+        })
+    }
+
 
 
     @Throws(IllegalArgumentException::class)
@@ -116,6 +128,7 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
                 .setExercises(exercises?.map { Exercise(it) })
                 .setTargetMuscleGroups(muscleGroups?.map { MuscleGroup(it) })
                 .setImageBlob(doc.getBlob(WorkoutField.IMAGE_BMP.toString())?.toBytes())
+                .setDateLogged(doc.getDate(WorkoutField.DATE_LOGGED.toString()))
                 .build()
 
         } catch (e: Exception) {
@@ -140,7 +153,7 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
                         if (exercise.name.equals(exerciseName)) matchedExerciseWeights.add(exercise.weight!!)
                     }
                 }
-                matchedExerciseWeights.sortByDescending { it.dateLogged }
+                matchedExerciseWeights.sortBy { it.dateLogged }
                 listener.onSuccess(matchedExerciseWeights)
             }
 

@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import com.portalpirates.cufit.datamodel.data.user.FitUser
 import com.portalpirates.cufit.datamodel.data.util.SwimlaneItem
+import java.util.*
 
 open class Workout(
         var name: String,
@@ -15,7 +16,8 @@ open class Workout(
         var subscribers: List<FitUser>? = null,
         var exercises: MutableList<Exercise>,
         var targetMuscleGroups: List<MuscleGroup>? = null,
-        var imageBmp: Bitmap? = null
+        var imageBmp: Bitmap? = null,
+        var dateLogged: Date? = null
 ) : SwimlaneItem {
 
     // Only null if it hasn't been pushed to the cloud yet.
@@ -24,15 +26,16 @@ open class Workout(
 
     // copy constructor
     constructor(workout: Workout) : this(
-            workout.name,
-            workout.description,
-            workout.ownerUid,
-            workout.owner,
-            workout.public,
-            workout.subscribers,
-            workout.exercises,
-            workout.targetMuscleGroups,
-            workout.imageBmp
+        workout.name,
+        workout.description,
+        workout.ownerUid,
+        workout.owner,
+        workout.public,
+        workout.subscribers,
+        workout.exercises,
+        workout.targetMuscleGroups,
+        workout.imageBmp,
+        workout.dateLogged
     ) {
         uid = workout.uid
     }
@@ -47,7 +50,8 @@ open class Workout(
         subscribers: List<FitUser>? = null,
         exercises: MutableList<Exercise>,
         targetMuscleGroups: List<MuscleGroup>? = null,
-        imageBmp: Bitmap? = null
+        imageBmp: Bitmap? = null,
+        dateLogged: Date? = null
     ) : this(
         name,
         description,
@@ -57,7 +61,8 @@ open class Workout(
         subscribers,
         exercises,
         targetMuscleGroups,
-        imageBmp
+        imageBmp,
+        dateLogged
     ) {
         this.uid = uid
     }
