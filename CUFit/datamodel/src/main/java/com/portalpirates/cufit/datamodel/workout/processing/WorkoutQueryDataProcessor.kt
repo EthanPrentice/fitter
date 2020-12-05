@@ -125,15 +125,23 @@ internal class WorkoutQueryDataProcessor(manager: Manager) : DataProcessor(manag
         }
     }
 
+
     /**
      * @return weights for logged instances of the exercise with [exerciseName] sorted descending by date logged
      */
-    fun getLoggedExerciseWeights(exerciseName: String) : List<Weight> {
-        // TODO: Get this from the cloud instead of mocking
-        val mockWeights = List(10) {
-            Weight(1, Date())
-        }
-        return mockWeights.sortedByDescending{ it.dateLogged }
+    fun getLoggedExerciseWeights(exerciseName: String, ownerUid: String, listener: TaskListener<List<Workout>>) : List<Weight> {
+        val exerciseWeights: MutableList<Weight>
+        val cloudWorkoutData = getWorkoutLogsByOwnerId(
+                ownerUid,
+                listener
+        )
+
+        val exercisesOfWorkout = cloudWorkoutData.exercises.filterNotNull()
+        exerercisesOfWorkout.forEach({ e ->
+            if (e.name.equals(exerciseName)) exerciseWeights += e.weight
+        })
+
+        return exerciseWeights.sortedByDescending{ it.dateLogged }
     }
 
 

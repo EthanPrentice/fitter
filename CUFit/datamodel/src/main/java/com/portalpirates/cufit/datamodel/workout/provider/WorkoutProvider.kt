@@ -89,8 +89,8 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
         )
     }
 
-   fun getExerciseDataSet(exerciseName: String, config: LineDataConfig): LineDataSet {
-       val exerciseWeights = dataProcessor.getLoggedExerciseWeights(exerciseName)
+   fun getExerciseDataSet(ownerUid: String, exerciseName: String, config: LineDataConfig, listener: TaskListener<List<Workout>>): LineDataSet {
+       val exerciseWeights = dataProcessor.getLoggedExerciseWeights(exerciseName, ownerUid, listener)
        val graphData: Map<Int, Float> = exerciseWeights.mapIndexed { i, weight ->
            i to (weight.number as Float)
        }.toMap()
