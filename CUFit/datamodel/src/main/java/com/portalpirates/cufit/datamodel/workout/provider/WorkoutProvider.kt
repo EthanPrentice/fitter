@@ -68,6 +68,7 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
             Exercise("Tricep Extensions", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Triceps")),
 
             // BACK
+            Exercise("Deadlift", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Legs")),
             Exercise("Lat Pulldown", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Biceps", "Shoulders")),
             Exercise("Seated Row",   Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back", "Biceps")),
             Exercise("Straight-arm Pulldown", Weight(0, MeasureUnit.POUND, Date()), 0, 0, toMGs("Back")),
@@ -93,12 +94,17 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
         return dataProcessor.getRecentWorkouts(uid, listener)
     }
 
-   fun getExerciseDataSet(ownerUid: String, exerciseName: String, config: LineDataConfig?, listener: TaskListener<LineDataSet>) {
+   fun getExerciseDataSet(ownerUid: String, exerciseName: String, config: LineDataConfig?, listener: TaskListener<LineDataSet?>) {
 
        dataProcessor.getLoggedExerciseWeights(exerciseName, ownerUid, object : TaskListener<List<Weight>> {
            override fun onSuccess(value: List<Weight>) {
                val graphData : Map<Int, Float> = value.mapIndexed { i, weight -> i to weight.number as Float }.toMap()
-               listener.onSuccess(LineDataUtil.toLineDataSet(graphData, exerciseName) )
+
+               if (graphData.isNotEmpty()) {
+                   listener.onSuccess(LineDataUtil.toLineDataSet(graphData, exerciseName))
+               } else {
+                   listener.onSuccess(null)
+               }
            }
 
            override fun onFailure(e: Exception?) {

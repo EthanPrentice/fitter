@@ -125,8 +125,8 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
                 FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid,
                 it.name,
                 null,
-                object : TaskListener<LineDataSet> {
-                    override fun onSuccess(value: LineDataSet) {
+                object : TaskListener<LineDataSet?> {
+                    override fun onSuccess(value: LineDataSet?) {
                         progressCard?.apply {
                             setData(value)
                             isIncreaseGood = true // TODO: read this from user preferences when programmed

@@ -64,10 +64,11 @@ internal class WorkoutManagementCloudInterface(manager: Manager) : CloudInterfac
                     updateWorkoutLog(fields, object : TaskListener<Unit?> {
                         override fun onSuccess(value: Unit?) {
                             updateWorkout(oldUid, fields, object : TaskListener<Unit?> {
-                                override fun onSuccess(value: Unit?) { }
+                                override fun onSuccess(value: Unit?) {
+                                    listener.onSuccess(ref.id)
+                                }
                                 override fun onFailure(e: Exception?) { }
                             })
-                            listener.onSuccess(ref.id)
                         }
                         override fun onFailure(e: Exception?) = listener.onFailure(e)
                     })

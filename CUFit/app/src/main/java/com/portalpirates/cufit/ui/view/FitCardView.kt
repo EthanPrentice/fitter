@@ -71,6 +71,8 @@ open class FitCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : 
         }
         contentView = view
         rootView.addView(view, layoutParams)
+
+        requestLayout()
     }
 
     /**
