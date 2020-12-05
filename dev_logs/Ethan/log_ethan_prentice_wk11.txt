@@ -50,6 +50,6 @@ This week was so busy for me since I was expecting these tasks to be a team effo
 Unfortunately, with 4 other COMP courses I wasn't able to work this hard the two weeks before this, even though I realized most of the tasks I delegated were never going to be touched.  So this week I had to work around 3-4 days straight to do them, which is why this log is so big.  Otherwise D4 wouldn't have had very much new content vs D3.
 
 
-Note: my GitHub commits now total 17.7k additions and deletions on master.
+Note: my GitHub commits now total 17.7k additions and deletions on master, of which I consider to be clean, well designed, and extendable code.
 
 Total time spent on project this week: somewhere in the range of 30-45 hours
