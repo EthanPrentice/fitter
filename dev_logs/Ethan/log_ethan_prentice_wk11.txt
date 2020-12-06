@@ -47,7 +47,8 @@ General bug fixes:
 
 Other stuff done this week:
   Team members finally started implementing some features so I answered a lot of questions in relation to that since some hadn't yet touched the client-side code
-  Will also probably end up doing the youtube video
+  Created the video submitted with the D4 document
+  Proofread & edited the D4 document to add more detail
 
 
 This week was so busy for me since I was expecting these tasks to be a team effort, and delegated them over the past 4 weeks.  However, there was no work done on them by delegates until the last 2-3 days before D4...
