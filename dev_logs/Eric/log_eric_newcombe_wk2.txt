@@ -1,0 +1,6 @@
+Met with team Sept 25 for status update
+Continued to research and experiment with basic firebase functions
+Developed schema for all objects for the database
+Began to plan routes for the server
+
+Time Allocated : 6 hours

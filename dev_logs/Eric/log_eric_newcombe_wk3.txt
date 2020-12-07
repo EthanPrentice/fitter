@@ -1,0 +1,6 @@
+Met with team Oct 2
+Started implementation of onUserUpdate
+Ran into complications realizing could not send an error object basck to user while watching the database
+Began research into how to create HTTP api through firebase
+
+Time allocated : 7 hours

@@ -1,0 +1,6 @@
+Met with team Nov 13
+
+Continued to implement workout http api
+Testing workout cloud functionality
+
+Time spent : 5 hours

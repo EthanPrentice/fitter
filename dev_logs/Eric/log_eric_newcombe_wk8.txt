@@ -1,0 +1,6 @@
+Met with team Nov 6
+
+Provided finalized routes
+COntinued implementation of workout functions on the back end
+
+Total time spent : 6 hours

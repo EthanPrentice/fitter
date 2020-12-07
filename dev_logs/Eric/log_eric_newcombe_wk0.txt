@@ -1,1 +1,6 @@
-Set up repo
+Met with team Sept 7
+Set up git repo
+Discussed project ideas
+Began research into firebase and firestore
+
+Time Allocated : 8 hours

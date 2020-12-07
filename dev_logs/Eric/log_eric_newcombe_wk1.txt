@@ -1,0 +1,8 @@
+Met with team Sept 15
+Met with team Sept 18
+Finalised presentation for class
+Presented for D1
+Implemented functionality to create blank user in database from auth object
+Continued research into Firestore
+
+Project Time : 10 hours

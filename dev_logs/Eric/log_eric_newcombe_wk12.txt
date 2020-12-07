@@ -1,0 +1,10 @@
+Met with team Dec 2
+
+Switched fully over to data model
+Implemented workout logging to the app on data model 
+    - Add workout logs
+    - update workout logs
+Updated code from Navita for getting logged workouts and converted to be working with task listeners
+
+
+Time spent : 16 hours

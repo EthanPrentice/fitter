@@ -1,0 +1,6 @@
+Met with team Nov 20
+
+Wrote up my portion for D3
+Began studying data model to switch over as we decided cloud HTTP API was made redundant
+
+Time Spent : 6 hours

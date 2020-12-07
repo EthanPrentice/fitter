@@ -1,0 +1,7 @@
+Met with team Oct 23
+
+Mapped out functionality required for workouts on cloud
+Wrote out skeleton code for workouts
+Began writing finalized routes list
+
+Time spent : 4 hours

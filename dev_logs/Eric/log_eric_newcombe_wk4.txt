@@ -1,0 +1,8 @@
+Met with team Oct 9
+
+Continued research into HTTP api and how to structure similar to NodeJS Application
+Continued work on error checking updates to user profile
+Developed the initial routes list, the parameters needed and return objects
+Fixed permissions for the project on firebase
+
+Project Allocation : 6 hours
