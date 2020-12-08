@@ -1,0 +1,24 @@
+I figured it might be useful to give a higher level overview of what I've done over the project in addition to dev logs, since my dev logs are mostly low-level and based around implementation.
+This also allows for a bigger picture view of my contributions to the project rather than week-to-week.
+
+
+Contributed to the architecture and technology decisions in the early-stages of the project, along with coming up with the product idea.
+
+Taught Simon small amounts of Android development into mid-October to try and onboard him so there'd be multiple devs working on Android, and to better understand what the UI component requires from the data model.
+
+Designed the entire client-side system (ie. UI and data model) which was the majority of the project.  The client-side implemented seven different design patterns, some implemented multiple times in different portions of the app.
+This involved a lot of planning and comparing alternative solutions in the early stages so that there would be minimal refactoring or technical difficulties later on in the project.
+
+I also designed all the UI that was used for our project in Figma.  Simon also had some ideas here in the very early stages (early-mid September).
+This also required a lot of looking ahead for what features would be required and how to fit them all in a minimalist UI while allowing future unexpected features to be added easily.
+I decided to go with a card-based approach due to the ability to add or remove cards on the fly as features are added or moved from screen to screen. (Along with some pop up dialogs for things like adding exercises, or user settings which was never implemented.)
+
+From mid-October until the end of the project, I was delegating tasks due to the team not being "self-starters" and requiring direction.
+
+Wrote the diagrams for D2 and D3.
+Heavily proof-read the documents for D2 through D4 to ensure that they covered everything in the spec and accurately portrayed the system.
+I was also the sole presenter for D2 through D4, and made the video for D4.
+
+
+I also implemented the vast majority of the application (18.3k lines of code of the 21.8k commited (84%)) and consider the code I contributed to be clean, concise, and extendable.
+https://github.com/EricNewcombe/cufit/graphs/contributors?from=2020-09-06&to=2020-12-07&type=a
