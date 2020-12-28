@@ -18,13 +18,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:layout_marginHorizontal="@dimen/LU_5_5"
+        android:layout_marginHorizontal="@dimen/LU_7_5"
         android:layout_marginVertical="@dimen/LU_3"
         android:src="@drawable/icon_text_logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/credentials"/>
+        app:layout_constraintBottom_toTopOf="@id/credentials"
+        app:layout_constraintVertical_bias="0.75"/>
 
     <LinearLayout
         android:id="@+id/credentials"
