@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="@dimen/LU_0_5"
+    android:paddingHorizontal="@dimen/LU_3"
+    android:background="@color/card_background">
+
+    <TextView
+        android:id="@+id/exercise_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textAppearance="@style/subtitle"
+        android:textColor="@color/text_primary"
+
+        android:layout_gravity="start|center_vertical"
+        android:layout_weight="1"/>
+
+    <com.ethanprentice.fitter.ui.view.MeasuredEditText
+        android:id="@+id/rep_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:inputType="number"
+        app:editTextType="secondary"
+        app:hintEnabled="false"
+        app:boxBackgroundMode="none"
+        android:textColor="@color/text_secondary"
+
+        android:layout_gravity="end|center_vertical"/>
+
+    <EditText
+        android:id="@+id/sets_input"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/LU_1"
+        style="@style/FitEditTextStyle"
+        android:maxLength="2"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textColor="@color/text_secondary"
+
+        android:layout_gravity="end|center_vertical" />
+
+    <TextView
+        android:id="@+id/middle_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:text="x"
+
+        android:layout_gravity="end|center_vertical"/>
+
+    <EditText
+        android:id="@+id/rep_input"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        style="@style/FitEditTextStyle"
+        android:maxLength="2"
+        android:inputType="number"
+        android:textColor="@color/text_secondary"
+
+        android:layout_gravity="end|center_vertical"/>
+
+    <ImageView
+        android:id="@+id/handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_drag_handle"
+        android:visibility="visible"
+
+        android:layout_gravity="end|center_vertical"/>
+
+
+
+
+</LinearLayout>

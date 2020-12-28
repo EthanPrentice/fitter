@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/LU_2_5">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/header3"
+        android:text="Primary"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:text="Hello"
+            app:buttonType="primary"/>
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:icon="@android:drawable/ic_delete"
+            app:buttonType="primary"/>
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:text="Hello"
+            app:icon="@android:drawable/ic_delete"
+            app:buttonType="primary"/>
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:text="Hello"
+            app:icon="@android:drawable/ic_delete"
+            app:iconOn="right"
+            app:buttonType="primary"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/LU_4"
+        android:textAppearance="@style/header3"
+        android:text="Secondary"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:text="Hello"
+            app:buttonType="secondary"/>
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:icon="@android:drawable/ic_delete"
+            app:buttonType="secondary"/>
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:text="Hello"
+            app:icon="@android:drawable/ic_delete"
+            app:buttonType="secondary"/>
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:text="Hello"
+            app:icon="@android:drawable/ic_delete"
+            app:iconOn="right"
+            app:buttonType="secondary"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/LU_4"
+        android:textAppearance="@style/header3"
+        android:text="Tertiary"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ethanprentice.fitter.ui.view.FitButton
+            android:id="@+id/btn31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/LU_1"
+            app:text="Hello"
+            app:buttonType="tertiary"/>
+
+    </LinearLayout>
+
+    <com.ethanprentice.fitter.ui.view.FitEditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:editTextType="primary"
+        android:inputType="textEmailAddress"
+        android:hint="Email Address"/>
+
+</LinearLayout>

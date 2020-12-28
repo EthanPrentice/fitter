@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/LU_3_5"
+    android:paddingBottom="@dimen/LU_4"
+    android:background="@color/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.ethanprentice.fitter.ui.user.profile.view.MyProfileCardView
+        android:id="@+id/my_profile_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3" />
+
+    <com.ethanprentice.fitter.ui.view.swimlane.SwimlaneCardView
+        android:id="@+id/my_workouts_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3" />
+
+    <com.ethanprentice.fitter.ui.workout.view.CreateWorkoutCardView
+        android:id="@+id/create_workout_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3"
+        android:visibility="gone"/>
+
+    <com.ethanprentice.fitter.ui.workout.view.WorkoutCardView
+        android:id="@+id/curr_workout_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/LU_3"
+        android:visibility="gone"/>
+
+    <com.ethanprentice.fitter.ui.progress.view.ProgressCard
+        android:id="@+id/progress_chart_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/LU_7_5"
+        app:showAxisLabels="false"/>
+
+</LinearLayout>
