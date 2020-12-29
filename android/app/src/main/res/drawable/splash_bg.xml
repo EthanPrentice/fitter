@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ravens_field"/>
-    <item>
-        <color android:color="@color/background_translucent"/>
-    </item>
-</layer-list>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <gradient
+        android:type="linear"
+        android:startColor="#237CF3"
+        android:centerColor="#2862c9"
+        android:endColor="#00309D"
+        android:centerY="40%"
+        android:angle="90"/>
+</shape>
