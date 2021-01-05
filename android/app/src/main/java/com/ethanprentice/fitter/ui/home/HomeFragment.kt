@@ -21,6 +21,7 @@ import com.ethanprentice.fitter.ui.view.misc.VerticalSpaceItemDecoration
 import com.ethanprentice.fitter.ui.view.swimlane.SwimlaneAdapter
 import com.ethanprentice.fitter.ui.view.swimlane.SwimlaneView
 import com.ethanprentice.fitter.ui.workout.WorkoutCardAdapter
+import com.ethanprentice.fitter.viewmodel.HomeViewModel
 
 class HomeFragment : FitFragment() {
 

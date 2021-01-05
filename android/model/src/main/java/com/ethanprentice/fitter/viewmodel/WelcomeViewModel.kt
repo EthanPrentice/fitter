@@ -1,17 +1,19 @@
-package com.ethanprentice.fitter.ui.user.welcome
+package com.ethanprentice.fitter.viewmodel
 
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ethanprentice.fitter.datamodel.adt.TaskListener
 import com.ethanprentice.fitter.datamodel.data.measure.Height
 import com.ethanprentice.fitter.datamodel.data.user.FitUserBuilder
 import com.ethanprentice.fitter.datamodel.data.user.UserSex
 import com.ethanprentice.fitter.datamodel.data.measure.Weight
+import com.ethanprentice.fitter.datamodel.user.UserManager
 import java.util.*
 
-class WelcomeViewModel : ViewModel() {
+class WelcomeViewModel : FitViewModel() {
 
     private val _userImage = MutableLiveData<Bitmap?>()
     val userImage: LiveData<Bitmap?> = _userImage
@@ -75,6 +77,12 @@ class WelcomeViewModel : ViewModel() {
     fun setUserWeightGoal(weightGoal: Weight?) {
         _userWeightGoal.postValue(weightGoal)
     }
+
+
+    fun createFireStoreUser(builder: FitUserBuilder, listener: TaskListener<Unit?>) {
+        UserManager.getInstance().managementReceiver.createFireStoreUser(builder, listener)
+    }
+
 
     @Throws(FitUserBuilder.UserBuildException::class)
     fun getBuilder(): FitUserBuilder {

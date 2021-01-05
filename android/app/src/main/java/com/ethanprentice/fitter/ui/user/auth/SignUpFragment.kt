@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.activityViewModels
 import com.ethanprentice.fitter.R
 import com.ethanprentice.fitter.datamodel.adt.TaskListener
 import com.ethanprentice.fitter.ui.FitApplication
+import com.ethanprentice.fitter.viewmodel.AuthViewModel
 
 class SignUpFragment : AuthFragment() {
 
     val listener: SignUpListener?
         get() = activity as? SignUpListener
+
+    val model: AuthViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.signup_layout, container, false)
@@ -61,15 +65,13 @@ class SignUpFragment : AuthFragment() {
         }
 
         // Put userManager in the view model later when it's written
-        val userManager = FitApplication.instance.userManager
-        userManager.managementReceiver.signUpUser(email, password, object :
+        model.signUpUser(email, password, object :
             TaskListener<Unit?> {
             override fun onSuccess(value: Unit?) {
                 hideMessage()
 
-                val fbUser = userManager.provider.getFirebaseUser()
-                if (fbUser != null) {
-                    listener?.onSignUp(fbUser.uid)
+                model.firebaseUser?.let {
+                    listener?.onSignUp(it.uid)
                     hideMessage()
                 }
             }

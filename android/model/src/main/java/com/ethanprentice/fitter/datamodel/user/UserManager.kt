@@ -11,7 +11,7 @@ import com.ethanprentice.fitter.datamodel.user.provider.UserProvider
 import com.ethanprentice.fitter.datamodel.user.receiver.UserAuthReceiver
 import com.ethanprentice.fitter.datamodel.user.receiver.UserManagementReceiver
 
-class UserManager : Manager() {
+internal class UserManager private constructor() : Manager() {
 
     init {
         cloudInterfaces[QUERY] = UserQueryCloudInterface(this)
@@ -48,5 +48,13 @@ class UserManager : Manager() {
         private const val QUERY = 0
         private const val MANAGEMENT = 1
         private const val AUTH = 2
+
+        private var instance: UserManager? = null
+        fun getInstance(): UserManager {
+            if (instance == null) {
+                instance = UserManager()
+            }
+            return instance!!
+        }
     }
 }

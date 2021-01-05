@@ -14,6 +14,7 @@ import com.ethanprentice.fitter.datamodel.data.user.FitUserBuilder
 import com.ethanprentice.fitter.ui.FitFragment
 import com.ethanprentice.fitter.ui.view.ChooseImageButton
 import com.ethanprentice.fitter.ui.view.FitButton
+import com.ethanprentice.fitter.viewmodel.WelcomeViewModel
 import java.lang.IllegalStateException
 
 abstract class WelcomeFragment : FitFragment() {

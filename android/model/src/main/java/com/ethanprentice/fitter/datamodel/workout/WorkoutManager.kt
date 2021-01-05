@@ -8,7 +8,7 @@ import com.ethanprentice.fitter.datamodel.workout.processing.WorkoutQueryDataPro
 import com.ethanprentice.fitter.datamodel.workout.provider.WorkoutProvider
 import com.ethanprentice.fitter.datamodel.workout.receiver.WorkoutReceiver
 
-class WorkoutManager : Manager() {
+internal class WorkoutManager private constructor() : Manager() {
 
     init {
         cloudInterfaces[QUERY] = WorkoutQueryCloudInterface(this)
@@ -33,5 +33,13 @@ class WorkoutManager : Manager() {
     companion object {
         private const val QUERY = 0
         private const val MANAGEMENT = 1
+
+        private var instance: WorkoutManager? = null
+        fun getInstance(): WorkoutManager {
+            if (instance == null) {
+                instance = WorkoutManager()
+            }
+            return instance!!
+        }
     }
 }

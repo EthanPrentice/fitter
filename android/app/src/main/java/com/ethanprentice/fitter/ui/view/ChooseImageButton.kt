@@ -14,15 +14,16 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import com.ethanprentice.fitter.ui.FitActivity.Companion.RESULT_LOAD_IMAGE
 import com.ethanprentice.fitter.R
-import com.ethanprentice.fitter.ui.util.ImageSelector
-import com.ethanprentice.fitter.ui.util.ImageSelectorLock
+import com.ethanprentice.fitter.viewmodel.util.ImageSelector
+import com.ethanprentice.fitter.viewmodel.util.ImageSelectorLock
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class ChooseImageButton(context: Context, attrs: AttributeSet?, defStyle: Int) : RelativeLayout(context, attrs, defStyle), ImageSelector {
+class ChooseImageButton(context: Context, attrs: AttributeSet?, defStyle: Int) : RelativeLayout(context, attrs, defStyle),
+    ImageSelector {
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 

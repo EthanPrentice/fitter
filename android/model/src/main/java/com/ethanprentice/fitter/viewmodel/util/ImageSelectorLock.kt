@@ -1,4 +1,6 @@
-package com.ethanprentice.fitter.ui.util
+package com.ethanprentice.fitter.viewmodel.util
+
+import com.ethanprentice.fitter.viewmodel.util.ImageSelector
 
 class ImageSelectorLock {
     var owner: ImageSelector? = null

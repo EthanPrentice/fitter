@@ -1,4 +1,4 @@
-package com.ethanprentice.fitter.ui.util
+package com.ethanprentice.fitter.viewmodel.util
 
 import android.graphics.Bitmap
 

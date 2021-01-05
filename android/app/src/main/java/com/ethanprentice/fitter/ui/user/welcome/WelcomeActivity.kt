@@ -19,6 +19,7 @@ import com.ethanprentice.fitter.datamodel.adt.TaskListener
 import com.ethanprentice.fitter.datamodel.data.user.FitUserBuilder
 import com.ethanprentice.fitter.ui.FitApplication
 import com.ethanprentice.fitter.ui.nav.NavActivity
+import com.ethanprentice.fitter.viewmodel.WelcomeViewModel
 import java.io.IOException
 
 
@@ -72,7 +73,7 @@ class WelcomeActivity : FitActivity(), WelcomeFragment.WelcomeFragListener {
     }
 
     override fun userReadyToBuild(builder: FitUserBuilder) {
-        FitApplication.instance.userManager.managementReceiver.createFireStoreUser(builder, object :
+        model.createFireStoreUser(builder, object :
             TaskListener<Unit?> {
             override fun onSuccess(value: Unit?) {
                 Toast.makeText(FitApplication.instance.applicationContext, "Account creation successful!\nWelcome ${builder.firstName}!", Toast.LENGTH_SHORT).show()

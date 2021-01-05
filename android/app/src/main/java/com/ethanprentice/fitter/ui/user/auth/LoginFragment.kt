@@ -10,12 +10,14 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.activityViewModels
 import com.ethanprentice.fitter.R
 import com.ethanprentice.fitter.datamodel.adt.TaskListener
 import com.ethanprentice.fitter.datamodel.data.user.AuthenticatedUser
 import com.ethanprentice.fitter.ui.FitApplication
 import com.ethanprentice.fitter.ui.animation.ResizeAnimation
 import com.ethanprentice.fitter.ui.view.FitButton
+import com.ethanprentice.fitter.viewmodel.AuthViewModel
 import kotlinx.android.synthetic.main.button_layout.view.*
 import java.lang.IllegalStateException
 
@@ -30,6 +32,8 @@ class LoginFragment : AuthFragment() {
     private lateinit var forgotPasswordBtn: FitButton
 
     private var listener: LogInListener? = null
+
+    private val model: AuthViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.login_layout, container, false)
@@ -124,8 +128,6 @@ class LoginFragment : AuthFragment() {
         val email = emailAddrInput.text
         val password = passwordInput.text
 
-        val userManager = FitApplication.instance.userManager
-
         val listener = object :
             TaskListener<AuthenticatedUser?> {
             override fun onSuccess(value: AuthenticatedUser?) {
@@ -147,10 +149,10 @@ class LoginFragment : AuthFragment() {
             }
         }
 
-        userManager.authReceiver.authenticateUser(email, password, object :
+        model.authenticateUser(email, password, object :
             TaskListener<Unit?> {
             override fun onSuccess(value: Unit?) {
-                userManager.provider.getAuthenticatedUser(listener)
+                model.getAuthenticatedUser(listener)
             }
 
             override fun onFailure(e: Exception?) {

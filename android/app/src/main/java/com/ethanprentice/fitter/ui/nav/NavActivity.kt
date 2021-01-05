@@ -17,7 +17,7 @@ import com.ethanprentice.fitter.datamodel.data.workout.Workout
 import com.ethanprentice.fitter.ui.FitActivity
 import com.ethanprentice.fitter.ui.FitApplication
 import com.ethanprentice.fitter.ui.home.HomeFragment
-import com.ethanprentice.fitter.ui.home.HomeViewModel
+import com.ethanprentice.fitter.viewmodel.HomeViewModel
 import com.ethanprentice.fitter.ui.view.LockableNestedScrollView
 import java.io.IOException
 
@@ -57,7 +57,6 @@ class NavActivity : FitActivity() {
             })
 
         runWorkoutQueries()
-        model.muscleGroups = FitApplication.instance.workoutManager.provider.getMuscleGroups()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -119,8 +118,8 @@ class NavActivity : FitActivity() {
 
     /* View model methods */
     private fun queryMyWorkouts() {
-        val userUid = FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid
-        FitApplication.instance.workoutManager.provider.getWorkoutsByOwner(userUid, object :
+        val userUid = model.firebaseUser!!.uid
+        model.getWorkoutsByOwner(userUid, object :
             TaskListener<List<Workout>> {
             override fun onSuccess(value: List<Workout>) {
                 model.clearOwnedWorkouts()
@@ -134,8 +133,8 @@ class NavActivity : FitActivity() {
     }
 
     private fun queryRecentWorkouts() {
-        val userUid = FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid
-        FitApplication.instance.workoutManager.provider.getRecentWorkouts(userUid, object : TaskListener<List<Workout>> {
+        val userUid = model.firebaseUser!!.uid
+        model.getRecentWorkouts(userUid, object : TaskListener<List<Workout>> {
             override fun onSuccess(value: List<Workout>) {
                 model.clearRecentWorkouts()
                 model.addRecentWorkouts(*(value.toTypedArray()))

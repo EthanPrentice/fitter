@@ -9,7 +9,7 @@ import com.ethanprentice.fitter.datamodel.data.workout.WorkoutField
 import com.ethanprentice.fitter.datamodel.workout.WorkoutManager
 import com.ethanprentice.fitter.datamodel.workout.processing.WorkoutManagementDataProcessor
 
-class WorkoutReceiver(manager: Manager) : Receiver(manager) {
+internal class WorkoutReceiver(manager: Manager) : Receiver(manager) {
 
     override val dataProcessor: WorkoutManagementDataProcessor
         get() = (manager as WorkoutManager).managementDataProcessor

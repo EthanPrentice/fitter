@@ -17,7 +17,7 @@ import com.ethanprentice.fitter.datamodel.data.util.Visibility
 import com.ethanprentice.fitter.datamodel.workout.processing.WorkoutQueryDataProcessor
 import java.util.*
 
-class WorkoutProvider(manager: Manager) : Provider(manager) {
+internal class WorkoutProvider(manager: Manager) : Provider(manager) {
 
     private val workoutManager: WorkoutManager
         get() = manager as WorkoutManager
@@ -94,7 +94,6 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
     }
 
    fun getExerciseDataSet(ownerUid: String, exerciseName: String, config: LineDataConfig?, listener: TaskListener<LineDataSet?>) {
-
        dataProcessor.getLoggedExerciseWeights(exerciseName, ownerUid, object : TaskListener<List<Weight>> {
            override fun onSuccess(value: List<Weight>) {
                val graphData : Map<Int, Float> = value.mapIndexed { i, weight -> i to weight.number as Float }.toMap()
@@ -110,7 +109,6 @@ class WorkoutProvider(manager: Manager) : Provider(manager) {
                listener.onFailure(e)
            }
        })
-
    }
 
 }

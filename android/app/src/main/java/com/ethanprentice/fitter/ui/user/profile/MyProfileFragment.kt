@@ -16,12 +16,13 @@ import com.ethanprentice.fitter.datamodel.adt.TaskListener
 import com.ethanprentice.fitter.datamodel.data.user.AuthenticatedUser
 import com.ethanprentice.fitter.datamodel.data.workout.Exercise
 import com.ethanprentice.fitter.datamodel.data.workout.Workout
+import com.ethanprentice.fitter.datamodel.data.workout.WorkoutBuilder
 import com.ethanprentice.fitter.ui.FitApplication
 import com.ethanprentice.fitter.ui.FitFragment
-import com.ethanprentice.fitter.ui.home.HomeViewModel
+import com.ethanprentice.fitter.viewmodel.HomeViewModel
 import com.ethanprentice.fitter.ui.nav.NavActivity
+import com.ethanprentice.fitter.ui.progress.view.ProgressCard
 import com.ethanprentice.fitter.ui.user.profile.view.MyProfileCardView
-import com.ethanprentice.fitter.ui.view.chart.LineChartCardView
 import com.ethanprentice.fitter.ui.view.swimlane.SwimlaneCardView
 import com.ethanprentice.fitter.ui.workout.view.CreateWorkoutCardView
 import com.ethanprentice.fitter.ui.workout.view.WorkoutCardView
@@ -39,12 +40,12 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
     var createWorkoutCard: CreateWorkoutCardView? = null
     var currWorkoutCard: WorkoutCardView? = null
 
-    var progressCard: LineChartCardView? = null
+    var progressCard: ProgressCard? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        FitApplication.instance.userManager.provider.getAuthenticatedUser(object :
+        model.getAuthenticatedUser(object :
             TaskListener<AuthenticatedUser?> {
             override fun onSuccess(value: AuthenticatedUser?) {
                 user = value
@@ -103,8 +104,17 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
             findViewById<ImageView>(R.id.workout_chevron)?.setOnClickListener {
                 visibility = View.GONE
             }
-            setOnWorkoutLoggedListener {
-                (requireActivity() as NavActivity).runWorkoutQueries()
+            setOnLogClickedListener { builder ->
+                model.createWorkoutLog(builder, object : TaskListener<String> {
+                    override fun onSuccess(value: String) {
+                        (requireActivity() as NavActivity).runWorkoutQueries()
+                        Toast.makeText(context, "Workout logged", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onFailure(e: Exception?) {
+                        Log.w(TAG, "Unable to log workout: ${e?.message}")
+                    }
+                })
             }
         }
     }
@@ -112,6 +122,8 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
     private fun initProgressCard() {
 //        val lineData = FitApplication.instance.userManager.provider.getBodyWeightLineDataSet()
         progressCard?.setTitle("Progress")
+        progressCard?.setUserUid(model.firebaseUser?.uid)
+        progressCard?.setLineDataGetter(::model.get()::getExerciseDataSet)
 
         var firstExercise: Exercise? = null
         model.recentWorkouts.value?.forEach { workout ->
@@ -121,8 +133,8 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         }
 
         firstExercise?.let {
-            FitApplication.instance.workoutManager.provider.getExerciseDataSet(
-                FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid,
+            model.getExerciseDataSet(
+                model.firebaseUser!!.uid,
                 it.name,
                 null,
                 object : TaskListener<LineDataSet?> {
@@ -167,26 +179,38 @@ class MyProfileFragment : FitFragment(), AppBarLayout.OnOffsetChangedListener {
         createWorkoutCard?.apply {
             assignLock(model.imageSelectorLock)
             populateMuscleGroups(model.muscleGroups)
-            setOnCreateTaskListener(object : TaskListener<Workout> {
-                override fun onSuccess(value: Workout) {
-                    Toast.makeText(context, "Workout created!", Toast.LENGTH_LONG).show()
-                    model.insertOwnedWorkout(0, value)
-
-                    createWorkoutCard?.apply {
-                        visibility = View.GONE
-                        clearData()
-                    }
-                }
-
-                override fun onFailure(e: Exception?) {
-                    Log.w("Create Workout", "There was an error creating the workout: ${e?.message}")
-                    Toast.makeText(context, "There was an error creating the workout!", Toast.LENGTH_LONG).show()
-                }
-            })
 
             setOnCancelListener {
                 visibility = View.GONE
                 clearData()
+            }
+
+            setOnSaveClicked { builder ->
+                val ownerUid = model.firebaseUser?.uid
+                if (ownerUid != null) {
+                    builder.setOwnerUid(model.firebaseUser!!.uid)
+
+                    model.createWorkout(builder, object : TaskListener<Workout> {
+                        override fun onSuccess(value: Workout) {
+                            Toast.makeText(context, "Workout created!", Toast.LENGTH_LONG).show()
+                            model.insertOwnedWorkout(0, value)
+
+                            createWorkoutCard?.apply {
+                                visibility = View.GONE
+                                clearData()
+                            }
+                        }
+
+                        override fun onFailure(e: Exception?) {
+                            Log.w("Create Workout", "There was an error creating the workout: ${e?.message}")
+                            Toast.makeText(context, "There was an error creating the workout!", Toast.LENGTH_LONG).show()
+                        }
+                    })
+
+                } else {
+                    Log.w(TAG, "Could not create workout.  No authenticated user.")
+                }
+                null
             }
         }
     }

@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -74,7 +73,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         }
     private var touchHelper: ItemTouchHelper? = null
 
-    private var onWorkoutLoggedListener: ((Workout) -> Unit?)? = null
+    private var onLogClickedListener: ((WorkoutBuilder) -> Unit?)? = null
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -114,16 +113,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         logWorkoutBtn.setOnClickListener {
             workout?.let { w ->
                 w.dateLogged = Date()
-                FitApplication.instance.workoutManager.receiver.createWorkoutLog(WorkoutBuilder(w), object : TaskListener<String> {
-                    override fun onSuccess(value: String) {
-                        onWorkoutLoggedListener?.invoke(w)
-                        Toast.makeText(context, "Workout logged", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onFailure(e: Exception?) {
-
-                    }
-                })
+                onLogClickedListener?.invoke(WorkoutBuilder(w))
             }
 
         }
@@ -184,7 +174,7 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
                     return@setOnSaveClickedListener null
                 }
 
-                FitApplication.instance.workoutManager.receiver.updateWorkout(uidRef, fieldsToUpdate, object : TaskListener<Unit?> {
+                model.updateWorkout(uidRef, fieldsToUpdate, object : TaskListener<Unit?> {
                     override fun onSuccess(value: Unit?) {
                         val exercisesRef = workout?.exercises
                         if (exercisesRef == null) {
@@ -283,8 +273,8 @@ class WorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: Int) : F
         }
     }
 
-    fun setOnWorkoutLoggedListener(listener: ((Workout) -> Unit?)?) {
-        onWorkoutLoggedListener = listener
+    fun setOnLogClickedListener(listener: ((WorkoutBuilder) -> Unit?)?) {
+        onLogClickedListener = listener
     }
 
     private fun getActivity(context: Context?): AppCompatActivity? {

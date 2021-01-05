@@ -17,7 +17,7 @@ import com.ethanprentice.fitter.datamodel.data.workout.MuscleGroup
 import com.ethanprentice.fitter.datamodel.data.workout.Workout
 import com.ethanprentice.fitter.datamodel.data.workout.WorkoutBuilder
 import com.ethanprentice.fitter.ui.FitApplication
-import com.ethanprentice.fitter.ui.util.ImageSelectorLock
+import com.ethanprentice.fitter.viewmodel.util.ImageSelectorLock
 import com.ethanprentice.fitter.ui.view.ChooseImageButton
 import com.ethanprentice.fitter.ui.view.FitButton
 import com.ethanprentice.fitter.ui.view.FitCardView
@@ -39,11 +39,9 @@ class CreateWorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: In
     private val saveBtn: FitButton
     private val cancelBtn: FitButton
 
+    private var onSaveClickedListener: ((WorkoutBuilder) -> Unit?)? = null
 
-    private var onCreateListener: TaskListener<Workout> = object : TaskListener<Workout> {
-        override fun onSuccess(value: Workout) { }
-        override fun onFailure(e: Exception?) { }
-    }
+
     private var onCancelListener: (() -> Unit?)? = null
 
 
@@ -97,13 +95,6 @@ class CreateWorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: In
     }
 
     private fun saveWorkout() {
-        val ownerUid = FitApplication.instance.userManager.provider.getFirebaseUser()?.uid
-        if (ownerUid == null) {
-            Log.w("Create Workout", "Unable to create workout, no authenticated user")
-            Toast.makeText(context, "Unable to create workout.  Please log in to the app again.", Toast.LENGTH_LONG).show()
-            return
-        }
-
         val name = workoutTitleView.editText?.text?.toString()
         if (name.isNullOrBlank()) {
             Toast.makeText(context, "Please enter a title", Toast.LENGTH_LONG).show()
@@ -116,13 +107,11 @@ class CreateWorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: In
         }
 
         val builder = WorkoutBuilder().setName(name)
-            .setOwnerUid(ownerUid)
             .setDescription(workoutDescView.editText?.text?.toString())
             .setImage(imageBmp)
             .setTargetMuscleGroups(muscleGroups)
 
-
-        FitApplication.instance.workoutManager.receiver.createWorkout(builder, onCreateListener)
+        onSaveClickedListener?.invoke(builder)
     }
 
     fun clearData() {
@@ -137,10 +126,6 @@ class CreateWorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: In
                 isChecked = false
             }
         }
-    }
-
-    fun setOnCreateTaskListener(listener: TaskListener<Workout>) {
-        onCreateListener = listener
     }
 
     fun setOnCancelListener(listener: (() -> Unit?)?) {
@@ -165,6 +150,10 @@ class CreateWorkoutCardView(context: Context, attrs: AttributeSet?, defStyle: In
 
     fun assignLock(lock: ImageSelectorLock) {
         chooseImageBtn.assignLock(lock)
+    }
+
+    fun setOnSaveClicked(listener: ((WorkoutBuilder) -> Unit?)) {
+        onSaveClickedListener = listener
     }
 
 }

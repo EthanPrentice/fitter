@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.data.LineDataSet
 import com.ethanprentice.fitter.R
 import com.ethanprentice.fitter.datamodel.adt.TaskListener
+import com.ethanprentice.fitter.datamodel.data.graph.LineDataConfig
 import com.ethanprentice.fitter.ui.FitApplication
 import com.ethanprentice.fitter.ui.view.chart.LineChartCardView
 
@@ -17,6 +18,8 @@ class ProgressCard(context: Context, attrs: AttributeSet?, defStyle: Int) : Line
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
+    private var userUid: String? = null
+    private var dataSetGetter: ((userUid: String, exerciseName: String, LineDataConfig?, TaskListener<LineDataSet?>) -> Unit?)? = null
 
     val toggleTextView: TextView
     var togglePos = 0
@@ -55,20 +58,41 @@ class ProgressCard(context: Context, attrs: AttributeSet?, defStyle: Int) : Line
     }
 
     private fun onTextViewClicked() {
-        val nextPos = getNextExercisePos(togglePos)
-
-        val userUid = FitApplication.instance.userManager.provider.getFirebaseUser()!!.uid
-        FitApplication.instance.workoutManager.provider.getExerciseDataSet(userUid, EXERCISES[nextPos], null, object : TaskListener<LineDataSet?> {
-            override fun onSuccess(value: LineDataSet?) {
-                setData(value)
-                togglePos = nextPos
-                toggleTextView.text = "(${EXERCISES[togglePos]})"
+        userUid.let { uid ->
+            if (uid == null) {
+                chartView.setNoDataText("Error retrieving data")
+                return
             }
+            val nextPos = getNextExercisePos(togglePos)
+            dataSetGetter?.invoke(
+                uid,
+                EXERCISES[nextPos],
+                null,
+                object : TaskListener<LineDataSet?> {
+                    override fun onSuccess(value: LineDataSet?) {
+                        setData(value)
+                        togglePos = nextPos
+                        toggleTextView.text = "(${EXERCISES[togglePos]})"
 
-            override fun onFailure(e: Exception?) {
-                Log.w("Progress", "Could not retrieve data for exercise!")
-            }
-        })
+                        chartView.setNoDataText("No data")
+                    }
+
+                    override fun onFailure(e: Exception?) {
+                        Log.w("Progress", "Could not retrieve data for exercise!")
+
+                        chartView.setNoDataText("Error retrieving data")
+                    }
+                })
+        }
+    }
+
+
+    fun setUserUid(uid: String?) {
+        userUid = uid
+    }
+
+    fun setLineDataGetter(getter: ((String, String, LineDataConfig?, TaskListener<LineDataSet?>) -> Unit?)?) {
+        dataSetGetter = getter
     }
 
 

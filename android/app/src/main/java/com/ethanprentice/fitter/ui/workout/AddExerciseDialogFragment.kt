@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.ethanprentice.fitter.R
 import com.ethanprentice.fitter.datamodel.data.workout.Exercise
 import com.ethanprentice.fitter.ui.FitApplication
 import com.ethanprentice.fitter.ui.view.FitButton
+import com.ethanprentice.fitter.viewmodel.HomeViewModel
 
 
 class AddExerciseDialogFragment : DialogFragment() {
@@ -31,6 +33,8 @@ class AddExerciseDialogFragment : DialogFragment() {
     private var onSaveClickedListener: ((List<Exercise>) -> Unit?)? = null
 
     private var onDialogShownListener: OnDialogShownListener? = null
+
+    val model: HomeViewModel by activityViewModels()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,7 +68,7 @@ class AddExerciseDialogFragment : DialogFragment() {
             }
         }
 
-        populateExercises()
+        populateExercises(model.getExercises())
 
         onDialogShownListener?.onDialogShown(this)
     }
@@ -89,11 +93,11 @@ class AddExerciseDialogFragment : DialogFragment() {
         }
     }
 
-    fun populateExercises(/* exercises: List<Exercise> */) {
+    fun populateExercises(exercises: List<Exercise>) {
         // mocked
         if (adapter != null) return
 
-        adapter = AddExercisesAdapter(FitApplication.instance.workoutManager.provider.getExercises().toMutableList())
+        adapter = AddExercisesAdapter(exercises.toMutableList())
 
         exerciseEntries?.adapter = adapter
     }
